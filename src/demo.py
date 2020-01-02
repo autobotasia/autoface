@@ -101,8 +101,7 @@ def add_overlays(frame, faces, frame_rate):
                 cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0),
                 thickness=2, lineType=2)
 
-def get_embedding(image, model):
-    
+def get_embedding(image, model):    
     face_112x112 = image
     landmarks = fa.get_landmarks(image)
     if landmarks is None:
@@ -169,7 +168,7 @@ if __name__ == '__main__':
 
     video_capture = cv2.VideoCapture(0)
     start_time = time.time()
-
+    
     WEIGHTS_BEST = './weights/best_weight_part6_fold2.hdf5'
 
     clsmodel = Model()
