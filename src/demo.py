@@ -180,13 +180,15 @@ if __name__ == '__main__':
     for _, clsdirs, _ in os.walk('/home/autobot/projects/autobot/facenet/datasets/nccfaces/'):
         for index, clsdir in enumerate(clsdirs):
             classname.append(clsdir)
-
-    while True:
+    
+    #while True:
+    for file in os.listdir("/home/autobot/projects/autobot/facenet/datasets/faces160/nccfaces/"): 
+        print(file)       
         # Capture frame-by-frame
-        ret, frame = video_capture.read()
-        #frame = cv2.imread('/home/autobot/projects/autobot/dnb-facerecognition-aivivn/datasets/aligned/test/112x112/Nguyen_Dai_Duong_1_IMG_4988(1).png')
+        #ret, frame = video_capture.read()
+        frame = cv2.imread(os.path.join("/home/autobot/projects/autobot/facenet/datasets/faces160/nccfaces/", file))
 
-        if True or (frame_count % frame_interval) == 0:
+        if True: #or (frame_count % frame_interval) == 0:
             #faces = face_recognition.identify(frame)
             try:
                 xtest, alignedimg = get_embedding(frame, model)
@@ -202,6 +204,11 @@ if __name__ == '__main__':
                                       
             clsname = classname[best_idx[0]]
             prob = ptest[0,best_idx[0]]
+            
+            print("=============%s=%f", clsname, prob)
+            if not os.path.exists('./result/%s'%clsname):
+                os.makedirs('./result/%s'%clsname)
+            cv2.imwrite(os.path.join('./result/%s'%clsname, file), frame)
 
             bounding_box = []
             bounding_box.append(alignedimg[:,0,0].min())
@@ -222,14 +229,14 @@ if __name__ == '__main__':
 
         #add_overlays(frame, [face], frame_rate)
         frame_count += 1
-        cv2.imshow('Video', frame)
+        #cv2.imshow('Video', frame)
 
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+        #if cv2.waitKey(1) & 0xFF == ord('q'):
+        #    break
 
     # When everything is done, release the capture
-    video_capture.release()
-    cv2.destroyAllWindows()
+    #video_capture.release()
+    #cv2.destroyAllWindows()
 
     
 
