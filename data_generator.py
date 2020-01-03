@@ -10,7 +10,7 @@ class DataGenerator:
         # load data here        
         self.train_df = pd.read_csv('./datasets/train_refined.csv')
         #xtrain = np.load('train_data.npy')
-        self.xtrain_aug = np.load('./train_aug_data.npy')
+        self.xtrain_aug = np.load('./data/train_aug_data.npy')
         self.ytrain = self.get_y_true()
         self.train_size = len(self.xtrain_aug)
 

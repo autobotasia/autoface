@@ -14,21 +14,21 @@ class Trainer():
         self.sess.run(self.init)
 
     def train(self):
-        for cur_epoch in range(self.model.cur_epoch_tensor.eval(self.sess), self.config.num_epochs + 1, 1):
-            print("Current epoch %d/%d"%(cur_epoch, self.config.num_epochs))
-            self.train_epoch()
+        for cur_epoch in range(self.model.cur_epoch_tensor.eval(self.sess), self.config.num_epochs + 1, 1):            
+            self.train_epoch(cur_epoch)
             self.sess.run(self.model.increment_cur_epoch_tensor)
 
-    def train_epoch(self):
+    def train_epoch(self, cur_epoch):
         loop = tqdm(range(self.config.num_iter_per_epoch))
         losses = []
         accs = []
-        for _ in loop:
+        for _ in loop:            
             loss, acc = self.train_step()
             losses.append(loss)
             accs.append(acc)
         loss = np.mean(losses)
         acc = np.mean(accs)
+        print("Current epoch %d/%d, loss %f"%(cur_epoch, self.config.num_epochs, loss))
 
         cur_it = self.model.global_step_tensor.eval(self.sess)
         summaries_dict = {

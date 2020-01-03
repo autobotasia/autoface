@@ -29,13 +29,17 @@ def main():
     model = Model(config)
     # create tensorboard logger
     logger = Logger(sess, config)
-    # create trainer and pass all the previous components to it
-    trainer = Trainer(sess, model, data, config, logger)
-    #load model if exists
-    model.load(sess)
-    # here you train your model
-    trainer.train()
 
+    if config.do_train:
+        # create trainer and pass all the previous components to it
+        trainer = Trainer(sess, model, data, config, logger)        
+        # here you train your model
+        trainer.train()
+
+    if config.do_eval:
+        #load model if exists
+        model.load(sess)
+        
 
 if __name__ == '__main__':
     main()

@@ -10,12 +10,11 @@ class Model():
 
         self.build_model()
         self.init_saver()
-        self.is_training = True
 
     # save function that saves the checkpoint in the path defined in the config file
     def save(self, sess):
-        print("Saving model...")
-        self.saver.save(sess, self.config.checkpoint_dir, self.global_step_tensor)
+        print("Saving model at %s...", self.config.checkpoint_dir)
+        self.saver.save(sess, '%smodel'%self.config.checkpoint_dir, self.global_step_tensor)
         print("Model saved")
 
     # load latest checkpoint from the experiment path defined in the config file
@@ -74,5 +73,5 @@ class Model():
 
     def init_saver(self):
         # here you initialize the tensorflow saver that will be used in saving the checkpoints.
-        self.saver = tf.train.Saver(max_to_keep=self.config.max_to_keep)
+        self.saver = tf.train.Saver(max_to_keep=self.config.max_to_keep, filename='checkpoint')
 
