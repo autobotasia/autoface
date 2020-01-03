@@ -24,7 +24,7 @@ def main():
     # create tensorflow session
     sess = tf.Session()
     # create your data generator
-    data = DataGenerator(config)
+    data = DataGenerator(config)    
     # create an instance of the model you want
     model = Model(config)
     # create tensorboard logger

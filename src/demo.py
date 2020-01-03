@@ -181,6 +181,10 @@ if __name__ == '__main__':
         for index, clsdir in enumerate(clsdirs):
             classname.append(clsdir)
     
+
+    print("="*10)
+    print(len(classname))
+
     #while True:
     for file in os.listdir("/home/autobot/projects/autobot/facenet/datasets/faces160/nccfaces/"): 
         print(file)       

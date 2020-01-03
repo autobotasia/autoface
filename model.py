@@ -1,9 +1,5 @@
 import tensorflow as tf
 
-INPUT_DIM = 512
-NUMBER_OF_CLASSES = 1000
-BATCH_SIZE = 32
-
 class Model():
     def __init__(self, config):
         self.config = config
@@ -14,6 +10,7 @@ class Model():
 
         self.build_model()
         self.init_saver()
+        self.is_training = True
 
     # save function that saves the checkpoint in the path defined in the config file
     def save(self, sess):
@@ -44,38 +41,34 @@ class Model():
     def build_model(self):
         self.is_training = tf.placeholder(tf.bool)
 
-        self.x = tf.placeholder(tf.float32, shape=[INPUT_DIM])
-        self.labels = tf.placeholder(tf.float32, shape=[BATCH_SIZE, NUMBER_OF_CLASSES])
+        self.inputs = tf.placeholder(tf.float32, shape=[self.config.batch_size, self.config.input_dim])
+        self.labels = tf.placeholder(tf.float32, shape=[self.config.batch_size, self.config.number_of_class])
 
         # network architecture
-        weight1 = tf.get_variable("weight1", [2048, INPUT_DIM],
+        weight1 = tf.get_variable("weight1", [2048, self.config.input_dim],
                 initializer=tf.truncated_normal_initializer(stddev=0.02))
-        bias1 = tf.get_variable("bias1", [INPUT_DIM], initializer=tf.zeros_initializer())
+        bias1 = tf.get_variable("bias1", [2048], initializer=tf.zeros_initializer())
 
-        weight2 = tf.get_variable("weight2", [NUMBER_OF_CLASSES, 2048],
+        weight2 = tf.get_variable("weight2", [self.config.number_of_class, 2048],
                 initializer=tf.truncated_normal_initializer(stddev=0.02))
-        bias2 = tf.get_variable("bias2", [INPUT_DIM], initializer=tf.zeros_initializer())
+        bias2 = tf.get_variable("bias2", [self.config.number_of_class], initializer=tf.zeros_initializer())
 
         with tf.variable_scope("loss"):
-            logits1 = tf.matmul(self.x, weight1, transpose_b=True)            
+            logits1 = tf.matmul(self.inputs, weight1, transpose_b=True)            
             logits1 = tf.nn.bias_add(logits1, bias1)
             prob_logits1 = tf.nn.relu(logits1)
-            prob_logits1 = tf.nn.dropout(prob_logits1, keep_prob=0.25)
+            prob_logits1 = tf.nn.dropout(prob_logits1, rate=0.25)
             logits = tf.matmul(prob_logits1, weight2, transpose_b=True)
             logits = tf.nn.bias_add(logits, bias2)
-            '''probabilities = tf.nn.softmax(logits, axis=-1)
-            self.cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=self.labels, logits=logits))            
-            '''
+
             self.probabilities = tf.nn.softmax(logits, axis=-1)
-            log_probs = tf.nn.log_softmax(logits, axis=-1)
-
-            one_hot_labels = tf.one_hot(self.labels, depth=NUMBER_OF_CLASSES, dtype=tf.float32)
-
-            per_example_loss = -tf.reduce_sum(one_hot_labels * log_probs, axis=-1)
-            loss = tf.reduce_mean(per_example_loss)
+            #log_probs = tf.nn.log_softmax(logits, axis=-1)
+            #one_hot_labels = tf.one_hot(self.labels, depth=NUMBER_OF_CLASSES, dtype=tf.float32)
+            #per_example_loss = -tf.reduce_sum(self.labels * log_probs, axis=-1)
+            self.loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(labels=self.labels, logits=logits)) 
             update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
             with tf.control_dependencies(update_ops):
-                self.train_step = tf.train.AdamOptimizer(self.config.learning_rate).minimize(loss,
+                self.train_step = tf.train.AdamOptimizer(self.config.learning_rate).minimize(self.loss,
                                                             global_step=self.global_step_tensor)
 
 

@@ -15,7 +15,7 @@ class Trainer():
 
     def train(self):
         for cur_epoch in range(self.model.cur_epoch_tensor.eval(self.sess), self.config.num_epochs + 1, 1):
-            print("="*10, cur_epoch)
+            print("Current epoch %d/%d"%(cur_epoch, self.config.num_epochs))
             self.train_epoch()
             self.sess.run(self.model.increment_cur_epoch_tensor)
 
@@ -40,7 +40,7 @@ class Trainer():
 
     def train_step(self):
         batch_x, batch_y = next(self.data.next_batch(self.config.batch_size))
-        feed_dict = {self.model.x: batch_x, self.model.y: batch_y, self.model.is_training: True}
+        feed_dict = {self.model.inputs: batch_x, self.model.labels: batch_y}
         _, loss, prob = self.sess.run([self.model.train_step, self.model.loss, self.model.probabilities],
                                      feed_dict=feed_dict)
         return loss, prob
