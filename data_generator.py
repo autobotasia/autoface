@@ -20,8 +20,7 @@ class DataGenerator:
             y_true.append(to_categorical(row['label'], num_classes=self.config.number_of_class))
         return np.array(y_true)    
 
-    def next_batch(self, batch_size):        
-
+    def next_batch(self, batch_size):
         self.xtrain_aug, self.ytrain = shuffle(self.xtrain_aug, self.ytrain)
         for start in range(0, self.train_size, batch_size):
             end = min(start + batch_size, self.train_size)

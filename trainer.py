@@ -1,46 +1,98 @@
 import tensorflow as tf
-from tqdm import tqdm
 import numpy as np
+from data_generator import DataGenerator
+from model import Model
+from random import randint
 
 
 class Trainer():
-    def __init__(self, sess, model, data, config, logger):
-        self.model = model
-        self.logger = logger
+    def __init__(self, config):
         self.config = config
-        self.sess = sess
-        self.data = data
-        self.init = tf.group(tf.global_variables_initializer(), tf.local_variables_initializer())
-        self.sess.run(self.init)
+        self.data = DataGenerator(config)
+
+    def model_fn(self, features, labels, mode):
+        model = Model(self.config)
+        global_step = tf.train.get_global_step()
+        
+        #images = tf.reshape(features, [-1, self.config.input_dim])
+        
+        logits = model.build_model(features)
+        predicted_logit = tf.argmax(input=logits, axis=1)
+        probabilities = tf.nn.softmax(logits)
+        
+        #PREDICT
+        predictions = {
+            "predicted_logit": predicted_logit,
+            "probabilities": probabilities
+        }
+        if mode == tf.estimator.ModeKeys.PREDICT:
+            return tf.estimator.EstimatorSpec(mode=mode,  
+                                            predictions=predictions)
+        with tf.name_scope('loss'):
+            cross_entropy = tf.nn.softmax_cross_entropy_with_logits_v2(labels=labels, logits=logits)
+            loss = tf.reduce_mean(cross_entropy)
+        
+        with tf.name_scope('accuracy'):
+            accuracy = tf.metrics.accuracy(
+                labels=tf.argmax(input=labels, axis=1), predictions=predicted_logit, name='acc')   
+            tf.summary.scalar('accuracy', accuracy[1])
+
+        #EVAL
+        if mode == tf.estimator.ModeKeys.EVAL:
+            return tf.estimator.EstimatorSpec(
+                mode=mode,
+                loss=loss,
+                eval_metric_ops={'accuracy/accuracy': accuracy},
+                evaluation_hooks=None)
+        
+        
+        # Create a SGR optimizer 
+        optimizer = tf.train.AdamOptimizer()
+        train_op = optimizer.minimize( 
+                    loss, global_step=global_step)
+        
+        # Create a hook to print acc, loss & global step every 100 iter.   
+        train_hook_list = []
+        train_tensors_log = {'accuracy': accuracy[1],
+                            'loss': loss,
+                            'global_step': global_step}
+        train_hook_list.append(tf.train.LoggingTensorHook(
+            tensors=train_tensors_log, every_n_iter=10))
+        
+        if mode == tf.estimator.ModeKeys.TRAIN:
+            return tf.estimator.EstimatorSpec(
+                mode=mode,
+                loss=loss,
+                train_op=train_op,
+                training_hooks=train_hook_list)
 
     def train(self):
-        for cur_epoch in range(self.model.cur_epoch_tensor.eval(self.sess), self.config.num_epochs + 1, 1):            
-            self.train_epoch(cur_epoch)
-            self.sess.run(self.model.increment_cur_epoch_tensor)
+        # Load training and eval data 
+        eval_data, eval_labels = next(self.data.next_batch(self.config.batch_size))
+        train_data, train_labels = next(self.data.next_batch(self.config.batch_size))
 
-    def train_epoch(self, cur_epoch):
-        loop = tqdm(range(self.config.num_iter_per_epoch))
-        losses = []
-        accs = []
-        for _ in loop:            
-            loss, acc = self.train_step()
-            losses.append(loss)
-            accs.append(acc)
-        loss = np.mean(losses)
-        acc = np.mean(accs)
-        print("Current epoch %d/%d, loss %f"%(cur_epoch, self.config.num_epochs, loss))
+        # Create a input function to train
+        train_input_fn = tf.estimator.inputs.numpy_input_fn(
+            x=self.data.xtrain_aug[:, randint(0, 99), :],
+            y=self.data.ytrain,
+            batch_size=self.config.batch_size,
+            num_epochs=self.config.num_epochs,
+            shuffle=True)
 
-        cur_it = self.model.global_step_tensor.eval(self.sess)
-        summaries_dict = {
-            'loss': loss,
-            'acc': acc,
-        }
-        self.logger.summarize(cur_it, summaries_dict=summaries_dict)
-        self.model.save(self.sess)
+        # Create a input function to eval
+        eval_input_fn = tf.estimator.inputs.numpy_input_fn(
+            x=eval_data,
+            y=eval_labels,
+            batch_size=self.config.batch_size,
+            num_epochs=self.config.num_epochs,
+            shuffle=False)
+        # Create a estimator with model_fn
+        classifier = tf.estimator.Estimator(model_fn=self.model_fn, 
+                        model_dir=self.config.checkpoint_dir)
+        # Finally, train and evaluate the model after each epoch
+        for _ in range(self.config.num_epochs):
+            classifier.train(input_fn=train_input_fn)
+            metrics = classifier.evaluate(input_fn=eval_input_fn)
 
-    def train_step(self):
-        batch_x, batch_y = next(self.data.next_batch(self.config.batch_size))
-        feed_dict = {self.model.inputs: batch_x, self.model.labels: batch_y}
-        _, loss, prob = self.sess.run([self.model.train_step, self.model.loss, self.model.probabilities],
-                                     feed_dict=feed_dict)
-        return loss, prob
+
+        
