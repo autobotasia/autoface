@@ -24,8 +24,20 @@ class DataGenerator:
         self.xtrain_aug, self.ytrain = shuffle(self.xtrain_aug, self.ytrain)
         for start in range(0, self.train_size, batch_size):
             end = min(start + batch_size, self.train_size)
-            x_batch = np.array([],dtype = np.float32).reshape(0,512)
+            x_batch = np.array([],dtype = np.float32).reshape(0,self.config.input_dim)
             for i in range(start,end,1):
-                x_batch = np.vstack((x_batch, self.xtrain_aug[i, randint(0, 99), :].reshape(1,512)))
+                x_batch = np.vstack((x_batch, self.xtrain_aug[i, randint(0, 99), :].reshape(1,self.config.input_dim)))
             y_batch = self.ytrain[start:end, :]
             yield x_batch, y_batch
+
+    def get_aug_data(self):
+        xtrain = self.xtrain_aug
+        ytrain = np.array([],dtype=np.float32).reshape(0, self.config.number_of_class)
+        for val in self.ytrain:
+            #val = np.asarray(val)
+            for _ in range(100):
+                ytrain = np.vstack((ytrain, val.reshape(1, self.config.number_of_class)))
+
+        print('='*80)
+        print(ytrain.shape)
+        return xtrain, ytrain
