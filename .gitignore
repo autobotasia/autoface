@@ -1,4 +1,4 @@
 **/datasets
-**/models
-**/src/weights
+**/models/insightface/models/
 **/data
+**/experiments
