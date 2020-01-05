@@ -9,6 +9,7 @@ from utils.dirs import create_dirs
 from utils.logger import Logger
 from utils.utils import get_args 
 from utils import insightface_utils
+from prepare import prepare_data
 import face_model
 from bunch import Bunch
 
@@ -41,10 +42,13 @@ if __name__ == '__main__':
         exit(0)
 
     trainer = Trainer(config)
+    if config.do_prepare:
+        prepare_data()
+
     if config.do_train:
         # create the experiments dirs
         create_dirs([config.summary_dir, config.checkpoint_dir])
-        trainer.train()
+        trainer.train()    
 
     if config.do_demo:
         if not config.pretrained_model:
