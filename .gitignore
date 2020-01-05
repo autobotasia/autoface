@@ -1,4 +1,5 @@
 **/datasets
 **/models/insightface/models/
+**/models/insightface/embedding/
 **/data
 **/experiments
