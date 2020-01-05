@@ -9,7 +9,7 @@ from utils.dirs import create_dirs
 from utils.logger import Logger
 from utils.utils import get_args 
 from utils import insightface_utils
-from prepare import prepare_data
+from preprocess import prepare_data
 import face_model
 from bunch import Bunch
 
@@ -41,9 +41,13 @@ if __name__ == '__main__':
         print("missing or invalid arguments")
         exit(0)
 
+    if not config.pretrained_model:
+            raise Exception('model path is required')
+    model = face_model.FaceModel(Bunch(config.pretrained_model))
+    
     trainer = Trainer(config)
-    if config.do_prepare:
-        prepare_data()
+    if config.do_preprocess:    
+        prepare_data(model)
 
     if config.do_train:
         # create the experiments dirs
@@ -51,11 +55,6 @@ if __name__ == '__main__':
         trainer.train()    
 
     if config.do_demo:
-        if not config.pretrained_model:
-            raise Exception('model path is required')
-
-        model = face_model.FaceModel(Bunch(config.pretrained_model))
-
         frame_interval = 3  # Number of frames after which to run face detection
         fps_display_interval = 5  # seconds
         frame_rate = 0

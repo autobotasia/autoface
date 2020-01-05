@@ -9,14 +9,14 @@
   "max_to_keep":5,
   "checkpoint_dir":"./experiments/checkpoints/",
   "summary_dir": "./experiments/summary/",
-  "do_prepare":0,
-  "do_train":1,
+  "do_preprocess":1,
+  "do_train":0,
   "do_demo": 0,
   "pretrained_model": {
     "image_size":"112,112",
     "ga_model":"",
     "model":"./models/insightface/models/model-r100-ii/model,0",
-    "gpu":1,
+    "gpu":0,
     "det":0,
     "flip":0,
     "threshold":1.24

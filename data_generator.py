@@ -3,6 +3,7 @@ from keras.utils.np_utils import to_categorical
 import pandas as pd
 from sklearn.utils import shuffle
 from random import randint
+import tensorflow as tf
 
 class DataGenerator:
     def __init__(self, config):
@@ -34,10 +35,9 @@ class DataGenerator:
         xtrain = self.xtrain_aug
         ytrain = np.array([],dtype=np.float32).reshape(0, self.config.number_of_class)
         for val in self.ytrain:
-            #val = np.asarray(val)
             for _ in range(100):
                 ytrain = np.vstack((ytrain, val.reshape(1, self.config.number_of_class)))
 
-        print('='*80)
         print(ytrain.shape)
         return xtrain, ytrain
+          
