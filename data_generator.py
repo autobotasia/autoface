@@ -14,6 +14,8 @@ class DataGenerator:
         self.xtrain_aug = np.load('./data/train_aug_data.npy')
         self.ytrain = self.get_y_true()
         self.train_size = len(self.xtrain_aug)
+        #self.test_df = pd.read_csv('./datasets/test_refined.csv')
+        #self.xtest = np.load('./data/test_data.npy')
 
     def get_y_true(self):
         y_true = []

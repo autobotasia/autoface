@@ -32,7 +32,7 @@ def prepare_data(model):
     for mset in ['train', 'test']:
         dataset_arr[mset] = np.array([],dtype=np.float32).reshape(0,512)
         augmentation_arr[mset] = np.array([],dtype=np.float32).reshape(0,512)
-        for rdir, sdir, files in os.walk('../datasets/aligned/%s/112x112/'%mset):
+        for rdir, sdir, files in os.walk('./datasets/aligned/%s/112x112/'%mset):
             for file in tqdm(files):
                 if '.png' not in file:
                     continue
@@ -53,12 +53,12 @@ def prepare_data(model):
                     #np.save(output_dir + '/%s_flip.npy'%fn, emb)
                     dataset_arr[mset] = np.vstack((dataset_arr[mset], emb.reshape(1,512)))
 
-                augmentation_arr = np.array([],dtype=np.float32).reshape(0,512)
+                #augmentation_arr = np.array([],dtype=np.float32).reshape(0,512)
                 for i in range(100):
                     img_aug = seq.augment_image(img_org)
                     img_aug = np.transpose(img_aug, (2,0,1))
                     emb = model.get_feature(img_aug)
-                    augmentation_arr = np.vstack((augmentation_arr, emb.reshape(1,512)))
+                    augmentation_arr[mset] = np.vstack((augmentation_arr[mset], emb.reshape(1,512)))
         print(dataset_arr[mset].shape, augmentation_arr[mset].shape)
         np.save('./data/%s_dataset_arr.npy'%mset, dataset_arr[mset])        
         np.save('./data/%s_augmentation_arr.npy'%mset, augmentation_arr[mset])                                            

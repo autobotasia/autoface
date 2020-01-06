@@ -41,6 +41,8 @@ class Trainer():
         for _ in range(self.config.num_epochs):
             self.classifier.train(input_fn=train_input_fn)
             metrics = self.classifier.evaluate(input_fn=eval_input_fn)
+            for metric in metrics:
+                print(metric)
 
     def predict(self, image):
         predict_input_fn = tf.estimator.inputs.numpy_input_fn(
