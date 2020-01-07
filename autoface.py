@@ -16,12 +16,12 @@ from bunch import Bunch
 def add_overlays(frame, faces, frame_rate):
     if faces is not None:
         for face in faces:
-            face_bb = face["bounding_box"]
-            cv2.rectangle(frame,
-                          (face_bb[0], face_bb[1]), (face_bb[2], face_bb[3]),
-                          (0, 255, 0), 2)
+            face_bb = face["point"]
+            #cv2.rectangle(frame,
+            #              (face_bb[0], face_bb[1]), (face_bb[2], face_bb[3]),
+            #              (0, 255, 0), 2)
             if face["name"] is not None:
-                cv2.putText(frame, face["name"], (face_bb[0], face_bb[3]),
+                cv2.putText(frame, face["name"], (face_bb[0], face_bb[1]),
                             cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0),
                             thickness=2, lineType=2)
 
@@ -73,7 +73,7 @@ if __name__ == '__main__':
             ret, frame = video_capture.read()
             if (frame_count % frame_interval) == 0:
                 try:
-                    predictimg, alignedimg = insightface_utils.get_embedding(frame, model)
+                    predictimg, points = insightface_utils.get_embedding(frame, model)
                 except:
                     continue
 
@@ -83,13 +83,8 @@ if __name__ == '__main__':
                     best_idx = p['predicted_logit']
                     clsname = classname[best_idx]
                     prob = p['probabilities'][best_idx]
-                    bounding_box = []
-                    bounding_box.append(alignedimg[:,0,0].min())
-                    bounding_box.append(alignedimg[:,0,0].max())
-                    bounding_box.append(alignedimg[:,0,1].min())
-                    bounding_box.append(alignedimg[:,0,1].max())
 
-                    face = {'bounding_box': bounding_box, 'name': clsname}
+                    face = {'point': points[0], 'name': clsname}
                     print("=====%s: %f=====" % (clsname, prob))
 
                     # Check our current fps

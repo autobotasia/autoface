@@ -3,3 +3,5 @@
 **/models/insightface/embedding/
 **/data
 **/experiments
+**/__pycache__/**
+**/.vscode
