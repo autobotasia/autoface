@@ -3,6 +3,7 @@ import numpy as np
 from data_generator import DataGenerator
 from model import Model
 from random import randint
+from sklearn.model_selection import KFold
 
 class Trainer():
     def __init__(self, config):
@@ -16,33 +17,40 @@ class Trainer():
 
     def train(self):
         # Load training and eval data 
-        eval_data, eval_labels = next(self.data.next_batch(self.config.batch_size))
+        #eval_data, eval_labels = next(self.data.next_batch(self.config.batch_size))        
+ 
+        n_split=3        
         train_data = self.data.xtrain_aug[:,randint(0, 99),:]
         train_labels = self.data.ytrain
+        for train_index,test_index in KFold(n_split).split(train_data):            
+            x_train,x_test=train_data[train_index],train_data[test_index]
+            y_train,y_test=train_labels[train_index],train_labels[test_index]
 
-        # Create a input function to train
-        train_input_fn = tf.estimator.inputs.numpy_input_fn(
-            x=train_data,
-            y=train_labels,
-            batch_size=self.config.batch_size,
-            num_epochs=self.config.num_epochs,
-            shuffle=True)
+            
 
-    
-        # Create a input function to eval
-        eval_input_fn = tf.estimator.inputs.numpy_input_fn(
-            x=eval_data,
-            y=eval_labels,
-            batch_size=self.config.batch_size,
-            num_epochs=self.config.num_epochs,
-            shuffle=False)    
+            # Create a input function to train
+            train_input_fn = tf.estimator.inputs.numpy_input_fn(
+                x=x_train,
+                y=y_train,
+                batch_size=self.config.batch_size,
+                num_epochs=self.config.num_epochs,
+                shuffle=True)
 
-        # Finally, train and evaluate the model after each epoch
-        for _ in range(self.config.num_epochs):
-            self.classifier.train(input_fn=train_input_fn)
-            metrics = self.classifier.evaluate(input_fn=eval_input_fn)
-            for metric in metrics:
-                print(metric)
+        
+            # Create a input function to eval
+            eval_input_fn = tf.estimator.inputs.numpy_input_fn(
+                x=x_test,
+                y=y_test,
+                batch_size=self.config.batch_size,
+                num_epochs=self.config.num_epochs,
+                shuffle=False)    
+
+            # Finally, train and evaluate the model after each epoch
+            for _ in range(self.config.num_epochs):
+                self.classifier.train(input_fn=train_input_fn)
+                metrics = self.classifier.evaluate(input_fn=eval_input_fn)
+                for metric in metrics:
+                    print(metric)
 
     def predict(self, image):
         predict_input_fn = tf.estimator.inputs.numpy_input_fn(

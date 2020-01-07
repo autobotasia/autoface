@@ -53,7 +53,7 @@ class Model():
             return tf.estimator.EstimatorSpec(
                 mode=mode,
                 loss=loss,
-                eval_metric_ops={'accuracy/accuracy': accuracy},
+                eval_metric_ops={'accuracy': accuracy},
                 evaluation_hooks=None)
         
         
