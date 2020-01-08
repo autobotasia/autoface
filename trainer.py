@@ -5,6 +5,16 @@ from data_generator import DataGenerator
 from model import Model
 from random import randint
 from sklearn.model_selection import KFold
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
+from sklearn.metrics import f1_score
+from sklearn.metrics import confusion_matrix
+
+
+classname = []
+for _, clsdirs, _ in os.walk('/home/autobot/projects/autobot/facenet/datasets/nccfaces/'):
+    for index, clsdir in enumerate(clsdirs):
+        classname.append(clsdir)
 
 class Trainer():
     def __init__(self, config):
@@ -43,21 +53,60 @@ class Trainer():
                 num_epochs=self.config.num_epochs,
                 shuffle=False)    
 
+            train_spec = tf.estimator.TrainSpec(
+                train_input_fn,
+                max_steps=16000
+            )    
+
+            eval_spec = tf.estimator.EvalSpec(
+                eval_input_fn,
+                steps=100,
+                name='validation',
+                start_delay_secs=150,
+                throttle_secs=200
+            )
             # Finally, train and evaluate the model after each epoch
-            for _ in range(self.config.num_epochs):
+            '''for _ in range(self.config.num_epochs):
                 self.classifier.train(input_fn=train_input_fn)
                 metrics = self.classifier.evaluate(input_fn=eval_input_fn)
-                for metric in metrics:
-                    print(metric)
+                print(metrics)'''
+            tf.estimator.train_and_evaluate(
+                self.classifier,
+                train_spec,
+                eval_spec
+            )
 
-    def predict(self, image):
+    def do_predict(self):
+        y_pred = []
+        y_true = np.argmax(self.data.ytest, 1)
+        for best_idx, _, _ in self.predict(self.data.xtest, self.config.batch_size):
+            y_pred.append(best_idx)
+
+        assert(len(y_pred) == len(y_true), "diff range error")
+
+        #metrics        
+        print("Precision", precision_score(y_true, y_pred, average='macro'))
+        print("Recall", recall_score(y_true, y_pred, average='macro'))
+        print("f1_score", f1_score(y_true, y_pred, average='macro'))
+        print("confusion_matrix")
+        print(confusion_matrix(y_true, y_pred))
+        #fpr, tpr, tresholds = sk.metrics.roc_curve(y_true, y_pred)
+    
+
+
+    def predict(self, image, batch_size):
         predict_input_fn = tf.estimator.inputs.numpy_input_fn(
             x=image,
-            batch_size=1,
+            batch_size=batch_size,
             shuffle=False)
-        predictions = self.classifier.predict(input_fn=predict_input_fn, 
-            checkpoint_path=os.path.join(self.config.checkpoint_dir, 'avg/avg-0')) 
-        return predictions                
+        predictions = self.classifier.predict(input_fn=predict_input_fn) #, checkpoint_path=os.path.join(self.config.checkpoint_dir, 'model.ckpt-1932'))
+
+        for p in predictions:
+            best_idx = p['predicted_logit']
+            clsname = classname[best_idx]
+            prob = p['probabilities'][best_idx]
+
+            yield best_idx, clsname, prob                
 
 
 

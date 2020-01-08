@@ -52,7 +52,9 @@ if __name__ == '__main__':
     if config.do_train:
         # create the experiments dirs
         create_dirs([config.summary_dir, config.checkpoint_dir])
-        trainer.train()    
+        trainer.train()
+    if config.do_predict:
+        trainer.do_predict()
 
     if config.do_demo:
         frame_interval = 3  # Number of frames after which to run face detection
@@ -62,11 +64,6 @@ if __name__ == '__main__':
 
         video_capture = cv2.VideoCapture(0)
         start_time = time.time()
-
-        classname = []
-        for _, clsdirs, _ in os.walk('/home/autobot/projects/autobot/facenet/datasets/nccfaces/'):
-            for index, clsdir in enumerate(clsdirs):
-                classname.append(clsdir)
         
         while True:
             # Capture frame-by-frame
@@ -78,21 +75,16 @@ if __name__ == '__main__':
                     continue
 
                 predictimg = predictimg.reshape(1, 512) 
-                predictions = trainer.predict(predictimg)
-                for p in predictions:
-                    best_idx = p['predicted_logit']
-                    clsname = classname[best_idx]
-                    prob = p['probabilities'][best_idx]
-
+                for best_idx, clsname, prob in trainer.predict(predictimg, batch_size=1):
                     face = {'point': points[0], 'name': clsname}
                     print("=====%s: %f=====" % (clsname, prob))
 
-                    # Check our current fps
-                    end_time = time.time()
-                    if (end_time - start_time) > fps_display_interval:
-                        frame_rate = int(frame_count / (end_time - start_time))
-                        start_time = time.time()
-                        frame_count = 0
+                # Check our current fps
+                end_time = time.time()
+                if (end_time - start_time) > fps_display_interval:
+                    frame_rate = int(frame_count / (end_time - start_time))
+                    start_time = time.time()
+                    frame_count = 0
 
             add_overlays(frame, [face], frame_rate)
             frame_count += 1

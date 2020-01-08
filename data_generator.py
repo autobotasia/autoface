@@ -12,14 +12,15 @@ class DataGenerator:
         self.train_df = pd.read_csv('./datasets/train_refined.csv')
         #xtrain = np.load('train_data.npy')
         self.xtrain_aug = np.load('./data/train_aug_data.npy')
-        self.ytrain = self.get_y_true()
+        self.ytrain = self.get_y_true(self.train_df)
         self.train_size = len(self.xtrain_aug)
         #self.test_df = pd.read_csv('./datasets/test_refined.csv')
-        #self.xtest = np.load('./data/test_data.npy')
+        self.xtest = np.load('./data/train_data.npy')
+        self.ytest = self.get_y_true(self.train_df)
 
-    def get_y_true(self):
+    def get_y_true(self, df):
         y_true = []
-        for _, row in self.train_df.iterrows():
+        for _, row in df.iterrows():
             y_true.append(to_categorical(row['label'], num_classes=self.config.number_of_class))
         return np.array(y_true)    
 
