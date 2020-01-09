@@ -8,9 +8,8 @@ from utils.config import process_config
 from utils.dirs import create_dirs
 from utils.logger import Logger
 from utils.utils import get_args 
-from utils import insightface_utils
-from preprocess import prepare_data
-import face_model
+from utils.insightface_utils import InsightfaceUtils
+from preprocess import process
 from bunch import Bunch
 
 def add_overlays(frame, faces, frame_rate):
@@ -40,14 +39,11 @@ if __name__ == '__main__':
     except:
         print("missing or invalid arguments")
         exit(0)
-
     if not config.pretrained_model:
-            raise Exception('model path is required')
-    model = face_model.FaceModel(Bunch(config.pretrained_model))
-    
+        raise Exception('model path is required')
+
+    util = InsightfaceUtils(Bunch(config.pretrained_model))
     trainer = Trainer(config)
-    if config.do_preprocess:    
-        prepare_data(model)
 
     if config.do_train:
         # create the experiments dirs
@@ -70,7 +66,7 @@ if __name__ == '__main__':
             ret, frame = video_capture.read()
             if (frame_count % frame_interval) == 0:
                 try:
-                    predictimg, points = insightface_utils.get_embedding(frame, model)
+                    predictimg, points = util.get_embedding(frame)
                 except:
                     continue
 

@@ -31,5 +31,9 @@ export PYTHONPATH=./models/insightface/deploy/
   }
 }
 
-
+# Run train/eval/predict
 python3 autoface.py
+
+# Run convert, align
+python3 utils/convert_dataset.py
+python3 utils/align_face.py
