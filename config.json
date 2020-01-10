@@ -1,6 +1,6 @@
 {
   "exp_name": "autoface",
-  "num_epochs": 10,
+  "num_epochs": 50,
   "num_iter_per_epoch": 10,
   "learning_rate": 0.001,
   "batch_size": 16,
@@ -9,8 +9,8 @@
   "max_to_keep":5,
   "checkpoint_dir":"./experiments/checkpoints/",
   "summary_dir": "./experiments/summary/",
-  "do_train":0,
-  "do_predict":1,
+  "do_train":1,
+  "do_predict":0,
   "do_demo": 0,
   "pretrained_model": {
     "image_size":"112,112",

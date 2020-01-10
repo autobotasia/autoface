@@ -27,7 +27,7 @@ def getFace(img):
     bounding_boxes, _ = detect_face.detect_face(img, minsize, pnet, rnet, onet, threshold, factor)
     if not len(bounding_boxes) == 0:
         for face in bounding_boxes:
-            if face[4] > 0.50:
+            if face[4] > 0.60:
                 det = np.squeeze(face[0:4])
                 bb = np.zeros(4, dtype=np.int32)
                 bb[0] = np.maximum(det[0] - margin / 2, 0)
@@ -42,24 +42,25 @@ def getFace(img):
 for f in os.listdir(args.imgpath):
     if f == '.' or f == '..':
         continue
+    for fi in os.listdir(os.path.join(args.imgpath, f)):
+        img = cv2.imread(os.path.join(args.imgpath, f, fi))
+        img = imutils.resize(img,width=1000)
+        faces = getFace(img)
+        rets = []
+        for face in faces:
+            x1 = face['rect'][0]
+            y1 = face['rect'][1]
+            x2 = face['rect'][2]
+            y2 = face['rect'][3]  
+            #cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            croped = img[y1:y2, x1:x2]
+            rets.append(croped)
+        if not os.path.exists(os.path.join("refine", f)):
+            os.makedirs(os.path.join("refine", f))
+        for i, img in enumerate(rets):
+            img = imutils.resize(img,width=300)
+            cv2.imwrite(os.path.join("refine", f, '%d_%s'% (i,fi)), img)
+            #cv2.imshow("faces", img)
 
-    img = cv2.imread(os.path.join(args.imgpath, f))
-    img = imutils.resize(img,width=1000)
-    faces = getFace(img)
-    rets = []
-    for face in faces:
-        x1 = face['rect'][0]
-        y1 = face['rect'][1]
-        x2 = face['rect'][2]
-        y2 = face['rect'][3]  
-        #cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
-        croped = img[y1:y2, x1:x2]
-        rets.append(croped)
-
-    for i, img in enumerate(rets):
-        img = imutils.resize(img,width=250)
-        cv2.imwrite('%d_%s'% (i,f), img)
-        #cv2.imshow("faces", img)
-
-    #cv2.waitKey(0)
-    cv2.destroyAllWindows()
+#cv2.waitKey(0)
+#cv2.destroyAllWindows()
