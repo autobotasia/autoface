@@ -31,9 +31,13 @@ export PYTHONPATH=./models/insightface/deploy/
   }
 }
 
-# Run train/eval/predict
-python3 autoface.py
-
 # Run convert, align
 python3 utils/convert_dataset.py
 python3 utils/align_face.py
+
+# Run prepare
+python3 utils/generate_insightface_embedding.py
+python3 utils/prepare.py
+
+# Run train/eval/predict
+python3 autoface.py

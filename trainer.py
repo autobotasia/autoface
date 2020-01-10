@@ -12,7 +12,7 @@ from sklearn.metrics import confusion_matrix
 
 
 classname = []
-for _, clsdirs, _ in os.walk('/home/autobot/projects/autobot/facenet/datasets/nccfaces/'):
+for _, clsdirs, _ in os.walk('./datasets/nccfaces/train/'):
     for index, clsdir in enumerate(clsdirs):
         classname.append(clsdir)
 
@@ -55,7 +55,7 @@ class Trainer():
 
             train_spec = tf.estimator.TrainSpec(
                 train_input_fn,
-                max_steps=16000
+                max_steps=20000
             )    
 
             eval_spec = tf.estimator.EvalSpec(
@@ -66,15 +66,15 @@ class Trainer():
                 throttle_secs=200
             )
             # Finally, train and evaluate the model after each epoch
-            '''for _ in range(self.config.num_epochs):
+            for _ in range(self.config.num_epochs):
                 self.classifier.train(input_fn=train_input_fn)
                 metrics = self.classifier.evaluate(input_fn=eval_input_fn)
-                print(metrics)'''
-            tf.estimator.train_and_evaluate(
+                print(metrics)
+            '''tf.estimator.train_and_evaluate(
                 self.classifier,
                 train_spec,
                 eval_spec
-            )
+            )'''
 
     def do_predict(self):
         y_pred = []

@@ -9,14 +9,14 @@ class DataGenerator:
     def __init__(self, config):
         self.config = config
         # load data here        
-        self.train_df = pd.read_csv('./datasets/train_refined.csv')
+        self.train_df = pd.read_csv('./datasets/train.csv')
         #xtrain = np.load('train_data.npy')
         self.xtrain_aug = np.load('./data/train_aug_data.npy')
         self.ytrain = self.get_y_true(self.train_df)
         self.train_size = len(self.xtrain_aug)
-        #self.test_df = pd.read_csv('./datasets/test_refined.csv')
-        self.xtest = np.load('./data/train_data.npy')
-        self.ytest = self.get_y_true(self.train_df)
+        self.test_df = pd.read_csv('./datasets/test.csv')
+        self.xtest = np.load('./data/test_data.npy')
+        self.ytest = self.get_y_true(self.test_df)
 
     def get_y_true(self, df):
         y_true = []
@@ -33,14 +33,4 @@ class DataGenerator:
                 x_batch = np.vstack((x_batch, self.xtrain_aug[i, randint(0, 99), :].reshape(1,self.config.input_dim)))
             y_batch = self.ytrain[start:end, :]
             yield x_batch, y_batch
-
-    def get_aug_data(self):
-        xtrain = self.xtrain_aug
-        ytrain = np.array([],dtype=np.float32).reshape(0, self.config.number_of_class)
-        for val in self.ytrain:
-            for _ in range(100):
-                ytrain = np.vstack((ytrain, val.reshape(1, self.config.number_of_class)))
-
-        print(ytrain.shape)
-        return xtrain, ytrain
           

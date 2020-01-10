@@ -9,7 +9,6 @@ from utils.dirs import create_dirs
 from utils.logger import Logger
 from utils.utils import get_args 
 from utils.insightface_utils import InsightfaceUtils
-from preprocess import process
 from bunch import Bunch
 
 def add_overlays(frame, faces, frame_rate):
