@@ -105,7 +105,7 @@ class InsightfaceUtils():
 
         img_org = cv2.cvtColor(face_112x112, cv2.COLOR_BGR2RGB)
         img = np.transpose(img_org, (2,0,1))
-        return model.get_feature(img), [p1,p2,p3,p4,p5]
+        return self.model.get_feature(img), [p1,p2,p3,p4,p5]
 
 
     

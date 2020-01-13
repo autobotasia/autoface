@@ -66,10 +66,11 @@ if __name__ == '__main__':
             if (frame_count % frame_interval) == 0:
                 try:
                     predictimg, points = util.get_embedding(frame)
-                except:
+                except NameError as e:
+                    print("ignore this frame", e)
                     continue
 
-                predictimg = predictimg.reshape(1, 512) 
+                predictimg = predictimg.reshape(1, 512)
                 for best_idx, clsname, prob in trainer.predict(predictimg, batch_size=1):
                     face = {'point': points[0], 'name': clsname}
                     print("=====%s: %f=====" % (clsname, prob))

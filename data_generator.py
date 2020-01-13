@@ -9,12 +9,14 @@ class DataGenerator:
     def __init__(self, config):
         self.config = config
         # load data here        
+        self.test_df = pd.read_csv('./datasets/test.csv')
         self.train_df = pd.read_csv('./datasets/train.csv')
+        
         #xtrain = np.load('train_data.npy')
         self.xtrain_aug = np.load('./data/train_aug_data.npy')
         self.ytrain = self.get_y_true(self.train_df)
         self.train_size = len(self.xtrain_aug)
-        self.test_df = pd.read_csv('./datasets/test.csv')
+        
         self.xtest = np.load('./data/test_data.npy')
         self.ytest = self.get_y_true(self.test_df)
 

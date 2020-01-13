@@ -40,20 +40,20 @@ for mset in ['train', 'test', 'testcam']:
         for file in tqdm(files):
             if file == '.' or file == '..':
                 continue
-            fn, fe = os.path.splitext(file)
+            #fn, fe = os.path.splitext(file)
             img_path = os.path.join(rdir, file)
             img_org = cv2.imread(img_path)
             img_org = cv2.cvtColor(img_org, cv2.COLOR_BGR2RGB)
 
             img = np.transpose(img_org, (2,0,1))
             emb = model.get_feature(img)
-            np.save(output_dir + '/%s.npy'%fn, emb)
+            np.save(output_dir + '/%s.npy'%(file), emb)
 
             if mset == 'test':
                 flip_img = cv2.flip(img_org, 1)
                 flip_img = np.transpose(flip_img, (2,0,1))
                 emb = model.get_feature(flip_img)
-                np.save(output_dir + '/%s_flip.npy'%fn, emb)
+                np.save(output_dir + '/%s_flip.npy'%file, emb)
 
             if 'model-y1-test2' == args.model.split(',')[0].split('/')[-2]:
                 augmentation_arr = np.array([],dtype=np.float32).reshape(0,128)
@@ -62,7 +62,7 @@ for mset in ['train', 'test', 'testcam']:
                     img_aug = np.transpose(img_aug, (2,0,1))
                     emb = model.get_feature(img_aug)
                     augmentation_arr = np.vstack((augmentation_arr, emb.reshape(1,128)))
-                np.save(output_dir + '/%s_augmentation.npy'%fn, augmentation_arr)
+                np.save(output_dir + '/%s_augmentation.npy'%file, augmentation_arr)
             else:
                 augmentation_arr = np.array([],dtype=np.float32).reshape(0,512)
                 for i in range(100):
@@ -70,4 +70,4 @@ for mset in ['train', 'test', 'testcam']:
                     img_aug = np.transpose(img_aug, (2,0,1))
                     emb = model.get_feature(img_aug)
                     augmentation_arr = np.vstack((augmentation_arr, emb.reshape(1,512)))
-                np.save(output_dir + '/%s_augmentation.npy'%fn, augmentation_arr)
+                np.save(output_dir + '/%s_augmentation.npy'%file, augmentation_arr)

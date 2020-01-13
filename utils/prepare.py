@@ -5,54 +5,56 @@ from tqdm import *
 from multiprocessing import Pool, cpu_count
 
 def my_process1(file_name):
-    print("my_process1", file_name)
-    emb = np.load(file_name).reshape(512)    
+    emb_path = './data/embedding/model-r100-ii/test/%s'%file_name.replace('.png', '.npy')
+    emb_path = emb_path.replace('.jpg', '.npy')
+    emb_path = emb_path.replace('.JPG', '.npy')
+    emb = np.load(emb_path).reshape(512)
     return emb
 
 def my_process2(file_name):
-    print("my_process2", file_name)
-    emb = np.load(file_name).reshape(100,512)
+    emb_path = './data/embedding/model-r100-ii/test/%s'%file_name.replace('.png', '_flip.npy')
+    emb_path = emb_path.replace('.jpg', '_flip.npy')
+    emb_path = emb_path.replace('.JPG', '_flip.npy')
+    emb = np.load(emb_path).reshape(512)
+    return emb
+
+def my_process3(file_name):
+    emb_path = './data/embedding/model-r100-ii/train/%s'%file_name.replace('.png', '.npy')
+    emb_path = emb_path.replace('.PNG', '.npy')
+    emb_path = emb_path.replace('.jpg', '.npy')
+    emb_path = emb_path.replace('.JPG', '.npy')
+    emb_path = emb_path.replace('.jpeg', '.npy')
+    emb_path = emb_path.replace('.JPEG', '.npy')
+    emb = np.load(emb_path).reshape(512)
+    return emb
+
+def my_process4(file_name):
+    emb_path = './data/embedding/model-r100-ii/train/%s'%file_name.replace('.png', '_augmentation.npy')
+    emb_path = emb_path.replace('.jpg', '_augmentation.npy')
+    emb_path = emb_path.replace('.JPG', '_augmentation.npy')
+    emb_path = emb_path.replace('.jpeg', '_augmentation.npy')
+    emb_path = emb_path.replace('.JPEG', '_augmentation.npy')
+    emb_path = emb_path.replace('.PNG', '_augmentation.npy')
+    emb = np.load(emb_path).reshape(100,512)
     return emb
 
 if __name__ == '__main__':
-    test_df = []
-    test_flip_df = []
-    for file in os.listdir('./data/embedding/model-r100-ii/test/'):
-        if file == '.' or file == '..':
-            continue
-        if '_augmentation.npy' in file:
-            continue
-        if '_flip.npy' in file: 
-            test_flip_df.append(os.path.join('./data/embedding/model-r100-ii/test/', file))
-        else:
-            test_df.append(os.path.join('./data/embedding/model-r100-ii/test/', file))    
+    # load data here        
+    test_df = pd.read_csv('./datasets/test.csv')
+    train_df = pd.read_csv('./datasets/train.csv') 
 
-    testcam_df = []
-    testcam_flip_df = []
-    for file in os.listdir('./data/embedding/model-r100-ii/testcam/'):
-        if file == '.' or file == '..':
-            continue
-        if '_augmentation.npy' in file:
-            continue
-        if '_flip.npy' in file: 
-            testcam_flip_df.append(os.path.join('./data/embedding/model-r100-ii/testcam/', file))
-        else:
-            testcam_df.append(os.path.join('./data/embedding/model-r100-ii/testcam/', file))
+    test = []
+    for i in test_df.image.values.tolist():
+        if os.path.exists('./datasets/aligned/test/112x112/%s'%i):
+            test.append(i)
 
-    train_df = []
-    train_augmentation_df = []
-    for file in os.listdir('./data/embedding/model-r100-ii/train/'):
-        if file == '.' or file == '..':
-            continue
-        if '_flip.npy' in file:
-            continue
-        if '_augmentation.npy' in file: 
-            train_augmentation_df.append(os.path.join('./data/embedding/model-r100-ii/train/', file))
-        else:
-            train_df.append(os.path.join('./data/embedding/model-r100-ii/train/', file))         
+    train = []
+    for i in train_df.image.values.tolist():
+        if os.path.exists('./datasets/aligned/train/112x112/%s'%i):
+            train.append(i)
 
     p = Pool(16)
-    test_data = p.map(func=my_process1, iterable = test_df)
+    test_data = p.map(func=my_process1, iterable = test)
     p.close()
     test_data = np.array(test_data)
     print(test_data.shape)
@@ -60,14 +62,14 @@ if __name__ == '__main__':
     test_data = []
 
     p = Pool(16)
-    test_flip_data = p.map(func=my_process1, iterable = test_flip_df)
+    test_flip_data = p.map(func=my_process2, iterable = test)
     p.close()
     test_flip_data = np.array(test_flip_data)
     print(test_flip_data.shape)
     np.save('./data/test_flip_data.npy', test_flip_data)
     test_flip_data = []
 
-    p = Pool(16)
+    '''p = Pool(16)
     testcam_data = p.map(func=my_process1, iterable = testcam_df)
     p.close()
     testcam_data = np.array(testcam_data)
@@ -81,10 +83,10 @@ if __name__ == '__main__':
     testcam_flip_data = np.array(testcam_flip_data)
     print(testcam_flip_data.shape)
     np.save('./data/testcam_flip_data.npy', testcam_flip_data)
-    testcam_flip_data = []
+    testcam_flip_data = []'''
 
     p = Pool(16)
-    train_data = p.map(func=my_process1, iterable = train_df)
+    train_data = p.map(func=my_process3, iterable = train)
     p.close()
     train_data = np.array(train_data)
     print(train_data.shape)
@@ -92,7 +94,7 @@ if __name__ == '__main__':
     train_data = []
 
     p = Pool(16)
-    train_aug_data = p.map(func=my_process2, iterable = train_augmentation_df)
+    train_aug_data = p.map(func=my_process4, iterable = train)
     p.close()
     train_aug_data = np.array(train_aug_data)
     print(train_aug_data.shape)
