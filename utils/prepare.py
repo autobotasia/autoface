@@ -5,36 +5,22 @@ from tqdm import *
 from multiprocessing import Pool, cpu_count
 
 def my_process1(file_name):
-    emb_path = './data/embedding/model-r100-ii/test/%s'%file_name.replace('.png', '.npy')
-    emb_path = emb_path.replace('.jpg', '.npy')
-    emb_path = emb_path.replace('.JPG', '.npy')
+    emb_path = './data/embedding/model-r100-ii/test/%s.npy'%file_name    
     emb = np.load(emb_path).reshape(512)
     return emb
 
 def my_process2(file_name):
-    emb_path = './data/embedding/model-r100-ii/test/%s'%file_name.replace('.png', '_flip.npy')
-    emb_path = emb_path.replace('.jpg', '_flip.npy')
-    emb_path = emb_path.replace('.JPG', '_flip.npy')
+    emb_path = './data/embedding/model-r100-ii/test/%s_flip.npy'%file_name    
     emb = np.load(emb_path).reshape(512)
     return emb
 
 def my_process3(file_name):
-    emb_path = './data/embedding/model-r100-ii/train/%s'%file_name.replace('.png', '.npy')
-    emb_path = emb_path.replace('.PNG', '.npy')
-    emb_path = emb_path.replace('.jpg', '.npy')
-    emb_path = emb_path.replace('.JPG', '.npy')
-    emb_path = emb_path.replace('.jpeg', '.npy')
-    emb_path = emb_path.replace('.JPEG', '.npy')
+    emb_path = './data/embedding/model-r100-ii/train/%s.npy'%file_name
     emb = np.load(emb_path).reshape(512)
     return emb
 
 def my_process4(file_name):
-    emb_path = './data/embedding/model-r100-ii/train/%s'%file_name.replace('.png', '_augmentation.npy')
-    emb_path = emb_path.replace('.jpg', '_augmentation.npy')
-    emb_path = emb_path.replace('.JPG', '_augmentation.npy')
-    emb_path = emb_path.replace('.jpeg', '_augmentation.npy')
-    emb_path = emb_path.replace('.JPEG', '_augmentation.npy')
-    emb_path = emb_path.replace('.PNG', '_augmentation.npy')
+    emb_path = './data/embedding/model-r100-ii/train/%s_augmentation.npy'%file_name
     emb = np.load(emb_path).reshape(100,512)
     return emb
 

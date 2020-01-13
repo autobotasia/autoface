@@ -4,27 +4,37 @@ import pandas as pd
 from sklearn.utils import shuffle
 from random import randint
 import tensorflow as tf
+import os
 
 class DataGenerator:
     def __init__(self, config):
         self.config = config
         # load data here        
-        self.test_df = pd.read_csv('./datasets/test.csv')
-        self.train_df = pd.read_csv('./datasets/train.csv')
+        test_df = pd.read_csv('./datasets/test.csv')
+        train_df = pd.read_csv('./datasets/train.csv')
+        self.testdf = []
+        for _, row in test_df.iterrows():
+            if os.path.exists('./datasets/aligned/test/112x112/%s'%row['image']):
+                self.testdf.append(row['label'])
+
+        self.traindf = []
+        for _, row in train_df.iterrows():
+            if os.path.exists('./datasets/aligned/train/112x112/%s'%row['image']):
+                self.traindf.append(row['label'])
         
         #xtrain = np.load('train_data.npy')
         self.xtrain_aug = np.load('./data/train_aug_data.npy')
-        self.ytrain = self.get_y_true(self.train_df)
+        self.ytrain = self.get_y_true(self.traindf)
         self.train_size = len(self.xtrain_aug)
         
         self.xtest = np.load('./data/test_data.npy')
-        self.ytest = self.get_y_true(self.test_df)
+        self.ytest = self.get_y_true(self.testdf)
 
     def get_y_true(self, df):
         y_true = []
-        for _, row in df.iterrows():
-            y_true.append(to_categorical(row['label'], num_classes=self.config.number_of_class))
-        return np.array(y_true)    
+        for label in df:
+            y_true.append(to_categorical(label, num_classes=self.config.number_of_class))
+        return np.array(y_true)
 
     def next_batch(self, batch_size):
         self.xtrain_aug, self.ytrain = shuffle(self.xtrain_aug, self.ytrain)
