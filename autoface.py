@@ -10,6 +10,7 @@ from utils.logger import Logger
 from utils.utils import get_args 
 from utils.insightface_utils import InsightfaceUtils
 from bunch import Bunch
+import imutils
 
 def add_overlays(frame, faces, frame_rate):
     if faces is not None:
@@ -57,23 +58,30 @@ if __name__ == '__main__':
         frame_rate = 0
         frame_count = 0
 
-        video_capture = cv2.VideoCapture(0)
+        #video_capture = cv2.VideoCapture(0)
+        video_capture = cv2.VideoCapture("rtsp://admin:12345678a@@172.16.12.111:554/Streamming/channels/101")
+
         start_time = time.time()
         
         while True:
             # Capture frame-by-frame
             ret, frame = video_capture.read()
+            if not ret:
+                continue
+
+            frame = imutils.resize(frame, width=512)
+
             if (frame_count % frame_interval) == 0:
                 try:
                     predictimg, points = util.get_embedding(frame)
-                except NameError as e:
+                    predictimg = predictimg.reshape(1, 512)
+                    for best_idx, clsname, prob in trainer.predict(predictimg, batch_size=1):
+                        face = {'point': points[0], 'name': clsname}
+                        print("=====%s: %f=====" % (clsname, prob))
+                        
+                except Exception as e:
                     print("ignore this frame", e)
                     continue
-
-                predictimg = predictimg.reshape(1, 512)
-                for best_idx, clsname, prob in trainer.predict(predictimg, batch_size=1):
-                    face = {'point': points[0], 'name': clsname}
-                    print("=====%s: %f=====" % (clsname, prob))
 
                 # Check our current fps
                 end_time = time.time()
@@ -81,11 +89,10 @@ if __name__ == '__main__':
                     frame_rate = int(frame_count / (end_time - start_time))
                     start_time = time.time()
                     frame_count = 0
-
+            
             add_overlays(frame, [face], frame_rate)
-            frame_count += 1
+            frame_count += 1            
             cv2.imshow('Video', frame)
-
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
