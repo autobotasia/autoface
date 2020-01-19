@@ -7,9 +7,11 @@ from trainer import Trainer
 from utils.config import process_config
 from utils.dirs import create_dirs
 from utils.logger import Logger
-from utils.utils import get_args 
+from utils.utils import get_args
 from utils.insightface_utils import InsightfaceUtils
 from bunch import Bunch
+from datetime import  datetime
+from save2DB import AutofacesMongoDB
 
 def add_overlays(frame, faces, frame_rate):
     if faces is not None:
@@ -28,6 +30,16 @@ def add_overlays(frame, faces, frame_rate):
                 thickness=2, lineType=2)
 
 if __name__ == '__main__':
+
+    # MongoDB info
+    mongo_client_address = "mongodb://localhost:27017/"
+    database_name = "Autofaces"
+    collection_name = 'PredictFaces'
+
+
+    autofaces_db = AutofacesMongoDB(mongo_client_address, database_name, collection_name)
+
+
     tf.logging.set_verbosity(tf.logging.INFO)
     # capture the config path from the run arguments
     # then process the json configuration file
@@ -51,6 +63,7 @@ if __name__ == '__main__':
     if config.do_predict:
         trainer.do_predict()
 
+
     if config.do_demo:
         frame_interval = 3  # Number of frames after which to run face detection
         fps_display_interval = 5  # seconds
@@ -59,7 +72,7 @@ if __name__ == '__main__':
 
         video_capture = cv2.VideoCapture(0)
         start_time = time.time()
-        
+
         while True:
             # Capture frame-by-frame
             ret, frame = video_capture.read()
@@ -71,9 +84,24 @@ if __name__ == '__main__':
                     continue
 
                 predictimg = predictimg.reshape(1, 512)
+                max_prob = 0
+                pred_clsname = ''
                 for best_idx, clsname, prob in trainer.predict(predictimg, batch_size=1):
                     face = {'point': points[0], 'name': clsname}
                     print("=====%s: %f=====" % (clsname, prob))
+                    if max_prob < prob:
+                        max_prob = prob
+                        pred_clsname = clsname
+
+                # save prediction to database
+                if max_prob > 0.7:
+                    predict_data = {
+                        "time": datetime.now(),
+                        'name': pred_clsname,
+                        'prob': max_prob
+                    }
+                    autofaces_db.save2db(data)
+
 
                 # Check our current fps
                 end_time = time.time()
