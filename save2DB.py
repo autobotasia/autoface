@@ -2,32 +2,36 @@ import pymongo
 
 class AutofacesMongoDB():
 
-    def __init__(self, mongodb_uri, db = None, col = None):
+    def __init__(self, username, password, host, port, db = None, col = None):
         '''
 
         '''
-
+        mongodb_uri = "mongodb://%s:%s@%s:%s"%(user, password, host, port)
+        self.host = host
+        self.port = port
         print("Connecting to MongoDB...")
         try:
             self.client = pymongo.MongoClient(mongodb_uri)
         except pymongo.errors.ConnectionFailure as e:
             print("Could not connect to server: %s" % e)
         print("Mongo connected.")
-        print("MongoDB address: %s" % mongodb_uri)
+        print("MongoDB host: %s" % self.host)
+        print("MongoDB port: %s" % self.port)
         self.db = db
         self.collection = col
-        print("Default database: %s" % db)
-        print("Default collection: %s" % col)
+        print("Default database: %s" % self.db)
+        print("Default collection: %s" % self.collection)
 
 
     def dbinfo(self):
-        print("MongoDB address: %s" % mongodb_uri)
-        print("Default database: %s" % db)
-        print("Default collection: %s" % col)
+        print("MongoDB host: %s" % self.host)
+        print("MongoDB port: %s" % self.port)
+        print("Default database: %s" % self.db)
+        print("Default collection: %s" % self.collection)
 
 
-    def getMongoClient(self):
-        return self.client
+    # def getMongoClient(self):
+    #     return self.client
 
 
     def set_database(self, db):

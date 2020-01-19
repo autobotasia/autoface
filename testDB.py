@@ -4,13 +4,19 @@ from datetime import datetime
 import random as rd
 from save2DB import AutofacesMongoDB
 from faker import Faker
+import dbconfig
 
-mongo_client_address = "mongodb://localhost:27017/"
-database_name = "Autofaces"
-collection_name = 'PredictFaces'
+# MongoDB info
+username = dbconfig.DBUSERNAME
+password = dbconfig.DBPASSWORD
+host = dbconfig.DBHOST
+port = dbconfig.DBPORT
+database_name = dbconfig.DBNAME
+collection_name = dbconfig.COLNAME
 
 
-autofaces_db = AutofacesMongoDB(mongo_client_address, database_name, collection_name)
+
+autofaces_db = AutofacesMongoDB(username, password, host, port, database_name, collection_name)
 
 fake = Faker()
 

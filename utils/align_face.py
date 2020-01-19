@@ -3,11 +3,10 @@ from tqdm import *
 from skimage import io
 from shutil import copyfile
 import cv2
-import numpy as np 
+import numpy as np
 import imgaug as ia
 from imgaug import augmenters as iaa
 from skimage import transform as trans
-from shutil import copyfile
 import face_alignment
 
 fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._2D, flip_input=False, device='cuda:0')
@@ -77,16 +76,15 @@ if __name__ == "__main__":
 
         unknown_file = open('./datasets/unknown/%s.txt'%mset,'w')
 
-        for rdir, _, files in os.walk('./datasets/%s'%mset):
+        for rdir, _, files in os.walk('./datasets/nccfaces/%s'%mset):
             for file in tqdm(files):
                 if file == '.' or file == '..':
                     continue
-                
+
                 try:
                     img_path = os.path.join(rdir, file)
                     image = io.imread(img_path)
                     landmarks = fa.get_landmarks(image)
-
                     check = False
                     if landmarks is None:
                         print('Step1: unknown ' + img_path)
@@ -102,7 +100,7 @@ if __name__ == "__main__":
                                 p3 = points[33,:]
                                 p4 = points[48,:]
                                 p5 = points[54,:]
-                                
+
                                 if np.mean([p1[1],p2[1]]) < p3[1] \
                                     and p3[1] < np.mean([p4[1],p5[1]]) \
                                     and np.min([p4[1], p5[1]]) > np.max([p1[1], p2[1]]) \
@@ -129,7 +127,7 @@ if __name__ == "__main__":
 
                                     check = True
                                     break
-                                
+
                     else:
                         points = landmarks[0]
                         p1 = np.mean(points[36:42,:], axis=0)
@@ -182,13 +180,15 @@ if __name__ == "__main__":
                             cv2.imwrite('./datasets/aligned/%s/224x224/%s'%(mset,file), face_224x224)
 
                         copyfile(img_path, './datasets/unknown/%s/%s'%(mset,file))
-        
+
                     total += 1
+                    print('check', check)
                 except (IOError, SyntaxError) as e:
                     print('Bad file:', filename)
                     continue
                 except:
+                    print('except')
                     print(img_path)
-                    continue        
+                    continue
         unknown_file.close()
         print(mset, count, total)
