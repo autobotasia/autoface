@@ -6,7 +6,9 @@ class AutofacesMongoDB():
         '''
 
         '''
-        mongodb_uri = "mongodb://%s:%s@%s:%s"%(user, password, host, port)
+        # mongodb_uri = "mongodb://%s:%s@%s:%s"%(user, password, host, port)
+        print("ver 0.1, ignore authentication.")
+        mongodb_uri = "mongodb://%s:%s"%( host, port)
         self.host = host
         self.port = port
         print("Connecting to MongoDB...")

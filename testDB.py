@@ -18,15 +18,25 @@ collection_name = dbconfig.COLNAME
 
 autofaces_db = AutofacesMongoDB(username, password, host, port, database_name, collection_name)
 
-fake = Faker()
+def test_save():
+    fake = Faker()
 
-for i in range(10):
-    time.sleep(rd.randint(1, 10))
-    face_class = fake.name()
-    prob = rd.random()
-    data = {
-        "time": datetime.now(),
-        "face_class": face_class,
-        "prob": prob
-    }
-    autofaces_db.save2db(data)
+    for i in range(10):
+        time.sleep(rd.randint(1, 10))
+        face_class = fake.name()
+        prob = rd.random()
+        data = {
+            "time": datetime.now(),
+            "face_class": face_class,
+            "prob": prob
+        }
+        autofaces_db.save2db(data)
+
+
+def show_data():
+    collection_ = autofaces_db.client[database_name][collection_name]
+    for e in collection_.find().sort('_id',-1):
+        print(e)
+
+
+show_data()
