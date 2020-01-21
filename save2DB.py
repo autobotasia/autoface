@@ -1,14 +1,25 @@
 import pymongo
+from datetime import datetime
 
 class AutofacesMongoDB():
 
     def __init__(self, username, password, host, port, db = None, col = None):
         '''
-
+        __init__(self, username, password, host, port, db = None, col = None)
         '''
-        # mongodb_uri = "mongodb://%s:%s@%s:%s"%(user, password, host, port)
-        print("ver 0.1, ignore authentication.")
-        mongodb_uri = "mongodb://%s:%s"%( host, port)
+        try:
+            # Python 3.x
+            from urllib.parse import quote_plus
+        except ImportError:
+            # Python 2.x
+            from urllib import quote_plus
+
+        # mongodb_uri = 'mongodb://username:password@host:port/database?authSource=database&w=1'
+        mongodb_uri = "mongodb://%s:%s@%s:%s/%s?authSource=%s&w=1"%(quote_plus(username), quote_plus(password), host, port, db, db)
+        
+        # print("ver 0.1, without authentication.")
+        # mongodb_uri = "mongodb://%s:%s"%( host, port)
+        
         self.host = host
         self.port = port
         print("Connecting to MongoDB...")
@@ -32,8 +43,8 @@ class AutofacesMongoDB():
         print("Default collection: %s" % self.collection)
 
 
-    # def getMongoClient(self):
-    #     return self.client
+    def getMongoClient(self):
+        return self.client
 
 
     def set_database(self, db):
@@ -69,9 +80,10 @@ class AutofacesMongoDB():
         if col == None:
             col = self.collection
         try:
-            mydb = self.client[db]
+            mydb = self.client[self.db]
             mycol = mydb[col]
             mycol.insert_one(data)
             print("Successfully inserted ", str(data), "to ", db + '.' + col)
+            # print(mycol)
         except Exception as e:
             print("MongoDB exception: " + str(e))
