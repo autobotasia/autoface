@@ -25,15 +25,18 @@ def createData(frame, pred_clsname, max_prob):
     time_str = re.sub('[:-]', '', time_str.split('.')[0])
     time_str = re.sub(' ', '_', time_str)
     image_link = './datasets/new-frame/' + pred_clsname + '_' + time_str + '.jpg'
-    cv2.imwrite(image_link, frame)
+    try:
+        cv2.imwrite(image_link, frame)
+    except:
+        print("Imwrite error in autoface.createData function.")
     predict_data = {
         "time": created_time,
         'face_class': pred_clsname,
         'prob': max_prob,
         'image_link': image_link
     }
-    # wait 5 seconds to save next image
-    next_time_can_save_img = datetime.now() + timedelta(seconds=5)
+    # wait 1 seconds to save next image
+    next_time_can_save_img = datetime.now() + timedelta(seconds=1)
     return next_time_can_save_img, predict_data
 
 
