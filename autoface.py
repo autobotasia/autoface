@@ -10,9 +10,32 @@ from utils.logger import Logger
 from utils.utils import get_args
 from utils.insightface_utils import InsightfaceUtils
 from bunch import Bunch
-from datetime import  datetime
+from datetime import  datetime, timedelta
 from save2DB import AutofacesMongoDB
 import dbconfig
+import re
+
+def createData(frame, pred_clsname, max_prob):
+
+    if not os.path.exists('./datasets/new-frame'):
+        os.makedirs('./datasets/new-frame')
+
+    created_time = datetime.now()
+    time_str = str(created_time)
+    time_str = re.sub('[:-]', '', time_str.split('.')[0])
+    time_str = re.sub(' ', '_', time_str)
+    image_link = './datasets/new-frame/' + pred_clsname + '_' + time_str + '.jpg'
+    cv2.imwrite(image_link, frame)
+    predict_data = {
+        "time": created_time,
+        'face_class': pred_clsname,
+        'prob': max_prob,
+        'image_link': image_link
+    }
+    # wait 5 seconds to save next image
+    next_time_can_save_img = datetime.now() + timedelta(seconds=5)
+    return next_time_can_save_img, predict_data
+
 
 def add_overlays(frame, faces, frame_rate):
     if faces is not None:
@@ -76,6 +99,7 @@ if __name__ == '__main__':
 
         video_capture = cv2.VideoCapture(0)
         start_time = time.time()
+        next_time_can_save_img = datetime.now()
 
         while True:
             # Capture frame-by-frame
@@ -97,14 +121,11 @@ if __name__ == '__main__':
                         max_prob = prob
                         pred_clsname = clsname
 
+
                 # save prediction to database
-                if max_prob > 0.7:
-                    predict_data = {
-                        "time": datetime.now(),
-                        'name': pred_clsname,
-                        'prob': max_prob
-                    }
-                    autofaces_db.save2db(data)
+                if max_prob > 0.7 and datetime.now() > next_time_can_save_img:
+                    next_time_can_save_img, predict_data = createData(frame, pred_clsname, max_prob)
+                    autofaces_db.save2db(predict_data)
 
 
                 # Check our current fps
