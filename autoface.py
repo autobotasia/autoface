@@ -14,71 +14,8 @@ from datetime import  datetime, timedelta
 from save2DB import AutofacesMongoDB
 import pjconfig
 import re
-import smtplib, ssl
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import emailNotification
 
-
-
-def loginEmail():
-    sender_email = pjconfig.SENDER_EMAIL
-    password = pjconfig.SENDER_EMAIL_PASSWORD
-    smtp_server = pjconfig.SMTP_SERVER
-    context = ssl.create_default_context()
-    try:
-        server = smtplib.SMTP(smtp_server)
-        server.ehlo()
-        server.starttls(context=context)
-        server.ehlo()
-        print('Start login', sender_email)
-        server.login(sender_email, password)
-        print('Login successfully.')
-        return server
-    except Exception as e:
-        print(e)
-
-
-def logoutEmail(serverMail):
-    try:
-        serverMail.quit()
-        print('Logout successfully.')
-    except Exception as e:
-        print(e)
-
-
-def createMess(name_, sender_email, receiver_email):
-    subject = name_ + " đã đến lúc " + str(datetime.now())
-    message = MIMEMultipart("alternative")
-    message["Subject"] = subject
-    message["From"] = sender_email
-    message["To"] = receiver_email
-    mail_content = subject + '.'
-    mail_content = MIMEText(mail_content, "plain")
-    message.attach(mail_content)
-    return message
-
-
-def sendMail(server, sender_email, receiver_email, message):
-    try:
-        print('Start send mail from', sender_email, "to", receiver_email)
-        server.sendmail(sender_email, receiver_email, message.as_string())
-        print('Successfully send mail from', sender_email, "to", receiver_email + '.')
-    except Exception as e:
-        print(e)
-
-
-def createCheckinDict():
-    classname = {}
-    for _, clsdirs, _ in os.walk('./datasets/nccfaces/train/'):
-        for index, clsdir in enumerate(clsdirs):
-            classname[clsdir] = False
-    return classname
-
-
-def isNewDay(saved_day):
-    if datetime.now().date != saved_day:
-        return True
-    return False
 
 
 def createData(frame, pred_clsname, max_prob):
@@ -138,9 +75,12 @@ if __name__ == '__main__':
 
     # variable for email notification
     # checkin dict save member checkin status, saved_day for check isNewDay
-    checkin = createCheckinDict()
+    checkin = emailNotification.createCheckinDict()
     saved_day = datetime.now().date
-    serverMail = loginEmail()
+    serverMail = emailNotification.loginEmail()
+    sender_email = pjconfig.SENDER_EMAIL
+    receiver_email_list = emailNotification.getReceiverEmailList()
+
 
     tf.logging.set_verbosity(tf.logging.INFO)
     # capture the config path from the run arguments
@@ -203,7 +143,7 @@ if __name__ == '__main__':
                     autofaces_db.save2db(predict_data)
 
                     # send-email code block
-                    if isNewDay(saved_day):
+                    if emailNotification.isNewDay(saved_day):
                         # reset dict values
                         for key in checkin:
                             checkin[key] = False
@@ -212,10 +152,10 @@ if __name__ == '__main__':
 
                     if checkin[pred_clsname] is False:
                         checkin[pred_clsname] = True
-                        sender_email = pjconfig.SENDER_EMAIL
-                        receiver_email = pjconfig.RECEIVER_EMAIL
-                        message = createMess(pred_clsname, sender_email, receiver_email)
-                        sendMail(serverMail, sender_email, receiver_email, message)
+
+                        for receiver_email in receiver_email_list:
+                            message = emailNotification.createMess(pred_clsname, sender_email, receiver_email)
+                            emailNotification.sendMail(serverMail, sender_email, receiver_email, message)
                     # end of send-email code block
                 # end of save-prediction-to-database code block
 
@@ -239,4 +179,4 @@ if __name__ == '__main__':
         cv2.destroyAllWindows()
 
         # logout Email
-        logoutEmail(serverMail)
+        emailNotification.logoutEmail(serverMail)
