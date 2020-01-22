@@ -10,6 +10,7 @@ from utils.logger import Logger
 from utils.utils import get_args
 from utils.insightface_utils import InsightfaceUtils
 from bunch import Bunch
+import imutils
 from datetime import  datetime, timedelta
 from save2DB import AutofacesMongoDB
 import pjconfig
@@ -112,65 +113,71 @@ if __name__ == '__main__':
         frame_rate = 0
         frame_count = 0
 
-        video_capture = cv2.VideoCapture(0)
+        #video_capture = cv2.VideoCapture(0)
+        video_capture = cv2.VideoCapture("rtsp://admin:12345678a@@172.16.12.111:554/Streamming/channels/101")
+
         start_time = time.time()
         next_time_can_save_img = datetime.now()
 
         while True:
             # Capture frame-by-frame
             ret, frame = video_capture.read()
+            if not ret:
+                continue
+
+            frame = imutils.resize(frame, width=512)
+
             if (frame_count % frame_interval) == 0:
                 try:
                     predictimg, points = util.get_embedding(frame)
-                except NameError as e:
+                    predictimg = predictimg.reshape(1, 512)
+                    max_prob = 0
+                    pred_clsname = ''
+                    for best_idx, clsname, prob in trainer.predict(predictimg, batch_size=1):
+                        face = {'point': points[0], 'name': clsname}
+                        print("=====%s: %f=====" % (clsname, prob))
+                        if max_prob < prob:
+                            max_prob = prob
+                            pred_clsname = clsname
+
+
+                    # save prediction to database
+                    if max_prob > 0.7 and datetime.now() > next_time_can_save_img:
+                        next_time_can_save_img, predict_data = createData(frame, pred_clsname, max_prob)
+                        autofaces_db.save2db(predict_data)
+
+                        # send-email code block
+                        if emailNotification.isNewDay(saved_day):
+                            # reset dict values
+                            for key in checkin:
+                                checkin[key] = False
+                            # renew saved_day
+                            saved_day = datetime.now().date
+
+                        if checkin[pred_clsname] is False:
+                            checkin[pred_clsname] = True
+
+                            for receiver_email in receiver_email_list:
+                                message = emailNotification.createMess(pred_clsname, sender_email, receiver_email)
+                                emailNotification.sendMail(serverMail, sender_email, receiver_email, message)
+                        # end of send-email code block
+                    # end of save-prediction-to-database code block
+                
+                except Exception as e:
                     print("ignore this frame", e)
                     continue
-
-                predictimg = predictimg.reshape(1, 512)
-                max_prob = 0
-                pred_clsname = ''
-                for best_idx, clsname, prob in trainer.predict(predictimg, batch_size=1):
-                    face = {'point': points[0], 'name': clsname}
-                    print("=====%s: %f=====" % (clsname, prob))
-                    if max_prob < prob:
-                        max_prob = prob
-                        pred_clsname = clsname
-
-
-                # save prediction to database
-                if max_prob > 0.7 and datetime.now() > next_time_can_save_img:
-                    next_time_can_save_img, predict_data = createData(frame, pred_clsname, max_prob)
-                    autofaces_db.save2db(predict_data)
-
-                    # send-email code block
-                    if emailNotification.isNewDay(saved_day):
-                        # reset dict values
-                        for key in checkin:
-                            checkin[key] = False
-                        # renew saved_day
-                        saved_day = datetime.now().date
-
-                    if checkin[pred_clsname] is False:
-                        checkin[pred_clsname] = True
-
-                        for receiver_email in receiver_email_list:
-                            message = emailNotification.createMess(pred_clsname, sender_email, receiver_email)
-                            emailNotification.sendMail(serverMail, sender_email, receiver_email, message)
-                    # end of send-email code block
-                # end of save-prediction-to-database code block
-
-
+                
+                
                 # Check our current fps
                 end_time = time.time()
                 if (end_time - start_time) > fps_display_interval:
                     frame_rate = int(frame_count / (end_time - start_time))
                     start_time = time.time()
                     frame_count = 0
-
+            
             add_overlays(frame, [face], frame_rate)
-            frame_count += 1
+            frame_count += 1            
             cv2.imshow('Video', frame)
-
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
