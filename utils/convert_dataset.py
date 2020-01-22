@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-import shutil
+import shutil 
 
 dataset = {}
 dataset['train'] = []
@@ -22,7 +22,7 @@ for mset in ['train', 'test', 'testcam']:
                     continue
 
                 imgname = '%s_%s'%(clsdir, file)
-                dest = shutil.copyfile(os.path.join(dirpath, file), './datasets/nccfaces/%s/%s'%(mset,imgname))
+                dest = shutil.copyfile(os.path.join(dirpath, file), './datasets/%s/%s'%(mset,imgname))
                 if mset == 'train':
                     #print("clsidx %d, %s" % (i, clsdir))
                     dataset[mset].append({
@@ -35,6 +35,6 @@ for mset in ['train', 'test', 'testcam']:
                         'label':classname.index(clsdir)
                     })
                     #print("clsidx %d, %s" % (classname.index(clsdir), clsdir))
-
+                        
     df = pd.DataFrame(dataset[mset])
     df.to_csv('./datasets/%s.csv'%mset, index=False)
