@@ -18,7 +18,6 @@ import re
 import emailNotification
 
 
-
 def createData(frame, pred_clsname, max_prob):
 
     if not os.path.exists('./datasets/new-frame'):
@@ -162,21 +161,21 @@ if __name__ == '__main__':
                                 emailNotification.sendMail(serverMail, sender_email, receiver_email, message)
                         # end of send-email code block
                     # end of save-prediction-to-database code block
-                
+
                 except Exception as e:
                     print("ignore this frame", e)
                     continue
-                
-                
+
+
                 # Check our current fps
                 end_time = time.time()
                 if (end_time - start_time) > fps_display_interval:
                     frame_rate = int(frame_count / (end_time - start_time))
                     start_time = time.time()
                     frame_count = 0
-            
+
             add_overlays(frame, [face], frame_rate)
-            frame_count += 1            
+            frame_count += 1
             cv2.imshow('Video', frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
