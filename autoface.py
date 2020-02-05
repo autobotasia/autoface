@@ -59,7 +59,7 @@ if __name__ == '__main__':
         frame_count = 0
 
         #video_capture = cv2.VideoCapture(0)
-        video_capture = cv2.VideoCapture("rtsp://admin:12345678a@@172.16.12.111:554/Streamming/channels/101")
+        video_capture = cv2.VideoCapture("rtsp://admin:12345678a@@172.16.11.111:554/Streamming/channels/101")
 
         start_time = time.time()
         
@@ -69,10 +69,11 @@ if __name__ == '__main__':
             if not ret:
                 continue
 
-            frame = imutils.resize(frame, width=512)
-
+            #cv2.imshow('Video', frame)    
+            frame = imutils.resize(frame, width=300)
+            
             if (frame_count % frame_interval) == 0:
-                try:
+                '''try:
                     predictimg, points = util.get_embedding(frame)
                     predictimg = predictimg.reshape(1, 512)
                     for best_idx, clsname, prob in trainer.predict(predictimg, batch_size=1):
@@ -81,7 +82,7 @@ if __name__ == '__main__':
                         
                 except Exception as e:
                     print("ignore this frame", e)
-                    continue
+                    continue'''
 
                 # Check our current fps
                 end_time = time.time()
@@ -92,7 +93,7 @@ if __name__ == '__main__':
             
             add_overlays(frame, [face], frame_rate)
             frame_count += 1            
-            cv2.imshow('Video', frame)
+            
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 

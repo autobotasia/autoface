@@ -9,9 +9,9 @@
   "max_to_keep":5,
   "checkpoint_dir":"./experiments/checkpoints/",
   "summary_dir": "./experiments/summary/",
-  "do_train":1,
-  "do_predict":1,
-  "do_demo": 0,
+  "do_train":0,
+  "do_predict":0,
+  "do_demo": 1,
   "pretrained_model": {
     "image_size":"112,112",
     "ga_model":"",
