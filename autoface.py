@@ -12,37 +12,8 @@ from utils.insightface_utils import InsightfaceUtils
 from bunch import Bunch
 import imutils
 from datetime import  datetime, timedelta, date
-from save2DB import AutofacesMongoDB
-import pjconfig
+from utils.mongodb import AutofacesMongoDB
 import re
-import emailNotification
-
-
-
-def createData(frame, pred_clsname, max_prob):
-
-    if not os.path.exists('./datasets/new-frame'):
-        os.makedirs('./datasets/new-frame')
-
-    created_time = datetime.now()
-    time_str = str(created_time)
-    time_str = re.sub('[:-]', '', time_str.split('.')[0])
-    time_str = re.sub(' ', '_', time_str)
-    image_link = './datasets/new-frame/' + pred_clsname + '_' + time_str + '.jpg'
-    try:
-        cv2.imwrite(image_link, frame)
-    except:
-        print("Imwrite error in autoface.createData function.")
-    predict_data = {
-        "time": created_time,
-        'face_class': pred_clsname,
-        'prob': float(max_prob),
-        'image_link': image_link
-    }
-    
-    # wait 1 seconds to save next image
-    next_time_can_save_img = datetime.now() + timedelta(seconds=1)
-    return next_time_can_save_img, predict_data
 
 
 def add_overlays(frame, faces, frame_rate):
@@ -64,26 +35,6 @@ def add_overlays(frame, faces, frame_rate):
 
 if __name__ == '__main__':
 
-    # MongoDB info
-    username = pjconfig.DBUSERNAME
-    password = pjconfig.DBPASSWORD
-    host = pjconfig.DBHOST
-    port = pjconfig.DBPORT
-    database_name = pjconfig.DBNAME
-    collection_name = pjconfig.COLNAME
-
-    # connect MongoDB database
-    autofaces_db = AutofacesMongoDB(username, password, host, port, database_name, collection_name)
-
-    # variable for email notification
-    # checkin dict save member checkin status, saved_day for check isNewDay
-    checkin = emailNotification.createCheckinDict()
-    saved_day = date.today()
-    serverMail = emailNotification.loginEmail()
-    sender_email = pjconfig.SENDER_EMAIL
-    receiver_email_list = emailNotification.getReceiverEmailList()
-
-
     tf.logging.set_verbosity(tf.logging.INFO)
     # capture the config path from the run arguments
     # then process the json configuration file
@@ -97,6 +48,8 @@ if __name__ == '__main__':
     if not config.pretrained_model:
         raise Exception('model path is required')
 
+    # connect MongoDB database
+    db = AutofacesMongoDB(config)
     util = InsightfaceUtils(Bunch(config.pretrained_model))
     trainer = Trainer(config)
 
@@ -134,38 +87,13 @@ if __name__ == '__main__':
                 try:
                     predictimg, points = util.get_embedding(frame)
                     predictimg = predictimg.reshape(1, 512)
-                    max_prob = 0
-                    pred_clsname = ''
                     for best_idx, clsname, prob in trainer.predict(predictimg, batch_size=1):
                         face = {'point': points[0], 'name': clsname}
                         print("=====%s: %f=====" % (clsname, prob))
-                        if max_prob < prob:
-                            max_prob = prob
-                            pred_clsname = clsname
-
 
                     # save prediction to database
-                    if max_prob > 0.7 and datetime.now() > next_time_can_save_img:
-
-                        next_time_can_save_img, predict_data = createData(frame, pred_clsname, max_prob)
-                        autofaces_db.save2db(predict_data)
-
-                        # send-email code block
-                        if emailNotification.isNewDay(saved_day):
-                            # reset dict values
-                            for key in checkin:
-                                checkin[key] = False
-                            # renew saved_day
-                            saved_day = date.today()
-                        
-                        if checkin[pred_clsname] is False:
-                            checkin[pred_clsname] = True
-
-                            for receiver_email in receiver_email_list:
-                                message = emailNotification.createMess(pred_clsname, sender_email, receiver_email)
-                                emailNotification.sendMail(serverMail, sender_email, receiver_email, message)
-                        # end of send-email code block
-                    # end of save-prediction-to-database code block
+                    if prob > 0.7 and datetime.now() > next_time_can_save_img:
+                        db.save_and_noti(frame, pred_clsname, prob)
                 
                 except Exception as e:
                     print("ignore this frame", e)

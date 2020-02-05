@@ -20,5 +20,23 @@
     "det":0,
     "flip":0,
     "threshold":1.24
+  },
+  "notification": {
+    "sender":"learnstmp.pythonmail@gmail.com",
+    "sender_passwd":"Zx9mw(q@dDkwAzf'ky;\p{+P=L(!S_JhWrSCbD88KVj\"[K&sW(Ju;3SM~$w=s[m8",
+    "server":"smtp.gmail.com",
+    "receiver_email":[
+      "learn.pythonmail1111@gmail.com",
+      "brendadaugherty912@gmail.com"
+    ]
+  },
+  "mongodb": {
+    "host":"",
+    "port":127027,
+    "username": "",
+    "password":"",
+    "dbname":"",
+    "colname":"PredictFaces"
   }
+
 }
