@@ -15,10 +15,10 @@ class AutofacesMongoDB():
             from urllib import quote_plus
 
         # mongodb_uri = 'mongodb://username:password@host:port/database?authSource=database&w=1'
-        mongodb_uri = "mongodb://%s:%s@%s:%s/%s?authSource=%s&w=1"%(quote_plus(username), quote_plus(password), host, port, db, db)
-        
-        # print("ver 0.1, without authentication.")
-        # mongodb_uri = "mongodb://%s:%s"%( host, port)
+        # mongodb_uri = "mongodb://%s:%s@%s:%s/%s?authSource=%s&w=1"%(quote_plus(username), quote_plus(password), host, port, db, db)
+        print("ver 0.1, without authentication.")
+        mongodb_uri = "mongodb://%s:%s"%( host, port)
+        # print("Mongo URI:", mongodb_uri)
         
         self.host = host
         self.port = port

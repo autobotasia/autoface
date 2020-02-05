@@ -1,8 +1,9 @@
 import pjconfig
+import os
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from datetime import  datetime
+from datetime import  datetime, date
 import re
 
 
@@ -75,6 +76,6 @@ def createCheckinDict():
 
 
 def isNewDay(saved_day):
-    if datetime.now().date != saved_day:
+    if date.today() != saved_day:
         return True
     return False
