@@ -1,0 +1,9 @@
+bunch==1.0.1
+face_alignment==1.0.0
+mxnet-cu100==1.5.1.post0
+imgaug==
+face_alignment==1.0.0
+tensorflow
+pymongo
+tqdm
+pandas
