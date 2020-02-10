@@ -17,7 +17,7 @@ class Model():
         logits1 = tf.matmul(inputs, weight1, transpose_b=True)            
         logits1 = tf.nn.bias_add(logits1, bias1)
         prob_logits1 = tf.nn.relu(logits1)
-        prob_logits1 = tf.nn.dropout(prob_logits1, rate=0.25)
+        prob_logits1 = tf.nn.dropout(prob_logits1, rate=0.10)
         logits = tf.matmul(prob_logits1, weight2, transpose_b=True)
         logits = tf.nn.bias_add(logits, bias2)
         return logits                                                   
