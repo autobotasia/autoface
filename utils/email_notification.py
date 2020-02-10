@@ -1,4 +1,3 @@
-import pjconfig
 import os
 import smtplib, ssl
 from email.mime.text import MIMEText
@@ -9,10 +8,11 @@ import re
 class Notification():
     def __init__(self, config):
         self.config = config
+        sender_email = config.sender_email
         password = config.sender_passwd
         self.smtp_server = config.server
         context = ssl.create_default_context()
-        self.smtp = smtplib.SMTP(smtp_server, 587)
+        self.smtp = smtplib.SMTP(self.smtp_server, 587)
         self.smtp.ehlo()
         self.smtp.starttls(context=context)
         self.smtp.ehlo()
@@ -29,8 +29,8 @@ class Notification():
     def logout(self):
         self.smtp.quit()
 
-    def create_mess_with_attachment(self, frame, cls, prob):
-        subject = cls + " đã đến lúc " + str(datetime.now())
+    def create_mess_with_attachment(self, frame, clsname, prob):
+        subject = clsname + " đã đến lúc " + str(datetime.now())
         message = MIMEMultipart("alternative")
         message["Subject"] = subject
         message["From"] = self.config.sender_email
@@ -41,12 +41,18 @@ class Notification():
         return message
 
 
-    def send_mail(self, frame, cls, prob):
+    def send_mail(self, frame, clsname, prob):
         print('Start send mail from', self.config.sender_email, "to", self.config.receiver_email)
-        message = self.create_mess_with_attachment(frame, cls, prob)
-        self.smtp.sendmail(sender_email, receiver_email, message.as_string())
-        print('Successfully send mail from', sender_email, "to", receiver_email + '.')
-
+        message = self.create_mess_with_attachment(frame, clsname, prob)
+        self.smtp.sendmail(self.config.sender_email, self.config.receiver_email, message.as_string())
+        print('Successfully send mail from', self.config.sender_email, "to", self.config.receiver_email + '.')
+    
+    def createCheckinDict(self):
+        classname = {}
+        for _, clsdirs, _ in os.walk('datasets/nccfaces/train/'):
+            for index, clsdir in enumerate(clsdirs):
+                classname[clsdir] = False
+        return classname
 
     def is_new_day(self, saved_day):
         if date.today() != saved_day:

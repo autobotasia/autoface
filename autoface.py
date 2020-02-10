@@ -13,6 +13,7 @@ from bunch import Bunch
 import imutils
 from datetime import  datetime, timedelta, date
 from utils.mongodb import AutofacesMongoDB
+from utils.email_notification import Notification
 import re
 
 
@@ -52,6 +53,9 @@ if __name__ == '__main__':
     db = AutofacesMongoDB(config)
     util = InsightfaceUtils(Bunch(config.pretrained_model))
     trainer = Trainer(config)
+    notifier = Notification(Bunch(config.notification))
+    checkin = notifier.createCheckinDict()
+    saved_day = date.today()
 
     if config.do_train:
         # create the experiments dirs
@@ -68,7 +72,9 @@ if __name__ == '__main__':
         frame_count = 0
 
         #video_capture = cv2.VideoCapture(0)
-        video_capture = cv2.VideoCapture("rtsp://admin:12345678a@@172.16.12.111:554/Streamming/channels/101")
+        #video_capture = cv2.VideoCapture("rtsp://admin:12345678a@@172.16.12.111:554/Streamming/channels/101")
+
+        video_capture = cv2.VideoCapture('3141.avi')
 
         start_time = time.time()
         next_time_can_save_img = datetime.now()
@@ -89,11 +95,12 @@ if __name__ == '__main__':
                     predictimg = predictimg.reshape(1, 512)
                     for best_idx, clsname, prob in trainer.predict(predictimg, batch_size=1):
                         face = {'point': points[0], 'name': clsname}
+                        max_prob = prob
                         print("=====%s: %f=====" % (clsname, prob))
-
+                    
                     # save prediction to database
-                    if prob > 0.7 and datetime.now() > next_time_can_save_img:
-                        db.save_and_noti(frame, pred_clsname, prob)
+                    if max_prob > 0.7 and datetime.now() > next_time_can_save_img:
+                        db.save_and_noti(frame, face['name'], max_prob, saved_day, checkin)
                 
                 except Exception as e:
                     print("ignore this frame", e)
@@ -118,4 +125,4 @@ if __name__ == '__main__':
         cv2.destroyAllWindows()
 
         # logout Email
-        emailNotification.logoutEmail(serverMail)
+        notifier.logout()

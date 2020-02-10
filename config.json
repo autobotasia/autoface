@@ -7,36 +7,36 @@
   "number_of_class": 256,
   "input_dim": 512,
   "max_to_keep":5,
-  "checkpoint_dir":"./experiments/checkpoints/",
-  "summary_dir": "./experiments/summary/",
+  "checkpoint_dir":"experiments/checkpoints/",
+  "summary_dir": "experiments/summary/",
   "do_train":0,
   "do_predict":0,
   "do_demo": 1,
   "pretrained_model": {
     "image_size":"112,112",
     "ga_model":"",
-    "model":"./models/insightface/models/model-r100-ii/model,0",
+    "model":"models/insightface/models/model-r100-ii/model,0",
     "gpu":0,
     "det":0,
     "flip":0,
     "threshold":1.24
   },
   "notification": {
-    "sender":"learnstmp.pythonmail@gmail.com",
-    "sender_passwd":"Zx9mw(q@dDkwAzf'ky;\p{+P=L(!S_JhWrSCbD88KVj\"[K&sW(Ju;3SM~$w=s[m8",
+    "sender_email":"learnstmp.pythonmail@gmail.com",
+    "sender_passwd":"xzfcd1FD",
     "server":"smtp.gmail.com",
-    "receiver_email":[
+    "receiver_email": [
       "learn.pythonmail1111@gmail.com",
       "brendadaugherty912@gmail.com"
     ]
   },
   "mongodb": {
-    "host":"",
-    "port":127027,
+    "host":"localhost",
+    "port":27017,
     "username": "",
     "password":"",
-    "dbname":"",
-    "colname":"PredictFaces"
+    "dbname":"Autofaces",
+    "collection":"PredictFaces"
   }
 
 }
