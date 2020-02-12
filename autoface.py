@@ -55,7 +55,7 @@ if __name__ == '__main__':
             for f in os.listdir('./data/capture/'):
                 file_name, file_ext = os.path.splitext(f)
                 
-                if file_ext != '.png':
+                if file_ext != '.png' or file_name[:3] == 'tmp':
                     print(file_name)
                     continue
                 
@@ -65,10 +65,9 @@ if __name__ == '__main__':
                     predictimg = predictimg.reshape(1, 512)
                     for best_idx, clsname, prob in trainer.predict(predictimg, batch_size=1):
                         face = {'point': points[0], 'name': clsname}
-                        max_prob = prob
                         print("=====%s: %f=====" % (clsname, prob))
                                        
-                    if max_prob > 0.8:
+                    if prob >= 0.90:
                         if os.path.exists('./data/cls/%s'%clsname) == False:
                             os.makedirs('./data/cls/%s'%clsname)
                         cv2.imwrite('./data/cls/%s/%s'%(clsname,f), frame)

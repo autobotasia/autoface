@@ -60,8 +60,9 @@ while True:
                 x2 = face['rect'][2]
                 y2 = face['rect'][3]  
                 cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                cv2.imwrite('./data/capture/%d.png'%round(time.time()), face['face'])
-                #cv2.imshow("faces", img)
+                strtime = round(time.time())
+                cv2.imwrite('./data/capture/tmp-%d.png'%strtime, face['face'])
+                os.rename('./data/capture/tmp-%d.png'%strtime, './data/capture/%d.png'%strtime)
                 cv2.waitKey(1)
         except:
             pass        
