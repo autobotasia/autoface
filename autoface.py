@@ -14,25 +14,6 @@ import imutils
 from datetime import  datetime, timedelta, date
 from utils.mongodb import AutofacesMongoDB
 from utils.email_notification import Notification
-import re
-
-
-def add_overlays(frame, faces, frame_rate):
-    if faces is not None:
-        for face in faces:
-            face_bb = face["point"]
-            #cv2.rectangle(frame,
-            #              (face_bb[0], face_bb[1]), (face_bb[2], face_bb[3]),
-            #              (0, 255, 0), 2)
-            if face["name"] is not None:
-                cv2.putText(frame, face["name"], (face_bb[0], face_bb[1]),
-                            cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0),
-                            thickness=2, lineType=2)
-
-    cv2.putText(frame, str(frame_rate) + " fps", (10, 30),
-                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0),
-                thickness=2, lineType=2)
-
 
 if __name__ == '__main__':
 
@@ -54,7 +35,7 @@ if __name__ == '__main__':
     util = InsightfaceUtils(Bunch(config.pretrained_model))
     trainer = Trainer(config)
     notifier = Notification(Bunch(config.notification))
-    checkin = notifier.createCheckinDict()
+    
     saved_day = date.today()
 
     if config.do_train:
@@ -66,30 +47,19 @@ if __name__ == '__main__':
 
 
     if config.do_demo:
-        frame_interval = 1  # Number of frames after which to run face detection
-        fps_display_interval = 1  # seconds
-        frame_rate = 0
-        frame_count = 0
-
-        #video_capture = cv2.VideoCapture(0)
-        #video_capture = cv2.VideoCapture("rtsp://admin:12345678a@@172.16.12.111:554/Streamming/channels/101")
-
-        video_capture = cv2.VideoCapture('3141.avi')
-
         start_time = time.time()
         next_time_can_save_img = datetime.now()
 
 
         while True:
-            # Capture frame-by-frame
-            ret, frame = video_capture.read()
-            if not ret:
-                continue
-
-            # frame = imutils.rotate_bound(frame, 90)
-            frame = imutils.resize(frame, width=200)
-
-            if (frame_count % frame_interval) == 0:
+            for f in os.listdir('./data/capture/'):
+                file_name, file_ext = os.path.splitext(f)
+                
+                if file_ext != '.png':
+                    print(file_name)
+                    continue
+                
+                frame = cv2.imread('./data/capture/%s'%f)
                 try:
                     predictimg, points = util.get_embedding(frame)
                     predictimg = predictimg.reshape(1, 512)
@@ -97,32 +67,17 @@ if __name__ == '__main__':
                         face = {'point': points[0], 'name': clsname}
                         max_prob = prob
                         print("=====%s: %f=====" % (clsname, prob))
-                    
+                                       
+                    if max_prob > 0.8:
+                        if os.path.exists('./data/cls/%s'%clsname) == False:
+                            os.makedirs('./data/cls/%s'%clsname)
+                        cv2.imwrite('./data/cls/%s/%s'%(clsname,f), frame)
+
                     # save prediction to database
-                    if max_prob > 0.7 and datetime.now() > next_time_can_save_img:
-                        db.save_and_noti(frame, face['name'], max_prob, saved_day, checkin)
+                    #if max_prob > 0.7 and datetime.now() > next_time_can_save_img:
+                    #    db.save_and_noti(frame, face['name'], max_prob, saved_day)
                 
                 except Exception as e:
-                    print("ignore this frame", e)
-                    continue
+                    print("ignore this frame", e)                    
                 
-                
-                # Check our current fps
-                end_time = time.time()
-                if (end_time - start_time) > fps_display_interval:
-                    frame_rate = int(frame_count / (end_time - start_time))
-                    start_time = time.time()
-                    frame_count = 0
-            
-            add_overlays(frame, [face], frame_rate)
-            frame_count += 1            
-            #cv2.imshow('Video', frame)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
-
-        # When everything is done, release the capture
-        video_capture.release()
-        cv2.destroyAllWindows()
-
-        # logout Email
-        notifier.logout()
+                os.remove('./data/capture/%s'%f) 

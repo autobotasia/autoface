@@ -5,9 +5,10 @@ import imutils
 import numpy as np
 import argparse
 import os
+import time
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--imgpath", type = str, required=True)
+#parser.add_argument("--imgpath", type = str, required=True)
 args = parser.parse_args()
 
 # some constants kept as default from facenet
@@ -27,7 +28,7 @@ def getFace(img):
     bounding_boxes, _ = detect_face.detect_face(img, minsize, pnet, rnet, onet, threshold, factor)
     if not len(bounding_boxes) == 0:
         for face in bounding_boxes:
-            if face[4] > 0.60:
+            if face[4] > 0.90:
                 det = np.squeeze(face[0:4])
                 bb = np.zeros(4, dtype=np.int32)
                 bb[0] = np.maximum(det[0] - margin / 2, 0)
@@ -38,29 +39,30 @@ def getFace(img):
                 resized = cv2.resize(cropped, (input_image_size,input_image_size),interpolation=cv2.INTER_AREA)
                 faces.append({'face':resized,'rect':[bb[0],bb[1],bb[2],bb[3]]})
     return faces
+    
+while True:
+    for f in os.listdir('./data/images/'):
+        file_name, file_ext = os.path.splitext(f)
+        
+        if file_ext != '.png' or file_name[:3] == 'tmp':
+            print(file_name)
+            continue
+        
+        img = cv2.imread('./data/images/%s'%f)
+        #img = imutils.resize(img, width=256)        
+        os.remove('./data/images/%s'%f)
 
-for f in os.listdir(args.imgpath):
-    if f == '.' or f == '..':
-        continue
-    for fi in os.listdir(os.path.join(args.imgpath, f)):
-        img = cv2.imread(os.path.join(args.imgpath, f, fi))
-        img = imutils.resize(img,width=1000)
-        faces = getFace(img)
-        rets = []
-        for face in faces:
-            x1 = face['rect'][0]
-            y1 = face['rect'][1]
-            x2 = face['rect'][2]
-            y2 = face['rect'][3]  
-            #cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
-            croped = img[y1:y2, x1:x2]
-            rets.append(croped)
-        if not os.path.exists(os.path.join("refine", f)):
-            os.makedirs(os.path.join("refine", f))
-        for i, img in enumerate(rets):
-            img = imutils.resize(img,width=300)
-            cv2.imwrite(os.path.join("refine", f, '%d_%s'% (i,fi)), img)
-            #cv2.imshow("faces", img)
-
-#cv2.waitKey(0)
-#cv2.destroyAllWindows()
+        try:
+            faces = getFace(img)
+            for face in faces:
+                x1 = face['rect'][0]
+                y1 = face['rect'][1]
+                x2 = face['rect'][2]
+                y2 = face['rect'][3]  
+                cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                cv2.imwrite('./data/capture/%d.png'%round(time.time()), face['face'])
+                #cv2.imshow("faces", img)
+                cv2.waitKey(1)
+        except:
+            pass        
+    cv2.destroyAllWindows()

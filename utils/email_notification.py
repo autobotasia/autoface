@@ -46,13 +46,6 @@ class Notification():
         message = self.create_mess_with_attachment(frame, clsname, prob)
         self.smtp.sendmail(self.config.sender_email, self.config.receiver_email, message.as_string())
         print('Successfully send mail from', self.config.sender_email, "to", self.config.receiver_email + '.')
-    
-    def createCheckinDict(self):
-        classname = {}
-        for _, clsdirs, _ in os.walk('datasets/nccfaces/train/'):
-            for index, clsdir in enumerate(clsdirs):
-                classname[clsdir] = False
-        return classname
 
     def is_new_day(self, saved_day):
         if date.today() != saved_day:

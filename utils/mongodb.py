@@ -82,7 +82,16 @@ class AutofacesMongoDB():
         next_time_can_save_img = datetime.now() + timedelta(seconds=1)
         return next_time_can_save_img, predict_data
 
-    def save_and_noti(self, frame, pred_clsname, max_prob, saved_day, checkin):
+        
+    def create_cls_dict(self):
+        classname = {}
+        for _, clsdirs, _ in os.walk('datasets/nccfaces/train/'):
+            for _, clsdir in enumerate(clsdirs):
+                classname[clsdir] = False
+        return classname    
+
+    def save_and_noti(self, frame, pred_clsname, max_prob, saved_day):
+        checkin = self.create_cls_dict()
         next_time_can_save_img, predict_data = self.create_data(frame, pred_clsname, max_prob)
         self.save(predict_data)
 
@@ -90,8 +99,9 @@ class AutofacesMongoDB():
             # reset dict values
             for key in checkin:
                 checkin[key] = False
-            #saved_day = date.today()
-        
+            # renew saved_day
+            saved_day = date.today()
+
         if checkin[pred_clsname] is False:
             checkin[pred_clsname] = True
             self.notifier.send_mail(frame, pred_clsname, max_prob)

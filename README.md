@@ -26,6 +26,7 @@ in pjconfig.py:
 save receiver email list in receiver-email file
 
 # manage config.json
+```json
 {
   "exp_name": "autoface",
   "num_epochs": 10,
@@ -50,6 +51,7 @@ save receiver email list in receiver-email file
     "threshold":1.24
   }
 }
+```
 
 # Run convert, align
 python3 utils/convert_dataset.py
@@ -61,3 +63,13 @@ python3 utils/prepare.py
 
 # Run train/eval/predict
 python3 autoface.py
+
+# Live
+python3 utils/capture-video.py
+
+export CUDA_VISIBLE_DEVICES="1"
+python3 utils/face_detect.py
+
+export CUDA_VISIBLE_DEVICES="0"
+python3 autoface.py
+
