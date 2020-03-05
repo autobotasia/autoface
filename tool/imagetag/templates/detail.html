@@ -1,0 +1,75 @@
+<div style="text-align: center;">
+    {% load static %}
+    <img src="{% static imagedetail.img_url%}" >
+    <h3>{{ imagedetail.tag_name }}</h3>
+    {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+    {% endif %}
+    <form action="{% url 'vote' imagedetail.pk %}" method="post">
+    {% csrf_token %}
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <!-- <input type="radio" id="yes" name="check" value="True" onclick="toggleDropdown();this.form.submit();"> -->
+        <input type="radio" id="yes" name="check" value="True" onclick="this.form.submit();">
+        <label>Yes</label>
+        <span></span>
+        <!-- <input type="radio" id="no" name="check" value="False" onclick="toggleDropdown();"> -->
+        <input type="radio" id="no" name="check" value="False" onclick="this.form.submit();">
+        <label>No</label><br>
+        <!-- <div>
+            <select name="tagname" id="dropdown" disabled>
+                {% for tag_name in tags %}
+                <option value="{{ tag_name }}">{{ tag_name }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <input type="checkbox" id="checkbox" onclick="toggleText()" disabled><label>Enable textbox</label><br>
+            <input type="text" id="text" name="tagname" required disabled>
+        </div>
+        <input type="submit" value="Submit" id="button" disabled> -->
+    </form>
+
+
+</div>
+
+<script>
+    function toggleDropdown() {
+        if (document.getElementById("no").checked) {
+            document.getElementById("dropdown").disabled = false;
+            document.getElementById("checkbox").disabled = false;
+            document.getElementById("button").disabled = false;
+        }
+        if (document.getElementById("yes").checked) {
+            document.getElementById("dropdown").disabled = true;
+            document.getElementById("checkbox").disabled = true;
+            document.getElementById("button").disabled = true;
+        }
+    }
+
+    function toggleText() {
+        if (document.getElementById("checkbox").checked) {
+            document.getElementById("text").disabled = false;
+            document.getElementById("dropdown").disabled = true;
+
+        } else {
+            document.getElementById("text").disabled = true;
+            document.getElementById("dropdown").disabled = false;
+        }
+    }
+</script>
