@@ -6,26 +6,6 @@ from .models import ImageDetail
 from django.conf import settings
 
 
-def loc_save2db():
-
-    base_dir = 'static'
-
-    for dir1 in os.listdir(base_dir):
-        if dir1 == 'css':
-            continue
-
-        base_dir1 = base_dir + '/' + dir1
-        for dir2 in os.listdir(base_dir1):
-            base_dir2 = base_dir1 + '/' + dir2
-            for img_file in os.listdir(base_dir2):
-                img_url = dir1 + '/' + dir2 + '/' + img_file
-                try:
-                    img = get_object_or_404(ImageDetail, img_url=img_url)
-                except Http404:
-                    img = ImageDetail(img_url=img_url, tag_name=dir2)
-                    img.save()
-
-
 def save_img_data_to_database():
 
     base_dir = './static/' + settings.TEMP_IMG

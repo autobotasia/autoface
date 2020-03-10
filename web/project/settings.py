@@ -23,9 +23,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = ')n-orbf@qz0320)t9(o+vi42olczoqla15q#u&&24*6p$)7b58'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
+    'localhost',
+    '0.0.0.0',
     'ai.nccsoft.vn'
 ]
 
