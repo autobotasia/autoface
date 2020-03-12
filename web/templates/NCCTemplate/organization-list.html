@@ -893,9 +893,9 @@
                         <div class="product-status-wrap">
                             <h4>Oganization List</h4>
                             <div class="add-product">
-                                <a href="organization-crud.html">Add Organization</a>
+                                <a href="organization-create.html">Add Organization</a>
                             </div>
-                            <table>
+                            <table id='data-table'>
                                 <tr>
                                     <th>No</th>
                                     <th>Oganization Name</th>
@@ -911,8 +911,8 @@
                                     <td>Location#</td>
                                     <td>+84 90 999 9999</td>
                                     <td>
-                                        <button data-toggle="tooltip" title="View" class="pd-setting-ed"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                                        <button data-toggle="tooltip" title="View" class="pd-setting-ed"><a href="organization-crud.html"><i class="fa fa-eye" aria-hidden="true"></i></a></button>
+                                        <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><a href="organization-crud.html"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></button>
                                         <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                     </td>
                                 </tr>
@@ -1053,4 +1053,11 @@
     <script src="js/main.js"></script>
 </body>
 
+    <script>
+      function createPDF() {
+          var sTable = document.getElementById('data-table').innerHTML;
+
+
+      }
+    </script>
 </html>
