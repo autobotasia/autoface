@@ -29,11 +29,14 @@ class Model():
         
         logits = self.build_model(features)
         predicted_logit = tf.argmax(input=logits, axis=1)
+        predicted_logit_top3 = tf.math.top_k(logits, 3).indices        
         probabilities = tf.nn.softmax(logits)
+        #beamtop3 = self.beam_search_decoder(logits, 3)
         
         #PREDICT
         predictions = {
             "predicted_logit": predicted_logit,
+            "predicted_logit_top3": predicted_logit_top3,
             "probabilities": probabilities
         }
         if mode == tf.estimator.ModeKeys.PREDICT:
@@ -77,3 +80,21 @@ class Model():
                 train_op=train_op,
                 scaffold=None,
                 training_hooks=train_hook_list)
+
+    # beam search
+    def beam_search_decoder(self, data, k):
+        sequences = [[list(), 1.0]]
+        # walk over each step in sequence
+        for row in data:
+            all_candidates = list()
+            # expand each current candidate
+            for i in range(len(sequences)):
+                seq, score = sequences[i]
+                for j in range(len(row)):
+                    candidate = [seq + [j], score * -tf.math.log(row[j])]
+                    all_candidates.append(candidate)
+            # order all candidates by score
+            ordered = sorted(all_candidates, key=lambda tup:tup[1])
+            # select k best
+            sequences = ordered[:k]
+        return sequences          

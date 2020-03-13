@@ -7,6 +7,8 @@ import argparse
 import os
 import time
 
+os.environ["CUDA_VISIBLE_DEVICES"]="1" 
+
 parser = argparse.ArgumentParser()
 #parser.add_argument("--imgpath", type = str, required=True)
 args = parser.parse_args()

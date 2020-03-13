@@ -12,7 +12,7 @@ from sklearn.metrics import confusion_matrix
 
 
 classname = []
-for _, clsdirs, _ in os.walk('./datasets/nccfaces/train/'):
+for _, clsdirs, _ in os.walk('./datasets/nccfaces/saved/'):
     for index, clsdir in enumerate(clsdirs):
         classname.append(clsdir)
 
@@ -79,7 +79,7 @@ class Trainer():
     def do_predict(self):
         y_pred = []
         y_true = np.argmax(self.data.ytest, 1)
-        for best_idx, _, _ in self.predict(self.data.xtest, self.config.batch_size):
+        for best_idx, _, _, _ in self.predict(self.data.xtest, self.config.batch_size):
             y_pred.append(best_idx)
 
         assert(len(y_pred) == len(y_true), "diff range error")
@@ -101,13 +101,15 @@ class Trainer():
             shuffle=False)
         predictions = self.classifier.predict(input_fn=predict_input_fn) #, checkpoint_path=os.path.join(self.config.checkpoint_dir, 'model.ckpt-1932'))
 
+        result_top3 = []
         for p in predictions:
             best_idx = p['predicted_logit']
             clsname = classname[best_idx]
             prob = p['probabilities'][best_idx]
-
-            yield best_idx, clsname, prob                
-
-
+            best_idx_top3 = p['predicted_logit_top3']
+            for best_idx in best_idx_top3:
+                ret = [classname[best_idx], p['probabilities'][best_idx]]  
+                result_top3.append(ret)
+            yield best_idx, clsname, prob, result_top3
 
         

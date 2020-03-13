@@ -1,5 +1,4 @@
 import os
-from tqdm import *
 from skimage import io
 from shutil import copyfile
 import cv2
@@ -8,8 +7,9 @@ import imgaug as ia
 from imgaug import augmenters as iaa
 from skimage import transform as trans
 import face_alignment
+import imutils
 
-fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._2D, flip_input=False, device='cuda:0')
+fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._2D, flip_input=False, device='cuda:1')
 
 def alignment(cv_img, dst, dst_w, dst_h):
     if dst_w == 96 and dst_h == 112:
@@ -56,139 +56,105 @@ def alignment(cv_img, dst, dst_w, dst_h):
     return face_img
 
 if __name__ == "__main__":
-    for mset in ['train', 'test', 'testcam']:
+    for mset in ['train', 'test1', 'test2']:
         count = 0
         total = 0
 
-        if not os.path.exists('./datasets/aligned/%s/96x112'%mset):
-            os.makedirs('./datasets/aligned/%s/96x112'%mset)
         if not os.path.exists('./datasets/aligned/%s/112x112'%mset):
             os.makedirs('./datasets/aligned/%s/112x112'%mset)
-        if not os.path.exists('./datasets/aligned/%s/150x150'%mset):
-            os.makedirs('./datasets/aligned/%s/150x150'%mset)
-        if not os.path.exists('./datasets/aligned/%s/160x160'%mset):
-            os.makedirs('./datasets/aligned/%s/160x160'%mset)
-        if not os.path.exists('./datasets/aligned/%s/224x224'%mset):
-            os.makedirs('./datasets/aligned/%s/224x224'%mset)
 
         if not os.path.exists('./datasets/unknown/%s'%mset):
             os.makedirs('./datasets/unknown/%s'%mset)
 
         unknown_file = open('./datasets/unknown/%s.txt'%mset,'w')
 
-        for rdir, _, files in os.walk('./datasets/nccfaces/%s'%mset):
-            for file in tqdm(files):
+        for dirname in os.listdir('./datasets/%s'%mset):
+            for file in os.listdir('./datasets/%s/%s'%(mset,dirname)):
                 if file == '.' or file == '..':
                     continue
 
+                img_path = os.path.join('./datasets/%s/%s'%(mset,dirname), file)
                 try:
-                    img_path = os.path.join(rdir, file)
                     image = io.imread(img_path)
+                   
+                    if image.shape[0] > 1000 and image.shape[1] > 1000:    
+                        image = imutils.resize(image, width=256) 
+
                     landmarks = fa.get_landmarks(image)
-                    check = False
-                    if landmarks is None:
-                        print('Step1: unknown ' + img_path)
-                        for sigma in np.linspace(0.0, 3.0, num=11).tolist():
-                            seq = iaa.GaussianBlur(sigma)
-                            image_aug = seq.augment_image(image)
-                            landmarks = fa.get_landmarks(image_aug)
-                            if landmarks is not None:
-                                print('sigma:',sigma)
-                                points = landmarks[0]
-                                p1 = np.mean(points[36:42,:], axis=0)
-                                p2 = np.mean(points[42:48,:], axis=0)
-                                p3 = points[33,:]
-                                p4 = points[48,:]
-                                p5 = points[54,:]
+                except:
+                    print(img_path)
+                    continue 
+                check = False
+                if landmarks is None:
+                    print('Step1: unknown ' + img_path)
+                    for sigma in np.linspace(0.0, 3.0, num=11).tolist():
+                        seq = iaa.GaussianBlur(sigma)
+                        image_aug = seq.augment_image(image)
+                        landmarks = fa.get_landmarks(image_aug)
+                        if landmarks is not None:
+                            print('sigma:',sigma)
+                            points = landmarks[0]
+                            p1 = np.mean(points[36:42,:], axis=0)
+                            p2 = np.mean(points[42:48,:], axis=0)
+                            p3 = points[33,:]
+                            p4 = points[48,:]
+                            p5 = points[54,:]
 
-                                if np.mean([p1[1],p2[1]]) < p3[1] \
-                                    and p3[1] < np.mean([p4[1],p5[1]]) \
-                                    and np.min([p4[1], p5[1]]) > np.max([p1[1], p2[1]]) \
-                                    and np.min([p1[1], p2[1]]) < p3[1] \
-                                    and p3[1] < np.max([p4[1], p5[1]]):
+                            if np.mean([p1[1],p2[1]]) < p3[1] \
+                                and p3[1] < np.mean([p4[1],p5[1]]) \
+                                and np.min([p4[1], p5[1]]) > np.max([p1[1], p2[1]]) \
+                                and np.min([p1[1], p2[1]]) < p3[1] \
+                                and p3[1] < np.max([p4[1], p5[1]]):
 
-                                    dst = np.array([p1,p2,p3,p4,p5],dtype=np.float32)
-                                    cv_img = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+                                dst = np.array([p1,p2,p3,p4,p5],dtype=np.float32)
+                                cv_img = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+                                
+                                if not os.path.exists('./datasets/aligned/%s/112x112/%s'%(mset, dirname)):
+                                    os.makedirs('./datasets/aligned/%s/112x112/%s'%(mset, dirname))
 
-                                    face_96x112 = alignment(cv_img, dst, 96, 112)
-                                    cv2.imwrite('./datasets/aligned/%s/96x112/%s'%(mset,file), face_96x112)
+                                face_112x112 = alignment(cv_img, dst, 112, 112)
+                                cv2.imwrite('./datasets/aligned/%s/112x112/%s/%s'%(mset,dirname,file), face_112x112)                                    
 
-                                    face_112x112 = alignment(cv_img, dst, 112, 112)
-                                    cv2.imwrite('./datasets/aligned/%s/112x112/%s'%(mset,file), face_112x112)
+                                check = True
+                                break
 
-                                    face_150x150 = alignment(cv_img, dst, 150, 150)
-                                    cv2.imwrite('./datasets/aligned/%s/150x150/%s'%(mset,file), face_150x150)
+                else:
+                    points = landmarks[0]
+                    p1 = np.mean(points[36:42,:], axis=0)
+                    p2 = np.mean(points[42:48,:], axis=0)
+                    p3 = points[33,:]
+                    p4 = points[48,:]
+                    p5 = points[54,:]
 
-                                    face_160x160 = alignment(cv_img, dst, 160, 160)
-                                    cv2.imwrite('./datasets/aligned/%s/160x160/%s'%(mset,file), face_160x160)
+                    dst = np.array([p1,p2,p3,p4,p5],dtype=np.float32)
+                    cv_img = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
-                                    face_224x224 = alignment(cv_img, dst, 224, 224)
-                                    cv2.imwrite('./datasets/aligned/%s/224x224/%s'%(mset,file), face_224x224)
+                    if not os.path.exists('./datasets/aligned/%s/112x112/%s'%(mset, dirname)):
+                        os.makedirs('./datasets/aligned/%s/112x112/%s'%(mset, dirname))
 
-                                    check = True
-                                    break
+                    face_112x112 = alignment(cv_img, dst, 112, 112)
+                    cv2.imwrite('./datasets/aligned/%s/112x112/%s/%s'%(mset,dirname,file), face_112x112)
 
-                    else:
-                        points = landmarks[0]
-                        p1 = np.mean(points[36:42,:], axis=0)
-                        p2 = np.mean(points[42:48,:], axis=0)
-                        p3 = points[33,:]
-                        p4 = points[48,:]
-                        p5 = points[54,:]
+                    check = True
 
-                        dst = np.array([p1,p2,p3,p4,p5],dtype=np.float32)
+                if check == False:
+                    count += 1
+                    print(img_path + '\t' + 'corrupted')
+                    unknown_file.write(file + '\n')
+
+                    if mset == 'test1' or mset == 'test2':
                         cv_img = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-
-                        face_96x112 = alignment(cv_img, dst, 96, 112)
-                        cv2.imwrite('./datasets/aligned/%s/96x112/%s'%(mset,file), face_96x112)
+                        
+                        if not os.path.exists('./datasets/aligned/%s/112x112/%s'%(mset, dirname)):
+                            os.makedirs('./datasets/aligned/%s/112x112/%s'%(mset, dirname))                            
 
                         face_112x112 = alignment(cv_img, dst, 112, 112)
-                        cv2.imwrite('./datasets/aligned/%s/112x112/%s'%(mset,file), face_112x112)
+                        cv2.imwrite('./datasets/aligned/%s/112x112/%s/%s'%(mset,dirname,file), face_112x112)
 
-                        face_150x150 = alignment(cv_img, dst, 150, 150)
-                        cv2.imwrite('./datasets/aligned/%s/150x150/%s'%(mset,file), face_150x150)
+                    copyfile(img_path, './datasets/unknown/%s/%s'%(mset,file))
 
-                        face_160x160 = alignment(cv_img, dst, 160, 160)
-                        cv2.imwrite('./datasets/aligned/%s/160x160/%s'%(mset,file), face_160x160)
-
-                        face_224x224 = alignment(cv_img, dst, 224, 224)
-                        cv2.imwrite('./datasets/aligned/%s/224x224/%s'%(mset,file), face_224x224)
-
-                        check = True
-
-                    if check == False:
-                        count += 1
-                        print(img_path + '\t' + 'corrupted')
-                        unknown_file.write(file + '\n')
-
-                        if mset == 'test':
-                            cv_img = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-
-                            face_96x112 = cv2.resize(cv_img, (96, 112), interpolation = cv2.INTER_CUBIC)
-                            cv2.imwrite('./datasets/aligned/%s/96x112/%s'%(mset,file), face_96x112)
-
-                            face_112x112 = cv2.resize(cv_img, (112, 112), interpolation = cv2.INTER_CUBIC)
-                            cv2.imwrite('./datasets/aligned/%s/112x112/%s'%(mset,file), face_112x112)
-
-                            face_150x150 = cv2.resize(cv_img, (150, 150), interpolation = cv2.INTER_CUBIC)
-                            cv2.imwrite('./datasets/aligned/%s/150x150/%s'%(mset,file), face_150x150)
-
-                            face_160x160 = cv2.resize(cv_img, (160, 160), interpolation = cv2.INTER_CUBIC)
-                            cv2.imwrite('./datasets/aligned/%s/160x160/%s'%(mset,file), face_160x160)
-
-                            face_224x224 = cv2.resize(cv_img, (224, 224), interpolation = cv2.INTER_CUBIC)
-                            cv2.imwrite('./datasets/aligned/%s/224x224/%s'%(mset,file), face_224x224)
-
-                        copyfile(img_path, './datasets/unknown/%s/%s'%(mset,file))
-
-                    total += 1
-                    print('check', check)
-                except (IOError, SyntaxError) as e:
-                    print('Bad file:', filename)
-                    continue
-                except:
-                    print('except')
-                    print(img_path)
-                    continue
+                total += 1
+                print('check', check)
+                
         unknown_file.close()
         print(mset, count, total)

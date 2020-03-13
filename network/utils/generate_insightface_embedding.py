@@ -31,38 +31,32 @@ seq = iaa.Sequential([
 	)
 ])
 
-for mset in ['train', 'test', 'testcam']:
+for mset in ['train', 'test1', 'test2']:
     output_dir = './data/embedding/%s/%s'%(args.model.split(',')[0].split('/')[-2],mset)
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    for rdir, sdir, files in os.walk('./datasets/aligned/%s/112x112/'%mset):
-        for file in tqdm(files):
+    for dirname in os.listdir('./datasets/aligned/%s/112x112'%mset):
+        for file in os.listdir('./datasets/aligned/%s/112x112/%s'%(mset,dirname)):
             if file == '.' or file == '..':
                 continue
             #fn, fe = os.path.splitext(file)
-            img_path = os.path.join(rdir, file)
+            img_path = os.path.join('./datasets/aligned/%s/112x112/%s'%(mset,dirname), file)
             img_org = cv2.imread(img_path)
             img_org = cv2.cvtColor(img_org, cv2.COLOR_BGR2RGB)
 
             img = np.transpose(img_org, (2,0,1))
             emb = model.get_feature(img)
-            np.save(output_dir + '/%s.npy'%(file), emb)
+            if not os.path.exists(output_dir + '/%s/'%(dirname)):
+                os.makedirs(output_dir + '/%s/'%(dirname))
+
+            np.save(output_dir + '/%s/%s.npy'%(dirname,file), emb)
 
             if mset == 'test':
                 flip_img = cv2.flip(img_org, 1)
                 flip_img = np.transpose(flip_img, (2,0,1))
                 emb = model.get_feature(flip_img)
-                np.save(output_dir + '/%s_flip.npy'%file, emb)
-
-            if 'model-y1-test2' == args.model.split(',')[0].split('/')[-2]:
-                augmentation_arr = np.array([],dtype=np.float32).reshape(0,128)
-                for i in range(100):
-                    img_aug = seq.augment_image(img_org)
-                    img_aug = np.transpose(img_aug, (2,0,1))
-                    emb = model.get_feature(img_aug)
-                    augmentation_arr = np.vstack((augmentation_arr, emb.reshape(1,128)))
-                np.save(output_dir + '/%s_augmentation.npy'%file, augmentation_arr)
+                np.save(output_dir + '%s/%s_flip.npy'%(dirname,file), emb)
             else:
                 augmentation_arr = np.array([],dtype=np.float32).reshape(0,512)
                 for i in range(100):
@@ -70,4 +64,4 @@ for mset in ['train', 'test', 'testcam']:
                     img_aug = np.transpose(img_aug, (2,0,1))
                     emb = model.get_feature(img_aug)
                     augmentation_arr = np.vstack((augmentation_arr, emb.reshape(1,512)))
-                np.save(output_dir + '/%s_augmentation.npy'%file, augmentation_arr)
+                np.save(output_dir + '/%s/%s_augmentation.npy'%(dirname,file), augmentation_arr)

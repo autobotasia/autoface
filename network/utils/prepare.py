@@ -5,42 +5,30 @@ from tqdm import *
 from multiprocessing import Pool, cpu_count
 
 def my_process1(file_name):
-    emb_path = './data/embedding/model-r100-ii/test/%s.npy'%file_name    
-    emb = np.load(emb_path).reshape(512)
-    return emb
+    if 'nonexistent flip' in file_name:
+        emb = np.load(file_name).reshape(512)
+        return emb
 
 def my_process2(file_name):
-    emb_path = './data/embedding/model-r100-ii/test/%s_flip.npy'%file_name    
-    emb = np.load(emb_path).reshape(512)
-    return emb
-
-def my_process3(file_name):
-    emb_path = './data/embedding/model-r100-ii/train/%s.npy'%file_name
-    emb = np.load(emb_path).reshape(512)
-    return emb
-
-def my_process4(file_name):
-    emb_path = './data/embedding/model-r100-ii/train/%s_augmentation.npy'%file_name
-    emb = np.load(emb_path).reshape(100,512)
-    return emb
-
+    emb = np.load(file_name)
+    if 'augmentation' in file_name:
+        emb = emb.reshape(100,512)
+        return emb
+    
 if __name__ == '__main__':
-    # load data here        
-    test_df = pd.read_csv('./datasets/test.csv')
-    train_df = pd.read_csv('./datasets/train.csv') 
+    fdict = {}
+    for mset in ['train', 'test1', 'test2']:
+        if "nonexistent %s"%mset in fdict.keys(): 
+            fdict[mset] = []
+        for dirname in os.listdir('./data/embedding/model-r100-ii/%s'%mset):
+            for file in os.listdir('./data/embedding/model-r100-ii/%s/%s'%(mset,dirname)):
+                if file == '.' or file == '..':
+                    continue
+                fdict[mset].append(os.path.join('./data/embedding/model-r100-ii/%s/%s'%(mset,dirname), file))
 
-    test = []
-    for i in test_df.image.values.tolist():
-        if os.path.exists('./datasets/aligned/test/112x112/%s'%i):
-            test.append(i)
-
-    train = []
-    for i in train_df.image.values.tolist():
-        if os.path.exists('./datasets/aligned/train/112x112/%s'%i):
-            train.append(i)
 
     p = Pool(16)
-    test_data = p.map(func=my_process1, iterable = test)
+    test_data = p.map(func=my_process1, iterable = fdict['test1'])
     p.close()
     test_data = np.array(test_data)
     print(test_data.shape)
@@ -48,41 +36,9 @@ if __name__ == '__main__':
     test_data = []
 
     p = Pool(16)
-    test_flip_data = p.map(func=my_process2, iterable = test)
-    p.close()
-    test_flip_data = np.array(test_flip_data)
-    print(test_flip_data.shape)
-    np.save('./data/test_flip_data.npy', test_flip_data)
-    test_flip_data = []
-
-    '''p = Pool(16)
-    testcam_data = p.map(func=my_process1, iterable = testcam_df)
-    p.close()
-    testcam_data = np.array(testcam_data)
-    print(testcam_data.shape)
-    np.save('./data/testcam_data.npy', testcam_data)
-    testcam_data = []
-
-    p = Pool(16)
-    testcam_flip_data = p.map(func=my_process1, iterable = testcam_flip_df)
-    p.close()
-    testcam_flip_data = np.array(testcam_flip_data)
-    print(testcam_flip_data.shape)
-    np.save('./data/testcam_flip_data.npy', testcam_flip_data)
-    testcam_flip_data = []'''
-
-    p = Pool(16)
-    train_data = p.map(func=my_process3, iterable = train)
-    p.close()
-    train_data = np.array(train_data)
-    print(train_data.shape)
-    np.save('./data/train_data.npy', train_data)
-    train_data = []
-
-    p = Pool(16)
-    train_aug_data = p.map(func=my_process4, iterable = train)
+    train_aug_data = p.map(func=my_process2, iterable = fdict['train'])
     p.close()
     train_aug_data = np.array(train_aug_data)
     print(train_aug_data.shape)
-    np.save('./data/train_aug_data.npy', train_aug_data)
+    np.save('./data/saved_aug_data.npy', train_aug_data)
     train_aug_data = []
