@@ -28,10 +28,14 @@ html, body {height: 100%; font-family: 'Roboto', sans-serif;font-weight:400;back
 a:focus {outline:0px solid}
 img {max-width:100%;height:auto}
 .fix {overflow:hidden}
-p {margin:0 0 15px;}
+p {
+    margin:0 0 15px;
+    color: #ddd;
+}
 h1, h2, h3, h4, h5, h6 {
   margin: 0 0 10px;
   font-weight:700;
+  color: #ddd;
 }
 a {transition: all 0.3s ease 0s;text-decoration:none;}
 a:hover{
@@ -3214,8 +3218,9 @@ ul.mailbox-list li:hover a, ul.h-list li:hover a {
 }
 .content-error h1 {
     font-size: 40px;
-    color: #444;
+    color: #ddd;
 }
+
 .content-error .counter {
     color: #e12503;
 }
@@ -3225,7 +3230,7 @@ ul.mailbox-list li:hover a, ul.h-list li:hover a {
 }
 .content-error p {
     font-size: 14px;
-    color: #444;
+    color: #ddd;
     line-height: 24px;
 }
 .content-error a {
@@ -3666,4 +3671,8 @@ th.fc-day-header.fc-widget-header {
 	background:#152036;
 	border-color: #152036;
 	color:#fff;
+}
+
+.tinymce-area {
+    color:#fff;
 }
