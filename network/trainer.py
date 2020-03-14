@@ -1,6 +1,7 @@
 import os
 import tensorflow as tf
 import numpy as np
+import pandas as pd
 from data_generator import DataGenerator
 from model import Model
 from random import randint
@@ -11,10 +12,8 @@ from sklearn.metrics import f1_score
 from sklearn.metrics import confusion_matrix
 
 
-classname = []
-for _, clsdirs, _ in os.walk('./datasets/nccfaces/saved/'):
-    for index, clsdir in enumerate(clsdirs):
-        classname.append(clsdir)
+traindf = pd.read_csv("./data/train.csv")
+classname = traindf['clsname'].tolist()
 
 class Trainer():
     def __init__(self, config):
@@ -30,12 +29,13 @@ class Trainer():
         # Load training and eval data 
         #eval_data, eval_labels = next(self.data.next_batch(self.config.batch_size))        
  
-        n_split=3
-        train_data = self.data.xtrain_aug[:,randint(0, 99),:]
-        train_labels = self.data.ytrain
+        n_split=3        
+        train_data = self.data.xtrain_aug#[:,randint(0, 99),:]
+        train_label = self.data.ytrain
+
         for train_index,test_index in KFold(n_split).split(train_data):            
             x_train,x_test=train_data[train_index],train_data[test_index]
-            y_train,y_test=train_labels[train_index],train_labels[test_index]            
+            y_train,y_test=train_label[train_index],train_label[test_index]            
 
             # Create a input function to train
             train_input_fn = tf.estimator.inputs.numpy_input_fn(
@@ -79,7 +79,7 @@ class Trainer():
     def do_predict(self):
         y_pred = []
         y_true = np.argmax(self.data.ytest, 1)
-        for best_idx, _, _, _ in self.predict(self.data.xtest, self.config.batch_size):
+        for best_idx, _, _ in self.predict(self.data.xtest, self.config.batch_size):
             y_pred.append(best_idx)
 
         assert(len(y_pred) == len(y_true), "diff range error")
@@ -110,6 +110,6 @@ class Trainer():
             for best_idx in best_idx_top3:
                 ret = [classname[best_idx], p['probabilities'][best_idx]]  
                 result_top3.append(ret)
-            yield best_idx, clsname, prob, result_top3
+            yield best_idx, clsname, prob#, result_top3
 
         

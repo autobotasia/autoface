@@ -65,11 +65,11 @@ if __name__ == '__main__':
                 try:
                     predictimg, points = util.get_embedding(frame)
                     predictimg = predictimg.reshape(1, 512)
-                    for best_idx, clsname, prob, result_top3 in trainer.predict(predictimg, batch_size=1):
+                    for best_idx, clsname, prob in trainer.predict(predictimg, batch_size=1):
                         face = {'point': points[0], 'name': clsname}
                         print("=====%s: %f=====" % (clsname, prob))
-                        for index, val in enumerate(result_top3):
-                            print("%d: =====%s: %f=====" % (index + 1, val[0], val[1]))
+                        #for index, val in enumerate(result_top3):
+                        #    print("%d: =====%s: %f=====" % (index + 1, val[0], val[1]))
                                        
                     if prob >= 0.70:
                         if os.path.exists('./data/cls/%s'%clsname) == False:

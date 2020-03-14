@@ -9,7 +9,7 @@
   "max_to_keep":5,
   "checkpoint_dir":"experiments/checkpoints/",
   "summary_dir": "experiments/summary/",
-  "do_train":0,
+  "do_train":1,
   "do_predict":1,
   "do_demo": 0,
   "pretrained_model": {
