@@ -15,6 +15,13 @@ config = process_config("./config.json")
 args = Bunch(config.pretrained_model)
 model = face_model.FaceModel(args)
 
+'''
+img_org = cv2.imread('./datasets/aligned/train/112x112/Tran_Le_Anh/3_IMG_4986.png')
+img_org = cv2.cvtColor(img_org, cv2.COLOR_BGR2RGB)
+img = np.transpose(img_org, (2,0,1))
+imgemb = model.get_feature(img)
+print(imgemb)
+'''
 
 for mset in ['train', 'test1', 'test2']:
     datalist = []
@@ -36,9 +43,10 @@ for mset in ['train', 'test1', 'test2']:
     for file in tqdm(pathlist):
         img_org = cv2.imread(file)
         img_org = cv2.cvtColor(img_org, cv2.COLOR_BGR2RGB)
-
         img = np.transpose(img_org, (2,0,1))
-        emb = np.vstack((emb, model.get_feature(img).reshape(1,512)))    
+        imgemb = model.get_feature(img_org).reshape(1,512)
+        emb = np.vstack((emb, imgemb))
+        #print(imgemb[0][124])   
 
     np.save('./data/%s_data.npy'%mset, emb)
     print(emb.shape)

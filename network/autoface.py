@@ -33,10 +33,10 @@ if __name__ == '__main__':
         raise Exception('model path is required')
 
     # connect MongoDB database
-    db = AutofacesMongoDB(config)
+    #db = AutofacesMongoDB(config)
     util = InsightfaceUtils(Bunch(config.pretrained_model))
     trainer = Trainer(config)
-    notifier = Notification(Bunch(config.notification))
+    #notifier = Notification(Bunch(config.notification))
     
     saved_day = date.today()
 
@@ -56,7 +56,6 @@ if __name__ == '__main__':
         while True:
             for f in os.listdir('./data/capture/'):
                 file_name, file_ext = os.path.splitext(f)
-                
                 if file_ext != '.png' or file_name[:3] == 'tmp':
                     print(file_name)
                     continue

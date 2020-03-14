@@ -17,7 +17,7 @@ class Model():
         logits1 = tf.matmul(inputs, weight1, transpose_b=True)            
         logits1 = tf.nn.bias_add(logits1, bias1)
         prob_logits1 = tf.nn.relu(logits1)
-        prob_logits1 = tf.nn.dropout(prob_logits1, rate=0.10)
+        prob_logits1 = tf.nn.dropout(prob_logits1, rate=0.30)
         logits = tf.matmul(prob_logits1, weight2, transpose_b=True)
         logits = tf.nn.bias_add(logits, bias2)
         return logits                                                   
@@ -36,7 +36,7 @@ class Model():
         #PREDICT
         predictions = {
             "predicted_logit": predicted_logit,
-            "predicted_logit_top3": predicted_logit_top3,
+            #"predicted_logit_top3": predicted_logit_top3,
             "probabilities": probabilities
         }
         if mode == tf.estimator.ModeKeys.PREDICT:
