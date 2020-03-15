@@ -23,6 +23,10 @@ imgemb = model.get_feature(img)
 print(imgemb)
 '''
 
+classname = []
+for index, dirname in enumerate(sorted(os.listdir('./datasets/aligned/train/112x112/'))):
+    classname.append(dirname)
+
 for mset in ['train', 'test1', 'test2']:
     datalist = []
     for index, dirname in enumerate(sorted(os.listdir('./datasets/aligned/%s/112x112/'%mset))):
@@ -31,8 +35,8 @@ for mset in ['train', 'test1', 'test2']:
                 continue
 
             datalist.append({
-                'clsname': dirname, 
-                'clsidx': index,
+                'clsname':dirname, 
+                'clsidx':classname.index(dirname),
                 'path':os.path.join('./datasets/aligned/%s/112x112/%s/'%(mset,dirname), file)
             })
 
