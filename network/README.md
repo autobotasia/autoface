@@ -53,13 +53,12 @@ save receiver email list in receiver-email file
 }
 ```
 
-# Run convert, align
-python3 utils/convert_dataset.py
+# Run align
 python3 utils/align_face.py
 
-# Run prepare
+# Run generate embedding
 python3 utils/generate_insightface_embedding.py
-python3 utils/prepare.py
+
 
 # Run train/eval/predict
 python3 autoface.py

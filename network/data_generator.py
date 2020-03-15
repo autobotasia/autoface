@@ -17,8 +17,7 @@ class DataGenerator:
         #xtrain = np.load('train_data.npy')
         self.xtrain = np.load('./data/train_data.npy')
         self.ytrain = self.get_y_true(self.traindf)
-        self.train_size = len(self.xtrain)
-        
+        #self.train_size = len(self.xtrain)
         self.xtest = np.load('./data/test2_data.npy')
         
         #print("="*20, self.traindf[2000])

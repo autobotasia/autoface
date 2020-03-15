@@ -16,7 +16,7 @@ args = Bunch(config.pretrained_model)
 model = face_model.FaceModel(args)
 
 '''
-img_org = cv2.imread('./datasets/aligned/train/112x112/Tran_Le_Anh/3_IMG_4986.png')
+img_org = cv2.imread('./datasets/aligned/train/112x112/Mai_The_Hung/0_2015-09-13 20-21-21_2642.png')
 img_org = cv2.cvtColor(img_org, cv2.COLOR_BGR2RGB)
 img = np.transpose(img_org, (2,0,1))
 imgemb = model.get_feature(img)
@@ -25,8 +25,8 @@ print(imgemb)
 
 for mset in ['train', 'test1', 'test2']:
     datalist = []
-    for index, dirname in enumerate(os.listdir('./datasets/aligned/%s/112x112/'%mset)):
-        for file in os.listdir('./datasets/aligned/%s/112x112/%s/'%(mset,dirname)):
+    for index, dirname in enumerate(sorted(os.listdir('./datasets/aligned/%s/112x112/'%mset))):
+        for file in sorted(os.listdir('./datasets/aligned/%s/112x112/%s/'%(mset,dirname))):
             if file == '.' or file == '..':
                 continue
 
@@ -44,7 +44,7 @@ for mset in ['train', 'test1', 'test2']:
         img_org = cv2.imread(file)
         img_org = cv2.cvtColor(img_org, cv2.COLOR_BGR2RGB)
         img = np.transpose(img_org, (2,0,1))
-        imgemb = model.get_feature(img_org).reshape(1,512)
+        imgemb = model.get_feature(img).reshape(1,512)
         emb = np.vstack((emb, imgemb))
         #print(imgemb[0][124])   
 

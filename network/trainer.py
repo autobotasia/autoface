@@ -10,6 +10,7 @@ from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import f1_score
 from sklearn.metrics import confusion_matrix
+from sklearn.utils import shuffle
 
 
 traindf = pd.read_csv("./data/train.csv")
@@ -29,13 +30,12 @@ class Trainer():
         # Load training and eval data 
         #eval_data, eval_labels = next(self.data.next_batch(self.config.batch_size))        
  
-        n_split=3       
-        train_data = self.data.xtrain
-        train_label = self.data.ytrain
+        n_split=3    
+        train_data, train_label = shuffle(self.data.xtrain, self.data.ytrain)
 
         for train_index,test_index in KFold(n_split).split(train_data):            
             x_train,x_test=train_data[train_index],train_data[test_index]
-            y_train,y_test=train_label[train_index],train_label[test_index]         
+            y_train,y_test=train_label[train_index],train_label[test_index]
 
             # Create a input function to train
             train_input_fn = tf.estimator.inputs.numpy_input_fn(

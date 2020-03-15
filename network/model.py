@@ -17,7 +17,7 @@ class Model():
         logits1 = tf.matmul(inputs, weight1, transpose_b=True)            
         logits1 = tf.nn.bias_add(logits1, bias1)
         prob_logits1 = tf.nn.relu(logits1)
-        prob_logits1 = tf.nn.dropout(prob_logits1, rate=0.30)
+        prob_logits1 = tf.nn.dropout(prob_logits1, rate=0.10)
         logits = tf.matmul(prob_logits1, weight2, transpose_b=True)
         logits = tf.nn.bias_add(logits, bias2)
         return logits                                                   
@@ -29,7 +29,7 @@ class Model():
         
         logits = self.build_model(features)
         predicted_logit = tf.argmax(input=logits, axis=1)
-        predicted_logit_top3 = tf.math.top_k(logits, 3).indices        
+        #predicted_logit_top3 = tf.math.top_k(logits, 3).indices        
         probabilities = tf.nn.softmax(logits)
         #beamtop3 = self.beam_search_decoder(logits, 3)
         

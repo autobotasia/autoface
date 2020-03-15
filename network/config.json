@@ -1,8 +1,8 @@
 {
   "exp_name": "autoface",
-  "num_epochs": 8,
+  "num_epochs": 5,
   "num_iter_per_epoch": 10,
-  "learning_rate": 0.001,
+  "learning_rate": 0.0001,
   "batch_size": 16,
   "number_of_class": 256,
   "input_dim": 512,
