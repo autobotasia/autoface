@@ -79,7 +79,7 @@ class Trainer():
     def do_predict(self):
         y_pred = []
         y_true = np.argmax(self.data.ytest, 1)
-        for best_idx, clsname, prob in self.predict(self.data.xtest, self.config.batch_size):
+        for best_idx, clsname, prob, _ in self.predict(self.data.xtest, self.config.batch_size):
             y_pred.append(best_idx)
             print("clsname %s ----- %f"%(clsname,prob))
 
@@ -100,13 +100,13 @@ class Trainer():
             shuffle=False)
         predictions = self.classifier.predict(input_fn=predict_input_fn) #, checkpoint_path=os.path.join(self.config.checkpoint_dir, 'model.ckpt-1932'))
 
-        #result_top3 = []
+        result_top3 = []
         for p in predictions:
             best_idx = p['predicted_logit']
             clsname = classname[best_idx]
             prob = p['probabilities'][best_idx]
-            '''best_idx_top3 = p['predicted_logit_top3']
+            best_idx_top3 = p['predicted_logit_top3']
             for best_idx in best_idx_top3:
                 ret = [classname[best_idx], p['probabilities'][best_idx]]  
-                result_top3.append(ret)'''
-            yield best_idx, clsname, prob#, result_top3
+                result_top3.append(ret)
+            yield best_idx, clsname, prob, result_top3

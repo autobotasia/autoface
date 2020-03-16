@@ -29,14 +29,14 @@ class Model():
         
         logits = self.build_model(features)
         predicted_logit = tf.argmax(input=logits, axis=1)
-        #predicted_logit_top3 = tf.math.top_k(logits, 3).indices        
+        predicted_logit_top3 = tf.math.top_k(logits, 3).indices        
         probabilities = tf.nn.softmax(logits)
         #beamtop3 = self.beam_search_decoder(logits, 3)
         
         #PREDICT
         predictions = {
             "predicted_logit": predicted_logit,
-            #"predicted_logit_top3": predicted_logit_top3,
+            "predicted_logit_top3": predicted_logit_top3,
             "probabilities": probabilities
         }
         if mode == tf.estimator.ModeKeys.PREDICT:
