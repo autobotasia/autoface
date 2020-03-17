@@ -35,7 +35,7 @@ if __name__ == '__main__':
     util = InsightfaceUtils(Bunch(config.pretrained_model))
     trainer = Trainer(config)
     #notifier = Notification(Bunch(config.notification))
-    top3 = db.Top3Helper("../web/db.sqlite3")
+    top3 = db.Top3Helper("../web/sqlite3.db")
     
     saved_day = date.today()
 
@@ -68,8 +68,8 @@ if __name__ == '__main__':
                         #if os.path.exists('./data/cls/%s'%clsname) == False:
                         #    os.makedirs('./data/cls/%s'%clsname)
                         cv2.imwrite('./data/top3/%s'%(f), frame)
-                        for index, val in enumerate(result_top3):
-                            top3.add_predict(f, result_top3)
+                        #for index, val in enumerate(result_top3):
+                        top3.add_predict(f, result_top3)
 
                     # save prediction to database
                     #if max_prob > 0.7 and datetime.now() > next_time_can_save_img:

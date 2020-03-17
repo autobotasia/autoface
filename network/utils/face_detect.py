@@ -1,46 +1,54 @@
 import tensorflow as tf
-from align import detect_face
+import face_model
+import face_alignment
 import cv2
 import imutils
 import numpy as np
 import argparse
 import os
 import time
+from skimage import transform as trans
 
 os.environ["CUDA_VISIBLE_DEVICES"]="1" 
 
 parser = argparse.ArgumentParser()
 #parser.add_argument("--imgpath", type = str, required=True)
 args = parser.parse_args()
-
-# some constants kept as default from facenet
-minsize = 20
-threshold = [0.6, 0.7, 0.7]
-factor = 0.709
-margin = 44
-input_image_size = 128
-
 sess = tf.Session()
-# read pnet, rnet, onet models from align directory and files are det1.npy, det2.npy, det3.npy
-pnet, rnet, onet = detect_face.create_mtcnn(sess, None)
+
+fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._2D, flip_input=False, device='cuda:0')
+
+def alignment(cv_img, dst, dst_w, dst_h):
+        if dst_w == 112 and dst_h == 112:
+            src = np.array([
+                [38.2946, 51.6963],
+                [73.5318, 51.5014],
+                [56.0252, 71.7366],
+                [41.5493, 92.3655],
+                [70.7299, 92.2041] ], dtype=np.float32)        
+        else:
+            return None
+        tform = trans.SimilarityTransform()
+        tform.estimate(dst, src)
+        M = tform.params[0:2,:]
+        face_img = cv2.warpAffine(cv_img,M,(dst_w,dst_h), borderValue = 0.0)
+        return face_img
 
 def getFace(img):
-    faces = []
-    img_size = np.asarray(img.shape)[0:2]
-    bounding_boxes, _ = detect_face.detect_face(img, minsize, pnet, rnet, onet, threshold, factor)
-    if not len(bounding_boxes) == 0:
-        for face in bounding_boxes:
-            if face[4] > 0.70:
-                det = np.squeeze(face[0:4])
-                bb = np.zeros(4, dtype=np.int32)
-                bb[0] = np.maximum(det[0] - margin / 2, 0)
-                bb[1] = np.maximum(det[1] - margin / 2, 0)
-                bb[2] = np.minimum(det[2] + margin / 2, img_size[1])
-                bb[3] = np.minimum(det[3] + margin / 2, img_size[0])
-                cropped = img[bb[1]:bb[3], bb[0]:bb[2], :]
-                resized = cv2.resize(cropped, (input_image_size,input_image_size),interpolation=cv2.INTER_AREA)
-                faces.append({'face':resized,'rect':[bb[0],bb[1],bb[2],bb[3]]})
-    return faces
+    landmarks = fa.get_landmarks(img)
+    if landmarks is not None:
+        points = landmarks[0]
+        p1 = np.mean(points[36:42,:], axis=0)
+        p2 = np.mean(points[42:48,:], axis=0)
+        p3 = points[33,:]
+        p4 = points[48,:]
+        p5 = points[54,:]
+
+        dst = np.array([p1,p2,p3,p4,p5],dtype=np.float32)
+        cv_img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+        face_112x112 = alignment(cv_img, dst, 112, 112)
+    
+    return face_112x112
     
 while True:
     for f in os.listdir('./data/images/'):
@@ -55,17 +63,10 @@ while True:
         os.remove('./data/images/%s'%f)
 
         try:
-            faces = getFace(img)
-            for face in faces:
-                x1 = face['rect'][0]
-                y1 = face['rect'][1]
-                x2 = face['rect'][2]
-                y2 = face['rect'][3]  
-                cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                strtime = round(time.time())
-                cv2.imwrite('./data/capture/tmp-%d.png'%strtime, face['face'])
-                os.rename('./data/capture/tmp-%d.png'%strtime, './data/capture/%d.png'%strtime)
-                cv2.waitKey(1)
-        except:
-            pass        
-    cv2.destroyAllWindows()
+            face = getFace(img)            
+            strtime = round(time.time())
+            cv2.imwrite('./data/capture/tmp-%d.png'%strtime, face)
+            os.rename('./data/capture/tmp-%d.png'%strtime, './data/capture/%d.png'%strtime)
+        except Exception as e:
+            print(e)
+            pass

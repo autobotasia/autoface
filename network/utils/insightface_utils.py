@@ -16,7 +16,7 @@ import sys
 
 class InsightfaceUtils():
     def __init__(self, args): 
-        self.fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._2D, flip_input=False, device='cuda:0')  
+        self.fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._2D, flip_input=False, device='cuda:0')
         self.model = face_model.FaceModel(args)
 
     def alignment(self, cv_img, dst, dst_w, dst_h):
