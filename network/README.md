@@ -43,9 +43,6 @@ python3 utils/generate_insightface_embedding.py
 python3 autoface.py
 
 # Live
-python3 utils/capture-video.py
-
-export CUDA_VISIBLE_DEVICES="1"
 python3 utils/face_detect.py
 
 export CUDA_VISIBLE_DEVICES="0"
