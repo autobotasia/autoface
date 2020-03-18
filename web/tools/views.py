@@ -102,3 +102,36 @@ def crud(request, arg, img_pk=0):
         return HttpResponse("Saved all image data object to database.")
 
     return HttpResponse("Argument is not valid.")
+
+
+@login_required
+def report(request):
+    try:
+        data_file = open("mock-data")
+        data_list = []
+        id = 1
+        for line in data_file:
+            line_data = line.split(',')
+            data = {
+                "id": id,
+                "img_link": line_data[0].strip(),
+                "name": line_data[1].strip(),
+                "age": line_data[2].strip(),
+                "emo": line_data[3].strip(),
+                "checkin": line_data[4].strip(),
+                "checkout": line_data[5].strip(),
+                "prob": line_data[6].strip(),
+            }
+            data_list.append(data)
+            id += 1
+
+        for data in data_list:
+            print(data)
+        return render(request, 'report.html', {
+            "data_list": data_list,
+        })
+    except IOError:
+        print("cannot open mock-data file.")
+    finally:
+        data_file.close()
+s

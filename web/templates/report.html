@@ -2,9 +2,12 @@
 <html class="no-js" lang="en">
 
 <head>
+    {% load staticfiles %}
+
+
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Timekeeping Report | NCC Autofaces</title>
+    <title>Report | NCC Autofaces</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- favicon
@@ -15,53 +18,84 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
     <!-- Bootstrap CSS
 		============================================ -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href={% static "css/bootstrap.min.css" %}>
     <!-- Bootstrap CSS
 		============================================ -->
-    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href={% static "css/font-awesome.min.css" %}>
 	<!-- NCC Icon CSS
 		============================================ -->
-    <link rel="stylesheet" href="css/nalika-icon.css">
+    <!-- <link rel="stylesheet" href="css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href={% static "css/font-awesome.min.css" %}>
     <!-- owl.carousel CSS
 		============================================ -->
-    <link rel="stylesheet" href="css/owl.carousel.css">
+    <!-- <link rel="stylesheet" href="css/owl.carousel.css">
     <link rel="stylesheet" href="css/owl.theme.css">
-    <link rel="stylesheet" href="css/owl.transitions.css">
+    <link rel="stylesheet" href="css/owl.transitions.css"> -->
+
+    <link rel="stylesheet" href={% static "css/owl.carousel.css" %}>
+    <link rel="stylesheet" href={% static "css/owl.theme.css" %}>
+    <link rel="stylesheet" href={% static "css/owl.transitions.css" %}>
     <!-- animate CSS
 		============================================ -->
-    <link rel="stylesheet" href="css/animate.css">
+    <!-- <link rel="stylesheet" href="css/animate.css"> -->
+
+    <link rel="stylesheet" href={% static "css/animate.css" %}>
     <!-- normalize CSS
 		============================================ -->
-    <link rel="stylesheet" href="css/normalize.css">
+    <!-- <link rel="stylesheet" href="css/normalize.css"> -->
+
+    <link rel="stylesheet" href={% static "css/normalize.css" %}>
     <!-- meanmenu icon CSS
 		============================================ -->
-    <link rel="stylesheet" href="css/meanmenu.min.css">
+    <!-- <link rel="stylesheet" href="css/meanmenu.min.css"> -->
+
+    <link rel="stylesheet" href={% static "css/meanmenu.min.css" %}>
     <!-- main CSS
 		============================================ -->
-    <link rel="stylesheet" href="css/main.css">
+    <!-- <link rel="stylesheet" href="css/main.css"> -->
+
+    <link rel="stylesheet" href={% static "css/main.css" %}>
     <!-- morrisjs CSS
 		============================================ -->
-    <link rel="stylesheet" href="css/morrisjs/morris.css">
+    <!-- <link rel="stylesheet" href="css/morrisjs/morris.css"> -->
+
+    <link rel="stylesheet" href={% static "css/morrisjs/morris.css" %}>
     <!-- mCustomScrollbar CSS
 		============================================ -->
-    <link rel="stylesheet" href="css/scrollbar/jquery.mCustomScrollbar.min.css">
+    <!-- <link rel="stylesheet" href="css/scrollbar/jquery.mCustomScrollbar.min.css"> -->
+
+    <link rel="stylesheet" href={% static "css/scrollbar/jquery.mCustomScrollbar.min.css" %}>
     <!-- metisMenu CSS
 		============================================ -->
-    <link rel="stylesheet" href="css/metisMenu/metisMenu.min.css">
-    <link rel="stylesheet" href="css/metisMenu/metisMenu-vertical.css">
+    <!-- <link rel="stylesheet" href="css/metisMenu/metisMenu.min.css"> -->
+    <!-- <link rel="stylesheet" href="css/metisMenu/metisMenu-vertical.css"> -->
+
+    <link rel="stylesheet" href={% static "css/metisMenu/metisMenu.min.css" %}>
+    <link rel="stylesheet" href={% static "css/metisMenu/metisMenu-vertical.css" %}>
     <!-- calendar CSS
 		============================================ -->
-    <link rel="stylesheet" href="css/calendar/fullcalendar.min.css">
-    <link rel="stylesheet" href="css/calendar/fullcalendar.print.min.css">
+    <!-- <link rel="stylesheet" href="css/calendar/fullcalendar.min.css"> -->
+    <!-- <link rel="stylesheet" href="css/calendar/fullcalendar.print.min.css"> -->
+
+    <link rel="stylesheet" href={% static "css/calendar/fullcalendar.min.css" %}>
+    <link rel="stylesheet" href={% static "css/calendar/fullcalendar.print.min.css" %}>
     <!-- style CSS
 		============================================ -->
-    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+
+    <link rel="stylesheet" href={% static "style.css" %}>
     <!-- responsive CSS
 		============================================ -->
-    <link rel="stylesheet" href="css/responsive.css">
+    <!-- <link rel="stylesheet" href="css/responsive.css"> -->
+
+    <link rel="stylesheet" href={% static "css/responsive.css" %}>
     <!-- modernizr JS
 		============================================ -->
-    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <!-- <script src="js/vendor/modernizr-2.8.3.min.js"></script> -->
+
+    <link rel="stylesheet" href={% static "js/vendor/modernizr-2.8.3.min.js" %}>
 </head>
 
 <body>
@@ -72,12 +106,12 @@
     <div class="left-sidebar-pro">
         <nav id="sidebar" class="">
             <div class="sidebar-header">
-                <a href="index.html"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
-                <strong><img src="img/logo/logosn.png" alt="" /></strong>
+                <a href="index.html"><img class="main-logo" src={% static "img/logo/logo.png" %} alt="" /></a>
+                <strong><img src={% static "img/logo/logosn.png" %} alt="" /></strong>
             </div>
 			<div class="nalika-profile">
 				<div class="profile-dtl">
-					<a href="#"><img src="img/notification/4.jpg" alt="" /></a>
+					<a href="#"><img src={% static "img/notification/4.jpg" %} alt="" /></a>
 					<h2>Lakian <span class="min-dtn">Das</span></h2>
 				</div>
 				<div class="profile-social-dtl">
@@ -94,63 +128,34 @@
                         <li class="active">
                             <a class="has-arrow" href="index.html">
 								   <i class="icon nalika-home icon-wrap"></i>
-								   <span class="mini-click-non">Ecommerce</span>
+								   <span class="mini-click-non">Users</span>
 								</a>
                             <ul class="submenu-angle" aria-expanded="true">
-                                <li><a title="Dashboard v.1" href="index.html"><span class="mini-sub-pro">Dashboard v.1</span></a></li>
-                                <li><a title="Dashboard v.2" href="index-1.html"><span class="mini-sub-pro">Dashboard v.2</span></a></li>
-                                <li><a title="Dashboard v.3" href="index-2.html"><span class="mini-sub-pro">Dashboard v.3</span></a></li>
-                                <li><a title="Timekeeping List" href="product-list.html"><span class="mini-sub-pro">Timekeeping List</span></a></li>
-                                <li><a title="Timekeeping Edit" href="product-edit.html"><span class="mini-sub-pro">Timekeeping Edit</span></a></li>
-                                <li><a title="Timekeeping Detail" href="product-detail.html"><span class="mini-sub-pro">Timekeeping Detail</span></a></li>
-                                <li><a title="Timekeeping Cart" href="product-cart.html"><span class="mini-sub-pro">Timekeeping Cart</span></a></li>
-                                <li><a title="Timekeeping Payment" href="product-payment.html"><span class="mini-sub-pro">Timekeeping Payment</span></a></li>
-                                <li><a title="Analytics" href="analytics.html"><span class="mini-sub-pro">Analytics</span></a></li>
-                                <li><a title="Widgets" href="widgets.html"><span class="mini-sub-pro">Widgets</span></a></li>
+                                <li><a title="Users List" href="login.html"><span class="mini-sub-pro">Users List</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-mail icon-wrap"></i> <span class="mini-click-non">Mailbox</span></a>
+                            <a class="has-arrow" href="" aria-expanded="false"><i class="icon nalika-pie-chart icon-wrap"></i><span class="mini-click-non">System</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="Inbox" href="mailbox.html"><span class="mini-sub-pro">Inbox</span></a></li>
-                                <li><a title="View Mail" href="mailbox-view.html"><span class="mini-sub-pro">View Mail</span></a></li>
-                                <li><a title="Compose Mail" href="mailbox-compose.html"><span class="mini-sub-pro">Compose Mail</span></a></li>
+                                <li><a title="Cameras" href="camera-list.html"><span class="mini-sub-pro">Cameras</span></a></li>
+                                <li><a title="Organization" href="organization-list.html"><span class="mini-sub-pro">Organization</span></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-diamond icon-wrap"></i> <span class="mini-click-non">Interface</span></a>
+                            <a class="has-arrow" href="#" aria-expanded="false"><i class="icon nalika-bar-chart icon-wrap"></i> <span class="mini-click-non">Report</span></a>
                             <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="Google Map" href="google-map.html"><span class="mini-sub-pro">Google Map</span></a></li>
-                                <li><a title="Data Maps" href="data-maps.html"><span class="mini-sub-pro">Data Maps</span></a></li>
-                                <li><a title="Pdf Viewer" href="pdf-viewer.html"><span class="mini-sub-pro">Pdf Viewer</span></a></li>
-                                <li><a title="X-Editable" href="x-editable.html"><span class="mini-sub-pro">X-Editable</span></a></li>
-                                <li><a title="Code Editor" href="code-editor.html"><span class="mini-sub-pro">Code Editor</span></a></li>
-                                <li><a title="Tree View" href="tree-view.html"><span class="mini-sub-pro">Tree View</span></a></li>
-                                <li><a title="Preloader" href="preloader.html"> <span class="mini-sub-pro">Preloader</span></a></li>
-                                <li><a title="Images Cropper" href="images-cropper.html"><span class="mini-sub-pro">Images Cropper</span></a></li>
+                                <li><a title="TimeKeeping" href="time-keeping.html"><span class="mini-sub-pro">TimeKeeping</span></a></li>
+                                <li><a title="Emotional Detection" href="404.html"><span class="mini-sub-pro">Emotional Detection</span></a></li>
+                                <li><a title="Group of Title" href="group-of-title.html"><span class="mini-sub-pro">Group of Title</span></a></li>
                             </ul>
                         </li>
-                        <li>
-                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-pie-chart icon-wrap"></i> <span class="mini-click-non">Miscellaneous</span></a>
-                            <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="File Manager" href="file-manager.html"><span class="mini-sub-pro">File Manager</span></a></li>
-                                <li><a title="Blog" href="blog.html"><span class="mini-sub-pro">Blog</span></a></li>
-                                <li><a title="Blog Details" href="blog-details.html"><span class="mini-sub-pro">Blog Details</span></a></li>
-                                <li><a title="404 Page" href="404.html"><span class="mini-sub-pro">404 Page</span></a></li>
-                                <li><a title="500 Page" href="500.html"><span class="mini-sub-pro">500 Page</span></a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-bar-chart icon-wrap"></i> <span class="mini-click-non">Charts</span></a>
-                            <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="Bar Charts" href="bar-charts.html"><span class="mini-sub-pro">Bar Charts</span></a></li>
-                                <li><a title="Line Charts" href="line-charts.html"><span class="mini-sub-pro">Line Charts</span></a></li>
-                                <li><a title="Area Charts" href="area-charts.html"><span class="mini-sub-pro">Area Charts</span></a></li>
-                                <li><a title="Rounded Charts" href="rounded-chart.html"><span class="mini-sub-pro">Rounded Charts</span></a></li>
-                                <li><a title="C3 Charts" href="c3.html"><span class="mini-sub-pro">C3 Charts</span></a></li>
-                                <li><a title="Sparkline Charts" href="sparkline.html"><span class="mini-sub-pro">Sparkline Charts</span></a></li>
-                                <li><a title="Peity Charts" href="peity.html"><span class="mini-sub-pro">Peity Charts</span></a></li>
-                            </ul>
+                        <!-- <li>
+                          <a class="has-arrow" href="#" aria-expanded="false"><i class="icon nalika-mail icon-wrap"></i> <span class="mini-click-non">Mailbox</span></a>
+                          <ul class="submenu-angle" aria-expanded="false">
+                            <li><a title="Inbox" href="#"><span class="mini-sub-pro">Inbox</span></a></li>
+                            <li><a title="View Mail" href="#"><span class="mini-sub-pro">View Mail</span></a></li>
+                            <li><a title="Compose Mail" href="#"><span class="mini-sub-pro">Compose Mail</span></a></li>
+                          </ul>
                         </li>
                         <li>
                             <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-table icon-wrap"></i> <span class="mini-click-non">Data Tables</span></a>
@@ -158,38 +163,7 @@
                                 <li><a title="Peity Charts" href="static-table.html"><span class="mini-sub-pro">Static Table</span></a></li>
                                 <li><a title="Data Table" href="data-table.html"><span class="mini-sub-pro">Data Table</span></a></li>
                             </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-forms icon-wrap"></i> <span class="mini-click-non">Forms Elements</span></a>
-                            <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="Basic Form Elements" href="basic-form-element.html"><span class="mini-sub-pro">Bc Form Elements</span></a></li>
-                                <li><a title="Advance Form Elements" href="advance-form-element.html"><span class="mini-sub-pro">Ad Form Elements</span></a></li>
-                                <li><a title="Password Meter" href="password-meter.html"><span class="mini-sub-pro">Password Meter</span></a></li>
-                                <li><a title="Multi Upload" href="multi-upload.html"><span class="mini-sub-pro">Multi Upload</span></a></li>
-                                <li><a title="Text Editor" href="tinymc.html"><span class="mini-sub-pro">Text Editor</span></a></li>
-                                <li><a title="Dual List Box" href="dual-list-box.html"><span class="mini-sub-pro">Dual List Box</span></a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="icon nalika-smartphone-call icon-wrap"></i> <span class="mini-click-non">App views</span></a>
-                            <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="Notifications" href="notifications.html"><span class="mini-sub-pro">Notifications</span></a></li>
-                                <li><a title="Alerts" href="alerts.html"><span class="mini-sub-pro">Alerts</span></a></li>
-                                <li><a title="Modals" href="modals.html"><span class="mini-sub-pro">Modals</span></a></li>
-                                <li><a title="Buttons" href="buttons.html"><span class="mini-sub-pro">Buttons</span></a></li>
-                                <li><a title="Tabs" href="tabs.html"><span class="mini-sub-pro">Tabs</span></a></li>
-                                <li><a title="Accordion" href="accordion.html"><span class="mini-sub-pro">Accordion</span></a></li>
-                            </ul>
-                        </li>
-                        <li id="removable">
-                            <a class="has-arrow" href="#" aria-expanded="false"><i class="icon nalika-new-file icon-wrap"></i> <span class="mini-click-non">Pages</span></a>
-                            <ul class="submenu-angle" aria-expanded="false">
-                                <li><a title="Login" href="login.html"><span class="mini-sub-pro">Login</span></a></li>
-                                <li><a title="Register" href="register.html"><span class="mini-sub-pro">Register</span></a></li>
-                                <li><a title="Lock" href="lock.html"><span class="mini-sub-pro">Lock</span></a></li>
-                                <li><a title="Password Recovery" href="password-recovery.html"><span class="mini-sub-pro">Password Recovery</span></a></li>
-                            </ul>
-                        </li>
+                        </li> -->
                     </ul>
                 </nav>
             </div>
@@ -201,7 +175,7 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="logo-pro">
-                        <a href="index.html"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
+                        <a href="index.html"><img class="main-logo" src={% static "img/logo/logo.png" %} alt="" /></a>
                     </div>
                 </div>
             </div>
@@ -243,7 +217,7 @@
                                                             <li>
                                                                 <a href="#">
                                                                     <div class="message-img">
-                                                                        <img src="img/contact/1.jpg" alt="">
+                                                                        <img src={% static "img/contact/1.jpg" %} alt="">
                                                                     </div>
                                                                     <div class="message-content">
                                                                         <span class="message-date">16 Sept</span>
@@ -255,7 +229,7 @@
                                                             <li>
                                                                 <a href="#">
                                                                     <div class="message-img">
-                                                                        <img src="img/contact/4.jpg" alt="">
+                                                                        <img src={% static "img/contact/4.jpg" %} alt="">
                                                                     </div>
                                                                     <div class="message-content">
                                                                         <span class="message-date">16 Sept</span>
@@ -267,7 +241,7 @@
                                                             <li>
                                                                 <a href="#">
                                                                     <div class="message-img">
-                                                                        <img src="img/contact/3.jpg" alt="">
+                                                                        <img src={% static "img/contact/3.jpg" %} alt="">
                                                                     </div>
                                                                     <div class="message-content">
                                                                         <span class="message-date">16 Sept</span>
@@ -279,7 +253,7 @@
                                                             <li>
                                                                 <a href="#">
                                                                     <div class="message-img">
-                                                                        <img src="img/contact/2.jpg" alt="">
+                                                                        <img src={% static "img/contact/2.jpg" %} alt="">
                                                                     </div>
                                                                     <div class="message-content">
                                                                         <span class="message-date">16 Sept</span>
@@ -398,7 +372,7 @@
                                                                                 <a href="#">
                                                                                     <div class="notes-list-flow">
                                                                                         <div class="notes-img">
-                                                                                            <img src="img/contact/4.jpg" alt="" />
+                                                                                            <img src={% static "img/contact/4.jpg" %} alt="" />
                                                                                         </div>
                                                                                         <div class="notes-content">
                                                                                             <p> The point of using Lorem Ipsum is that it has a more-or-less normal.</p>
@@ -411,7 +385,7 @@
                                                                                 <a href="#">
                                                                                     <div class="notes-list-flow">
                                                                                         <div class="notes-img">
-                                                                                            <img src="img/contact/1.jpg" alt="" />
+                                                                                            <img src={% static "img/contact/1.jpg" %} alt="" />
                                                                                         </div>
                                                                                         <div class="notes-content">
                                                                                             <p> The point of using Lorem Ipsum is that it has a more-or-less normal.</p>
@@ -424,7 +398,7 @@
                                                                                 <a href="#">
                                                                                     <div class="notes-list-flow">
                                                                                         <div class="notes-img">
-                                                                                            <img src="img/contact/2.jpg" alt="" />
+                                                                                            <img src={% static "img/contact/2.jpg" %} alt="" />
                                                                                         </div>
                                                                                         <div class="notes-content">
                                                                                             <p> The point of using Lorem Ipsum is that it has a more-or-less normal.</p>
@@ -437,7 +411,7 @@
                                                                                 <a href="#">
                                                                                     <div class="notes-list-flow">
                                                                                         <div class="notes-img">
-                                                                                            <img src="img/contact/3.jpg" alt="" />
+                                                                                            <img src={% static "img/contact/3.jpg" %} alt="" />
                                                                                         </div>
                                                                                         <div class="notes-content">
                                                                                             <p> The point of using Lorem Ipsum is that it has a more-or-less normal.</p>
@@ -450,7 +424,7 @@
                                                                                 <a href="#">
                                                                                     <div class="notes-list-flow">
                                                                                         <div class="notes-img">
-                                                                                            <img src="img/contact/4.jpg" alt="" />
+                                                                                            <img src={% static "img/contact/4.jpg" %} alt="" />
                                                                                         </div>
                                                                                         <div class="notes-content">
                                                                                             <p> The point of using Lorem Ipsum is that it has a more-or-less normal.</p>
@@ -463,7 +437,7 @@
                                                                                 <a href="#">
                                                                                     <div class="notes-list-flow">
                                                                                         <div class="notes-img">
-                                                                                            <img src="img/contact/1.jpg" alt="" />
+                                                                                            <img src={% static "img/contact/1.jpg" %} alt="" />
                                                                                         </div>
                                                                                         <div class="notes-content">
                                                                                             <p> The point of using Lorem Ipsum is that it has a more-or-less normal.</p>
@@ -476,7 +450,7 @@
                                                                                 <a href="#">
                                                                                     <div class="notes-list-flow">
                                                                                         <div class="notes-img">
-                                                                                            <img src="img/contact/2.jpg" alt="" />
+                                                                                            <img src={% static "img/contact/2.jpg" %} alt="" />
                                                                                         </div>
                                                                                         <div class="notes-content">
                                                                                             <p> The point of using Lorem Ipsum is that it has a more-or-less normal.</p>
@@ -489,7 +463,7 @@
                                                                                 <a href="#">
                                                                                     <div class="notes-list-flow">
                                                                                         <div class="notes-img">
-                                                                                            <img src="img/contact/1.jpg" alt="" />
+                                                                                            <img src={% static "img/contact/1.jpg" %} alt="" />
                                                                                         </div>
                                                                                         <div class="notes-content">
                                                                                             <p> The point of using Lorem Ipsum is that it has a more-or-less normal.</p>
@@ -502,7 +476,7 @@
                                                                                 <a href="#">
                                                                                     <div class="notes-list-flow">
                                                                                         <div class="notes-img">
-                                                                                            <img src="img/contact/2.jpg" alt="" />
+                                                                                            <img src={% static "img/contact/2.jpg" %} alt="" />
                                                                                         </div>
                                                                                         <div class="notes-content">
                                                                                             <p> The point of using Lorem Ipsum is that it has a more-or-less normal.</p>
@@ -515,7 +489,7 @@
                                                                                 <a href="#">
                                                                                     <div class="notes-list-flow">
                                                                                         <div class="notes-img">
-                                                                                            <img src="img/contact/3.jpg" alt="" />
+                                                                                            <img src={% static "img/contact/3.jpg" %} alt="" />
                                                                                         </div>
                                                                                         <div class="notes-content">
                                                                                             <p> The point of using Lorem Ipsum is that it has a more-or-less normal.</p>
@@ -917,7 +891,7 @@
 												<i class="icon nalika-home"></i>
 											</div>
 											<div class="breadcomb-ctn">
-												<h2>Timekeeping Report</h2>
+												<h2>Report</h2>
 												<p>Welcome to NCC <span class="bread-ntd">Admin Template</span></p>
 											</div>
 										</div>
@@ -951,108 +925,34 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="product-status-wrap">
-                            <h4>Timekeeping Report</h4>
+                            <h4>Report</h4>
                             <table>
                                 <tr>
-                                    <th>No</th>
+                                    <th>ID</th>
+                                    <th>Image</th>
                                     <th>Name</th>
-                                    <th>Position</th>
-                                    <th>Title</th>
-                                    <th>Checkin</th>
-                                    <th>Time</th>
-                                    <th>Checkout</th>
-                                    <th>Time</th>
+                                    <th>Age</th>
+                                    <th>Emo</th>
+                                    <th>Last Checkin</th>
+                                    <th>Last Checkout</th>
+                                    <th>Prob</th>
                                 </tr>
+                                {% for data in data_list %}
                                 <tr>
-                                    <td>No 1</td>
-                                    <td>Name 1</td>
-                                    <td>Position#</td>
-                                    <td>Admin</td>
+                                    <td>{{ data.id }}</td>
+                                    <td><img src={% static data.img_link %} alt=""></td>
+                                    <td>{{ data.name }}</td>
+                                    <td>{{ data.age }}</td>
                                     <td>
-                                      <button type="button" class="btn btn-custon-four btn-success"><i class="fa fa-check adminpro-checked-pro" aria-hidden="true"></i> Yes</button>
+                                      <img src={% static data.emo %} alt="">
                                     </td>
-                                    <td>2020-Mar-12 12:34</td>
+                                    <td>{{ data.checkin }}</td>
+                                    <td>{{ data.checkout }}</td>
                                     <td>
-                                      <button type="button" class="btn btn-custon-rounded-four btn-danger"><i class="fa fa-times adminpro-danger-error" aria-hidden="true"></i> No</button>
+                                      {{ data.prob }}
                                     </td>
-                                    </td>
-                                    <td>2020-Mar-12 12:34</td>
                                 </tr>
-                                <tr>
-                                    <td>No #</td>
-                                    <td>Name 2</td>
-                                    <td>Position#</td>
-                                    <td>Employee</td>
-                                    <td>
-                                      <button type="button" class="btn btn-custon-rounded-four btn-danger"><i class="fa fa-times adminpro-danger-error" aria-hidden="true"></i> No</button>
-                                    </td>
-                                    <td>2020-Mar-12 12:34</td>
-                                    <td>
-                                      <button type="button" class="btn btn-custon-four btn-success"><i class="fa fa-check adminpro-checked-pro" aria-hidden="true"></i> Yes</button>
-                                    </td>
-                                    </td>
-                                    <td>2020-Mar-12 12:34</td>
-                                </tr>
-                                <tr>
-                                    <td>No #</td>
-                                    <td>Name 3</td>
-                                    <td>Position#</td>
-                                    <td>Staff</td>
-                                    <td>
-                                      <button type="button" class="btn btn-custon-rounded-four btn-danger"><i class="fa fa-times adminpro-danger-error" aria-hidden="true"></i> No</button>
-                                    </td>
-                                    <td>2020-Mar-12 12:34</td>
-                                    <td>
-                                      <button type="button" class="btn btn-custon-four btn-success"><i class="fa fa-check adminpro-checked-pro" aria-hidden="true"></i> Yes</button>
-                                    </td>
-                                    </td>
-                                    <td>2020-Mar-12 12:34</td>
-                                </tr>
-                                <tr>
-                                    <td>No #</td>
-                                    <td>Name 4</td>
-                                    <td>Position#</td>
-                                    <td>Employee</td>
-                                    <td>
-                                      <button type="button" class="btn btn-custon-four btn-success"><i class="fa fa-check adminpro-checked-pro" aria-hidden="true"></i> Yes</button>
-                                    </td>
-                                    <td>2020-Mar-12 12:34</td>
-                                    <td>
-                                      <button type="button" class="btn btn-custon-four btn-success"><i class="fa fa-check adminpro-checked-pro" aria-hidden="true"></i> Yes</button>
-                                    </td>
-                                    </td>
-                                    <td>2020-Mar-12 12:34</td>
-                                </tr>
-                                <tr>
-                                    <td>No #</td>
-                                    <td>Name 5</td>
-                                    <td>Position#</td>
-                                    <td>HR</td>
-                                    <td>
-                                      <button type="button" class="btn btn-custon-rounded-four btn-danger"><i class="fa fa-times adminpro-danger-error" aria-hidden="true"></i> No</button>
-                                    </td>
-                                    <td>2020-Mar-12 12:34</td>
-                                    <td>
-                                      <button type="button" class="btn btn-custon-rounded-four btn-danger"><i class="fa fa-times adminpro-danger-error" aria-hidden="true"></i> No</button>
-                                    </td>
-                                    </td>
-                                    <td>2020-Mar-12 12:34</td>
-                                </tr>
-                                <tr>
-                                    <td>No #</td>
-                                    <td>Name 6</td>
-                                    <td>Position#</td>
-                                    <td>Web Developer</td>
-                                    <td>
-                                      <button type="button" class="btn btn-custon-four btn-success"><i class="fa fa-check adminpro-checked-pro" aria-hidden="true"></i> Yes</button>
-                                    </td>
-                                    <td>2020-Mar-12 12:34</td>
-                                    <td>
-                                      <button type="button" class="btn btn-custon-rounded-four btn-danger"><i class="fa fa-times adminpro-danger-error" aria-hidden="true"></i> No</button>
-                                    </td>
-                                    </td>
-                                    <td>2020-Mar-12 12:34</td>
-                                </tr>
+                                {% endfor %}
                             </table>
                             <div class="custom-pagination">
 								<ul class="pagination">
@@ -1083,51 +983,51 @@
 
     <!-- jquery
 		============================================ -->
-    <script src="js/vendor/jquery-1.12.4.min.js"></script>
+    <script src={% static "js/vendor/jquery-1.12.4.min.js" %}></script>
     <!-- bootstrap JS
 		============================================ -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src={% static "js/bootstrap.min.js" %}></script>
     <!-- wow JS
 		============================================ -->
-    <script src="js/wow.min.js"></script>
+    <script src={% static "js/wow.min.js" %}></script>
     <!-- price-slider JS
 		============================================ -->
-    <script src="js/jquery-price-slider.js"></script>
+    <script src={% static "js/jquery-price-slider.js" %}></script>
     <!-- meanmenu JS
 		============================================ -->
-    <script src="js/jquery.meanmenu.js"></script>
+    <script src={% static "js/jquery.meanmenu.js" %}></script>
     <!-- owl.carousel JS
 		============================================ -->
-    <script src="js/owl.carousel.min.js"></script>
+    <script src={% static "js/owl.carousel.min.js" %}></script>
     <!-- sticky JS
 		============================================ -->
-    <script src="js/jquery.sticky.js"></script>
+    <script src={% static "js/jquery.sticky.js" %}></script>
     <!-- scrollUp JS
 		============================================ -->
-    <script src="js/jquery.scrollUp.min.js"></script>
+    <script src={% static "js/jquery.scrollUp.min.js" %}></script>
     <!-- mCustomScrollbar JS
 		============================================ -->
-    <script src="js/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script src="js/scrollbar/mCustomScrollbar-active.js"></script>
+    <script src={% static "js/scrollbar/jquery.mCustomScrollbar.concat.min.js" %}></script>
+    <script src={% static "js/scrollbar/mCustomScrollbar-active.js" %}></script>
     <!-- metisMenu JS
 		============================================ -->
-    <script src="js/metisMenu/metisMenu.min.js"></script>
-    <script src="js/metisMenu/metisMenu-active.js"></script>
+    <script src={% static "js/metisMenu/metisMenu.min.js" %}></script>
+    <script src={% static "js/metisMenu/metisMenu-active.js" %}></script>
     <!-- morrisjs JS
 		============================================ -->
-    <script src="js/sparkline/jquery.sparkline.min.js"></script>
-    <script src="js/sparkline/jquery.charts-sparkline.js"></script>
+    <script src={% static "js/sparkline/jquery.sparkline.min.js" %}></script>
+    <script src={% static "js/sparkline/jquery.charts-sparkline.js" %}></script>
     <!-- calendar JS
 		============================================ -->
-    <script src="js/calendar/moment.min.js"></script>
-    <script src="js/calendar/fullcalendar.min.js"></script>
-    <script src="js/calendar/fullcalendar-active.js"></script>
+    <script src={% static "js/calendar/moment.min.js" %}></script>
+    <script src={% static "js/calendar/fullcalendar.min.js" %}></script>
+    <script src={% static "js/calendar/fullcalendar-active.js" %}></script>
     <!-- plugins JS
 		============================================ -->
-    <script src="js/plugins.js"></script>
+    <script src={% static "js/plugins.js" %}></script>
     <!-- main JS
 		============================================ -->
-    <script src="js/main.js"></script>
+    <script src={% static "js/main.js" %}></script>
 </body>
 
 </html>
