@@ -9,25 +9,20 @@ import os
 class DataGenerator:
     def __init__(self, config):
         self.config = config
-        # load data here        
-        test_df = pd.read_csv('./datasets/test.csv')
-        train_df = pd.read_csv('./datasets/train.csv')
-        self.testdf = []
-        for _, row in test_df.iterrows():
-            if os.path.exists('./datasets/aligned/test/112x112/%s'%row['image']):
-                self.testdf.append(row['label'])
-
-        self.traindf = []
-        for _, row in train_df.iterrows():
-            if os.path.exists('./datasets/aligned/train/112x112/%s'%row['image']):
-                self.traindf.append(row['label'])
+        testdf = pd.read_csv("./data/test1.csv")
+        self.testdf = testdf['clsidx'].tolist()        
+        traindf = pd.read_csv("./data/train.csv")
+        self.traindf = traindf['clsidx'].tolist()
         
         #xtrain = np.load('train_data.npy')
-        self.xtrain_aug = np.load('./data/train_aug_data.npy')
+        self.xtrain = np.load('./data/train_data.npy')
         self.ytrain = self.get_y_true(self.traindf)
-        self.train_size = len(self.xtrain_aug)
+        #self.train_size = len(self.xtrain)
+        self.xtest = np.load('./data/test1_data.npy')
         
-        self.xtest = np.load('./data/test_data.npy')
+        #print("="*20, self.traindf[2000])
+        #print("="*20, self.xtrain[2000])
+        
         self.ytest = self.get_y_true(self.testdf)
 
     def get_y_true(self, df):
@@ -35,14 +30,4 @@ class DataGenerator:
         for label in df:
             y_true.append(to_categorical(label, num_classes=self.config.number_of_class))
         return np.array(y_true)
-
-    def next_batch(self, batch_size):
-        self.xtrain_aug, self.ytrain = shuffle(self.xtrain_aug, self.ytrain)
-        for start in range(0, self.train_size, batch_size):
-            end = min(start + batch_size, self.train_size)
-            x_batch = np.array([],dtype = np.float32).reshape(0,self.config.input_dim)
-            for i in range(start,end,1):
-                x_batch = np.vstack((x_batch, self.xtrain_aug[i, randint(0, 99), :].reshape(1,self.config.input_dim)))
-            y_batch = self.ytrain[start:end, :]
-            yield x_batch, y_batch
-          
+            

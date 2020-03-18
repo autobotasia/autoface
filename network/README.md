@@ -1,29 +1,8 @@
 # autoface project
-Download model-r100-ii from github and paste to models/insightface/models
-
 
 cd autoface
 export PYTHONPATH=./models/insightface/deploy/
 
-save db config in pjconfig.py
-save sender email config in pjconfig.py
-
-in pjconfig.py:
-
-  # MongoDB database config
-    DBUSERNAME=db_username
-    DBPASSWORD=db_password
-    DBHOST=db_host
-    DBPORT=db_port
-    DBNAME=db_name
-    COLNAME=collection_name
-
-  # sender email config
-    SENDER_EMAIL=sender_email (gmail)
-    SENDER_EMAIL_PASSWORD=
-    SMTP_SERVER="smtp.gmail.com"
-
-save receiver email list in receiver-email file
 
 # manage config.json
 ```json
@@ -53,21 +32,17 @@ save receiver email list in receiver-email file
 }
 ```
 
-# Run convert, align
-python3 utils/convert_dataset.py
+# Run align
 python3 utils/align_face.py
 
-# Run prepare
+# Run generate embedding
 python3 utils/generate_insightface_embedding.py
-python3 utils/prepare.py
+
 
 # Run train/eval/predict
 python3 autoface.py
 
 # Live
-python3 utils/capture-video.py
-
-export CUDA_VISIBLE_DEVICES="1"
 python3 utils/face_detect.py
 
 export CUDA_VISIBLE_DEVICES="0"

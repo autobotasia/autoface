@@ -1,69 +1,29 @@
-import tensorflow as tf
-from align import detect_face
-import cv2
-import imutils
+from mtcnn import MTCNN
 import numpy as np
-import argparse
+import cv2
 import os
 import time
 
-parser = argparse.ArgumentParser()
-#parser.add_argument("--imgpath", type = str, required=True)
-args = parser.parse_args()
+os.environ["CUDA_VISIBLE_DEVICES"]="1" 
+detector = MTCNN()
 
-# some constants kept as default from facenet
-minsize = 20
-threshold = [0.6, 0.7, 0.7]
-factor = 0.709
-margin = 44
-input_image_size = 128
+vcap = cv2.VideoCapture("rtsp://admin:12345678a@@172.16.110.2:554/Streamming/channels/101")
+#vcap = cv.VideoCapture(0)
 
-sess = tf.Session()
-# read pnet, rnet, onet models from align directory and files are det1.npy, det2.npy, det3.npy
-pnet, rnet, onet = detect_face.create_mtcnn(sess, None)
-
-def getFace(img):
-    faces = []
-    img_size = np.asarray(img.shape)[0:2]
-    bounding_boxes, _ = detect_face.detect_face(img, minsize, pnet, rnet, onet, threshold, factor)
-    if not len(bounding_boxes) == 0:
-        for face in bounding_boxes:
-            if face[4] > 0.70:
-                det = np.squeeze(face[0:4])
-                bb = np.zeros(4, dtype=np.int32)
-                bb[0] = np.maximum(det[0] - margin / 2, 0)
-                bb[1] = np.maximum(det[1] - margin / 2, 0)
-                bb[2] = np.minimum(det[2] + margin / 2, img_size[1])
-                bb[3] = np.minimum(det[3] + margin / 2, img_size[0])
-                cropped = img[bb[1]:bb[3], bb[0]:bb[2], :]
-                resized = cv2.resize(cropped, (input_image_size,input_image_size),interpolation=cv2.INTER_AREA)
-                faces.append({'face':resized,'rect':[bb[0],bb[1],bb[2],bb[3]]})
-    return faces
-    
 while True:
-    for f in os.listdir('./data/images/'):
-        file_name, file_ext = os.path.splitext(f)
-        
-        if file_ext != '.png' or file_name[:3] == 'tmp':
-            print(file_name)
-            continue
-        
-        img = cv2.imread('./data/images/%s'%f)
-        #img = imutils.resize(img, width=256)        
-        os.remove('./data/images/%s'%f)
+    ret, frame = vcap.read()
+    #cv.imshow('VIDEO', frame)
 
-        try:
-            faces = getFace(img)
-            for face in faces:
-                x1 = face['rect'][0]
-                y1 = face['rect'][1]
-                x2 = face['rect'][2]
-                y2 = face['rect'][3]  
-                cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                strtime = round(time.time())
-                cv2.imwrite('./data/capture/tmp-%d.png'%strtime, face['face'])
-                os.rename('./data/capture/tmp-%d.png'%strtime, './data/capture/%d.png'%strtime)
-                cv2.waitKey(1)
-        except:
-            pass        
-    cv2.destroyAllWindows()
+    img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    bounding_boxes = detector.detect_faces(img)
+
+    for box in bounding_boxes:
+        if box['confidence'] < 0.9:
+            continue
+
+        det = np.squeeze(box['box'])
+        x1, y1, x2, y2 = det
+        cropped = img[y1: y1 + y2, x1: x1 + y2, :]            
+        strtime = round(time.time())
+        cv2.imwrite('./data/capture/tmp-%d.png'%strtime, cropped)
+        os.rename('./data/capture/tmp-%d.png'%strtime, './data/capture/%d.png'%strtime)   

@@ -12,8 +12,10 @@ from utils.insightface_utils import InsightfaceUtils
 from bunch import Bunch
 import imutils
 from datetime import  datetime, timedelta, date
-from utils.mongodb import AutofacesMongoDB
 from utils.email_notification import Notification
+import utils.sqlite as db
+
+os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 if __name__ == '__main__':
 
@@ -30,11 +32,10 @@ if __name__ == '__main__':
     if not config.pretrained_model:
         raise Exception('model path is required')
 
-    # connect MongoDB database
-    db = AutofacesMongoDB(config)
     util = InsightfaceUtils(Bunch(config.pretrained_model))
     trainer = Trainer(config)
-    notifier = Notification(Bunch(config.notification))
+    #notifier = Notification(Bunch(config.notification))
+    top3 = db.Top3Helper("../web/sqlite3.db")
     
     saved_day = date.today()
 
@@ -50,27 +51,25 @@ if __name__ == '__main__':
         start_time = time.time()
         next_time_can_save_img = datetime.now()
 
-
         while True:
             for f in os.listdir('./data/capture/'):
                 file_name, file_ext = os.path.splitext(f)
-                
                 if file_ext != '.png' or file_name[:3] == 'tmp':
                     print(file_name)
                     continue
                 
-                frame = cv2.imread('./data/capture/%s'%f)
+                frame = cv2.imread('./data/capture/%s'%f)                
                 try:
                     predictimg, points = util.get_embedding(frame)
                     predictimg = predictimg.reshape(1, 512)
-                    for best_idx, clsname, prob in trainer.predict(predictimg, batch_size=1):
+                    for best_idx, clsname, prob, result_top3 in trainer.predict(predictimg, batch_size=1):
                         face = {'point': points[0], 'name': clsname}
                         print("=====%s: %f=====" % (clsname, prob))
-                                       
-                    if prob >= 0.70:
-                        if os.path.exists('./data/cls/%s'%clsname) == False:
-                            os.makedirs('./data/cls/%s'%clsname)
-                        cv2.imwrite('./data/cls/%s/%s'%(clsname,f), frame)
+                        #if os.path.exists('./data/cls/%s'%clsname) == False:
+                        #    os.makedirs('./data/cls/%s'%clsname)
+                        cv2.imwrite('./data/top3/%s'%(f), frame)
+                        #for index, val in enumerate(result_top3):
+                        top3.add_predict(f, result_top3)
 
                     # save prediction to database
                     #if max_prob > 0.7 and datetime.now() > next_time_can_save_img:

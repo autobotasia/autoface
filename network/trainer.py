@@ -1,6 +1,7 @@
 import os
 import tensorflow as tf
 import numpy as np
+import pandas as pd
 from data_generator import DataGenerator
 from model import Model
 from random import randint
@@ -9,12 +10,11 @@ from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import f1_score
 from sklearn.metrics import confusion_matrix
+from sklearn.utils import shuffle
 
 
-classname = []
-for _, clsdirs, _ in os.walk('./datasets/nccfaces/train/'):
-    for index, clsdir in enumerate(clsdirs):
-        classname.append(clsdir)
+traindf = pd.read_csv("./data/train.csv")
+classname = traindf['clsname'].tolist()
 
 class Trainer():
     def __init__(self, config):
@@ -30,12 +30,12 @@ class Trainer():
         # Load training and eval data 
         #eval_data, eval_labels = next(self.data.next_batch(self.config.batch_size))        
  
-        n_split=3
-        train_data = self.data.xtrain_aug[:,randint(0, 99),:]
-        train_labels = self.data.ytrain
+        n_split=3    
+        train_data, train_label = shuffle(self.data.xtrain, self.data.ytrain)
+
         for train_index,test_index in KFold(n_split).split(train_data):            
             x_train,x_test=train_data[train_index],train_data[test_index]
-            y_train,y_test=train_labels[train_index],train_labels[test_index]            
+            y_train,y_test=train_label[train_index],train_label[test_index]
 
             # Create a input function to train
             train_input_fn = tf.estimator.inputs.numpy_input_fn(
@@ -79,10 +79,11 @@ class Trainer():
     def do_predict(self):
         y_pred = []
         y_true = np.argmax(self.data.ytest, 1)
-        for best_idx, _, _ in self.predict(self.data.xtest, self.config.batch_size):
+        for best_idx, clsname, prob, _ in self.predict(self.data.xtest, self.config.batch_size):
             y_pred.append(best_idx)
+            print("clsname %s ----- %f"%(clsname,prob))
 
-        assert(len(y_pred) == len(y_true), "diff range error")
+        assert(len(y_pred) == len(y_true)), "diff range error"
 
         #metrics        
         print("Precision", precision_score(y_true, y_pred, average='macro'))
@@ -91,8 +92,6 @@ class Trainer():
         print("confusion_matrix")
         print(confusion_matrix(y_true, y_pred))
         #fpr, tpr, tresholds = sk.metrics.roc_curve(y_true, y_pred)
-    
-
 
     def predict(self, image, batch_size):
         predict_input_fn = tf.estimator.inputs.numpy_input_fn(
@@ -101,13 +100,13 @@ class Trainer():
             shuffle=False)
         predictions = self.classifier.predict(input_fn=predict_input_fn) #, checkpoint_path=os.path.join(self.config.checkpoint_dir, 'model.ckpt-1932'))
 
+        result_top3 = []
         for p in predictions:
             best_idx = p['predicted_logit']
             clsname = classname[best_idx]
             prob = p['probabilities'][best_idx]
-
-            yield best_idx, clsname, prob                
-
-
-
-        
+            best_idx_top3 = p['predicted_logit_top3']
+            for best_idx in best_idx_top3:
+                ret = [classname[best_idx], p['probabilities'][best_idx]]  
+                result_top3.append(ret)
+            yield best_idx, clsname, prob, result_top3
