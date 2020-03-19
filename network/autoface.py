@@ -35,7 +35,7 @@ if __name__ == '__main__':
     util = InsightfaceUtils(Bunch(config.pretrained_model))
     trainer = Trainer(config)
     #notifier = Notification(Bunch(config.notification))
-    top3 = db.Top3Helper("../web/sqlite3.db")
+    top3 = db.Top3Helper("../web/db.sqlite3")
     
     saved_day = date.today()
 
@@ -58,7 +58,11 @@ if __name__ == '__main__':
                     print(file_name)
                     continue
                 
-                frame = cv2.imread('./data/capture/%s'%f)                
+                frame = cv2.imread('./data/capture/%s'%f)
+                height = frame.shape[0]
+                if height < 80:
+                    continue
+
                 try:
                     predictimg, points = util.get_embedding(frame)
                     predictimg = predictimg.reshape(1, 512)
