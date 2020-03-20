@@ -16,10 +16,13 @@ from . import dbtools
 def detail(request, img_id):
 
     img = get_object_or_404(ImageDetail, pk=img_id)
-    tags = settings.TAG_LIST
+    #tags = settings.TAG_LIST
     return render(request, 'detail.html', {
         'imagedetail': img,
-        'tags': tags,
+        'tags1': img.top1,
+        'tags2': img.top2,
+        'tags3': img.top3
+
     })
 
 
@@ -44,7 +47,7 @@ def vote(request, img_id):
 
             # copy to class folder
             img_url = './static/' + img.img_url
-            path = './saved/' + img.tag_name + '/'
+            path = './saved/' + img.top1 + '/'
             img_dir = path + os.path.basename(img_url)
             if not os.path.exists(path):
                 os.makedirs(path)
@@ -134,4 +137,4 @@ def report(request):
         print("cannot open mock-data file.")
     finally:
         data_file.close()
-s
+

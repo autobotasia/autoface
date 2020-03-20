@@ -1,11 +1,11 @@
 <div style="text-align: center;">
     {% load static %}
-    <img src="{% static imagedetail.img_url%}" >
-    <h3>{{ imagedetail.tag_name }}</h3>
+    <img src="{% static imagedetail.file_path%}" >
+    <h3>{{ imagedetail.top1 }}</h3>
     {% if messages %}
         <ul class="messages">
           {% for message in messages %}
-            <li class="{{ message.tags }}">{{ message }}</li>
+            <li class="{{ message.tags1 }}">{{ message }}</li>
           {% endfor %}
         </ul>
     {% endif %}
@@ -43,6 +43,72 @@
             <input type="text" id="text" name="tagname" required disabled>
         </div>
         <input type="submit" value="Submit" id="button" disabled> -->
+    </form>
+
+    <h3>{{ imagedetail.top2 }}</h3>
+    {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            <li class="{{ message.tags2 }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+    {% endif %}
+    <form action="{% url 'vote' imagedetail.pk %}" method="post">
+    {% csrf_token %}
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <!-- <input type="radio" id="yes" name="check" value="True" onclick="toggleDropdown();this.form.submit();"> -->
+        <input type="radio" id="yes" name="check" value="True" onclick="this.form.submit();">
+        <label>Yes</label>
+        <span></span>
+        <!-- <input type="radio" id="no" name="check" value="False" onclick="toggleDropdown();"> -->
+        <input type="radio" id="no" name="check" value="False" onclick="this.form.submit();">
+        <label>No</label><br>
+    </form>
+
+    <h3>{{ imagedetail.top3 }}</h3>
+    {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            <li class="{{ message.tags3 }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+    {% endif %}
+    <form action="{% url 'vote' imagedetail.pk %}" method="post">
+    {% csrf_token %}
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <!-- <input type="radio" id="yes" name="check" value="True" onclick="toggleDropdown();this.form.submit();"> -->
+        <input type="radio" id="yes" name="check" value="True" onclick="this.form.submit();">
+        <label>Yes</label>
+        <span></span>
+        <!-- <input type="radio" id="no" name="check" value="False" onclick="toggleDropdown();"> -->
+        <input type="radio" id="no" name="check" value="False" onclick="this.form.submit();">
+        <label>No</label><br>
     </form>
 
 
