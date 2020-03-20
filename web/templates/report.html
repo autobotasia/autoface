@@ -103,6 +103,7 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
+    <!-- left menu -->
     <div class="left-sidebar-pro">
         <nav id="sidebar" class="">
             <div class="sidebar-header">
@@ -154,6 +155,7 @@
             </div>
         </nav>
     </div>
+    <!-- end of left menu -->
     <!-- Start Welcome area -->
     <div class="all-content-wrapper">
         <div class="container-fluid">
@@ -818,14 +820,14 @@
                                 {% for data in data_list %}
                                 <tr>
                                     <td>{{ data.id }}</td>
-                                    <td><img src={% static data.img_link %} alt=""></td>
+                                    <td><img src={% static data.image_link %} alt=""></td>
                                     <td>{{ data.name }}</td>
                                     <td>{{ data.age }}</td>
                                     <td>
                                       <img src={% static data.emo %} alt="">
                                     </td>
-                                    <td>{{ data.checkin }}</td>
-                                    <td>{{ data.checkout }}</td>
+                                    <td>{{ data.last_checkin }}</td>
+                                    <td>{{ data.last_checkout }}</td>
                                     <td>
                                       {{ data.prob }}
                                     </td>
