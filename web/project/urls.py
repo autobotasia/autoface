@@ -22,5 +22,6 @@ admin.site.index_title = "Welcome to NCC Portal"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('tools.urls'))
+    path('', include('tools.urls')),
+    path('management/', include('management.urls')),
 ]
