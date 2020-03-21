@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Oganization Management | NCC Autofaces</title>
+    <title>Create Camera | NCC - Material Admin Template</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- favicon
@@ -13,13 +13,20 @@
     <!-- Google Fonts
 		============================================ -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+    <!-- include libraries(jQuery, bootstrap) -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- include summernote css/js -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-bs4.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-bs4.min.js"></script>
     <!-- Bootstrap CSS
 		============================================ -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- Bootstrap CSS
 		============================================ -->
     <link rel="stylesheet" href="css/font-awesome.min.css">
-	<!-- NCC Icon CSS
+	<!-- nalika Icon CSS
 		============================================ -->
     <link rel="stylesheet" href="css/nalika-icon.css">
     <!-- owl.carousel CSS
@@ -163,11 +170,11 @@
                                     <div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
                                         <div class="header-top-menu tabl-d-n">
                                             <div class="breadcome-heading">
-                      												<form role="search" class="">
-                      													<input type="text" placeholder="Search..." class="form-control">
-                      													<a href=""><i class="fa fa-search"></i></a>
-                      												</form>
-                      											</div>
+												<form role="search" class="">
+													<input type="text" placeholder="Search..." class="form-control">
+													<a href=""><i class="fa fa-search"></i></a>
+												</form>
+											</div>
                                         </div>
                                     </div>
                                     <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
@@ -297,7 +304,7 @@
                                                 <li class="nav-item">
                                                     <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
 															<i class="icon nalika-user nalika-user-rounded header-riht-inf" aria-hidden="true"></i>
-															<span class="admin-name">User Dropdown</span>
+															<span class="admin-name">Advanda Cro</span>
 															<i class="icon nalika-down-arrow nalika-angle-dw nalika-icon"></i>
 														</a>
                                                     <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">
@@ -716,11 +723,11 @@
                                                 <li><a href="index.html">Dashboard v.1</a></li>
                                                 <li><a href="index-1.html">Dashboard v.2</a></li>
                                                 <li><a href="index-3.html">Dashboard v.3</a></li>
-                                                <li><a href="product-list.html">Oganization List</a></li>
-                                                <li><a href="product-edit.html">Oganization Edit</a></li>
-                                                <li><a href="product-detail.html">Oganization Detail</a></li>
-                                                <li><a href="product-cart.html">Oganization Cart</a></li>
-                                                <li><a href="product-payment.html">Oganization Payment</a></li>
+                                                <li><a href="product-list.html">Camera List</a></li>
+                                                <li><a href="product-edit.html">Camera Edit</a></li>
+                                                <li><a href="product-detail.html">Camera Detail</a></li>
+                                                <li><a href="product-cart.html">Camera Cart</a></li>
+                                                <li><a href="product-payment.html">Camera Payment</a></li>
                                                 <li><a href="analytics.html">Analytics</a></li>
                                                 <li><a href="widgets.html">Widgets</a></li>
                                             </ul>
@@ -849,7 +856,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-							<div class="breadcome-list">
+                            <div class="breadcome-list">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                         <div class="breadcomb-wp">
@@ -857,7 +864,7 @@
 												<i class="icon nalika-home"></i>
 											</div>
 											<div class="breadcomb-ctn">
-												<h2>Oganization List</h2>
+												<h2>Create Camera</h2>
 												<p>Welcome to NCC <span class="bread-ntd">Admin Template</span></p>
 											</div>
 										</div>
@@ -874,117 +881,98 @@
                 </div>
             </div>
         </div>
-        <div>
-          <div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
-              <div class="header-top-menu tabl-d-n">
-                  <div class="breadcome-heading">
-                    <form role="search" class="">
-                      <input type="text" placeholder="Search..." class="form-control">
-                      <a href=""><i class="fa fa-search"></i></a>
-                    </form>
-                  </div>
-              </div>
-          </div>
-        </div>
-        <div class="product-status mg-b-30">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="product-status-wrap">
-                            <h4>Oganization List</h4>
-                            <div class="add-product">
-                                <a href="organization-crud.html">Add Organization</a>
-                            </div>
-                            <table>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Oganization Name</th>
-                                    <th>Admin</th>
-                                    <th>Location</th>
-                                    <th>Tel</th>
-                                    <th>Setting</th>
-                                </tr>
-                                <tr>
-                                    <td>No #</td>
-                                    <td>Oganization Name 1</td>
-                                    <td>Admin#</td>
-                                    <td>Location#</td>
-                                    <td>+84 90 999 9999</td>
-                                    <td>
-                                        <button data-toggle="tooltip" title="View" class="pd-setting-ed"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>No #</td>
-                                    <td>Oganization Name 2</td>
-                                    <td>Admin#</td>
-                                    <td>Location#</td>
-                                    <td>+84 90 999 9999</td>
-                                    <td>
-                                        <button data-toggle="tooltip" title="View" class="pd-setting-ed"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>No #</td>
-                                    <td>Oganization Name 3</td>
-                                    <td>Admin#</td>
-                                    <td>Location#</td>
-                                    <td>+84 90 999 9999</td>
-                                    <td>
-                                        <button data-toggle="tooltip" title="View" class="pd-setting-ed"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>No #</td>
-                                    <td>Oganization Name 4</td>
-                                    <td>Admin#</td>
-                                    <td>Location#</td>
-                                    <td>+84 90 999 9999</td>
-                                    <td>
-                                        <button data-toggle="tooltip" title="View" class="pd-setting-ed"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>No #</td>
-                                    <td>Oganization Name 5</td>
-                                    <td>Admin#</td>
-                                    <td>Location#</td>
-                                    <td>+84 90 999 9999</td>
-                                    <td>
-                                        <button data-toggle="tooltip" title="View" class="pd-setting-ed"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>No #</td>
-                                    <td>Oganization Name 6</td>
-                                    <td>Admin#</td>
-                                    <td>Location#</td>
-                                    <td>+84 90 999 9999</td>
-                                    <td>
-                                        <button data-toggle="tooltip" title="View" class="pd-setting-ed"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                                        <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                    </td>
-                                </tr>
-                            </table>
-                            <div class="custom-pagination">
-								<ul class="pagination">
-									<li class="page-item"><a class="page-link" href="#">Previous</a></li>
-									<li class="page-item"><a class="page-link" href="#">1</a></li>
-									<li class="page-item"><a class="page-link" href="#">2</a></li>
-									<li class="page-item"><a class="page-link" href="#">3</a></li>
-									<li class="page-item"><a class="page-link" href="#">Next</a></li>
-								</ul>
+        <!-- Single pro tab start-->
+        <div class="single-product-tab-area mg-b-30">
+            <!-- Single pro tab review Start-->
+            <div class="single-pro-review-area">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="review-tab-pro-inner">
+                                <ul id="myTab3" class="tab-review-design">
+                                    <li class="active"><a href="#description"><i class="icon nalika-edit" aria-hidden="true"></i>Create Camera Form</a></li>
+                                </ul>
+                                <div id="myTabContent" class="tab-content custom-product-edit">
+                                    <div class="product-tab-list tab-pane fade active in" id="description">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="review-content-section">
+                                                    <div class="input-group mg-b-pro-edt">
+                                                        <span class="input-group-addon"><i class="icon nalika-menu-task" aria-hidden="true"></i></span>
+                                                        <input type="text" class="form-control" placeholder="No.">
+                                                    </div>
+                                                    <div class="input-group mg-b-pro-edt">
+                                                        <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
+                                                        <input type="text" class="form-control" placeholder="Camera Name">
+                                                    </div>
+                                                    <div class="input-group mg-b-pro-edt">
+                                                        <span class="input-group-addon"><i class="icon nalika-placeholder" aria-hidden="true"></i></span>
+                                                        <input type="text" class="form-control" placeholder="Area">
+                                                    </div>
+                                                    <div class="input-group mg-b-pro-edt">
+                                                        <span class="input-group-addon"><i class="fa fa-building-o" aria-hidden="true"></i></span>
+                                                        <input type="text" class="form-control" placeholder="Organization">
+                                                    </div>
+                                                    <div class="input-group mg-b-pro-edt">
+                                                        <span class="input-group-addon"><i class="icon nalika-desktop" aria-hidden="true"></i></span>
+                                                        <input type="text" class="form-control" placeholder="IP Camera">
+                                                    </div>
+                                                    <div class="input-group mg-b-pro-edt">
+                                                        <span class="input-group-addon"><i class="icon nalika-upload" aria-hidden="true"></i></span>
+                                                        <label style="color:#ddd; padding: 10px">Status</label>
+                                                        <!-- begin button-drop-style-two block -->
+                                                            <button type="button" class="btn btn-custon-four btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-info-circle adminpro-informatio" aria-hidden="true"></i> Primary <i class="fa fa-angle-down"></i></button>
+                                                            <ul class="dropdown-menu btn-dropdown-menu another-drop-pro-seven" role="menu">
+                                                                <li><a href="#">Action</a>
+                                                                </li>
+                                                                <li><a href="#">Another action</a>
+                                                                </li>
+                                                                <li><a href="#">Something else here</a>
+                                                                </li>
+                                                                <li><a href="#">Separated link</a>
+                                                                </li>
+                                                                <li>
+                                                                    <div class="btn-setting-icon">
+                                                                        <div class="btn-icon-st">
+                                                                            <a href="#"><i class="fa fa-cloud-download adminpro-cloud-computing-down" aria-hidden="true"></i></a>
+                                                                        </div>
+                                                                        <div class="btn-icon-st">
+                                                                            <a href="#"><i class="fa fa-cog adminpro-settings" aria-hidden="true"></i></a>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        <!-- end button-drop-style-two-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="review-content-section">
+                                                    <form method="post">
+                                                      <textarea id="summernote" name="editordata"></textarea>
+                                                    </form>
+                                                    <script>
+                                                      $('#summernote').summernote({
+                                                        placeholder: 'Descriptions',
+                                                        tabsize: 2,
+                                                        height: 200
+                                                      });
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="text-center custom-pro-edt-ds">
+                                                    <button type="button" class="btn btn-ctl-bt waves-effect waves-light m-r-10">Save
+														</button>
+                                                    <button type="button" class="btn btn-ctl-bt waves-effect waves-light">Discard
+														</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -996,7 +984,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="footer-copy-right">
-                            <p>Copyright © 2018 <a href="ai.nccsoft.vn">NCC Autofaces</a> -- <a href="https://colorlib.com/wp/templates/">Colorlib</a> Template.</p>
+                            <p>Copyright © 2018 <a href="https://colorlib.com/wp/templates/">Colorlib</a> All rights reserved.</p>
                         </div>
                     </div>
                 </div>
@@ -1045,6 +1033,9 @@
     <script src="js/calendar/moment.min.js"></script>
     <script src="js/calendar/fullcalendar.min.js"></script>
     <script src="js/calendar/fullcalendar-active.js"></script>
+    <!-- tab JS
+		============================================ -->
+    <script src="js/tab.js"></script>
     <!-- plugins JS
 		============================================ -->
     <script src="js/plugins.js"></script>

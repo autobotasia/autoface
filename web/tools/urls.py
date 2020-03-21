@@ -7,4 +7,5 @@ urlpatterns = [
     path('detail/<int:Id>/vote', views.vote, name='vote'),
     path('crud/<str:arg>/', views.crud, name='crud'),
     path('crud/<str:arg>/<int:img_pk>', views.crud, name='crud'),
+    
 ]
