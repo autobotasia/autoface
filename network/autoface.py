@@ -71,6 +71,7 @@ if __name__ == '__main__':
                         print("=====%s: %f=====" % (clsname, prob))
                         #if os.path.exists('./data/cls/%s'%clsname) == False:
                         #    os.makedirs('./data/cls/%s'%clsname)
+                        print(result_top3)
                         cv2.imwrite('./data/top3/%s'%(f), frame)
                         #for index, val in enumerate(result_top3):
                         top3.add_predict(f, result_top3)

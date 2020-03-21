@@ -13,8 +13,11 @@ from sklearn.metrics import confusion_matrix
 from sklearn.utils import shuffle
 
 
-traindf = pd.read_csv("./data/train.csv")
-classname = traindf['clsname'].tolist()
+classname = []
+for dirname in sorted(os.listdir('./datasets/aligned/train/112x112/')):
+    classname.append(dirname)
+
+ 
 
 class Trainer():
     def __init__(self, config):
@@ -30,7 +33,7 @@ class Trainer():
         # Load training and eval data 
         #eval_data, eval_labels = next(self.data.next_batch(self.config.batch_size))        
  
-        n_split=3    
+        n_split=8
         train_data, train_label = shuffle(self.data.xtrain, self.data.ytrain)
 
         for train_index,test_index in KFold(n_split).split(train_data):            
@@ -79,11 +82,14 @@ class Trainer():
     def do_predict(self):
         y_pred = []
         y_true = np.argmax(self.data.ytest, 1)
+        #print(y_true)
+
         for best_idx, clsname, prob, _ in self.predict(self.data.xtest, self.config.batch_size):
             y_pred.append(best_idx)
-            print("clsname %s ----- %f"%(clsname,prob))
+            print("clsname %d ----- %s ----- %f"%(best_idx, clsname,prob))    
 
         assert(len(y_pred) == len(y_true)), "diff range error"
+        #print(y_pred)
 
         #metrics        
         print("Precision", precision_score(y_true, y_pred, average='macro'))
@@ -104,9 +110,11 @@ class Trainer():
         for p in predictions:
             best_idx = p['predicted_logit']
             clsname = classname[best_idx]
+            #print("="*10, best_idx, clsname)
             prob = p['probabilities'][best_idx]
             best_idx_top3 = p['predicted_logit_top3']
-            for best_idx in best_idx_top3:
-                ret = [classname[best_idx], p['probabilities'][best_idx]]  
+            for bestidx in best_idx_top3:
+                ret = [classname[bestidx], p['probabilities'][bestidx]]  
                 result_top3.append(ret)
+
             yield best_idx, clsname, prob, result_top3
