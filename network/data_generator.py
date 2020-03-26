@@ -10,7 +10,7 @@ class DataGenerator:
     def __init__(self, config):
         self.config = config
         testdf = pd.read_csv("./data/test1.csv")
-        self.testdf = testdf['clsidx'].tolist()        
+        self.testdf = testdf['clsidx'].tolist()
         traindf = pd.read_csv("./data/train.csv")
         self.traindf = traindf['clsidx'].tolist()
         
@@ -19,9 +19,10 @@ class DataGenerator:
         self.ytrain = self.get_y_true(self.traindf)
         #self.train_size = len(self.xtrain)
         self.xtest = np.load('./data/test1_data.npy')
-        
-        #print("="*20, self.traindf[2000])
-        #print("="*20, self.xtrain[2000])
+
+        #print("="*10)
+        #print(self.xtrain[158])
+        #print(self.traindf[158])
         
         self.ytest = self.get_y_true(self.testdf)
 
