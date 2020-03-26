@@ -1,6 +1,6 @@
 /*-----------------------------------------------------------------------------------
 
-    Template Name: Your template name 
+    Template Name: Your template name
     Template URI: http://bootexperts.com
     Description: This is html5 template
     Author: BootExperts
@@ -8,10 +8,10 @@
     Version: 1.0
 
 -----------------------------------------------------------------------------------
-    
+
     CSS INDEX
     ===================
-	
+
     1. Theme Default CSS (body, link color, section etc)
 
 -----------------------------------------------------------------------------------*/
@@ -339,12 +339,12 @@ ul.dtl-social li a{
 	background:#2b2a2a;
 }
 .header-top-menu .navbar-nav>li .dropdown-menu{
-	border: 0px solid #ccc; 
+	border: 0px solid #ccc;
     border: 0px solid rgba(0,0,0,.15);
-	background-color: #303030;	
+	background-color: #303030;
 }
 .header-right-info .navbar-nav>li .dropdown-menu{
-	border: 0px solid #ccc; 
+	border: 0px solid #ccc;
     border: 0px solid rgba(0,0,0,.15);
 }
 .header-top-menu .nav>li>a:focus, .header-top-menu .nav>li>a:hover, .header-top-menu .nav>li>a:active {
@@ -422,7 +422,7 @@ ul.dtl-social li a{
 	padding:18px 10px;
 }
 .header-right-info {
-	
+
 }
 .header-right-info ul.header-right-menu li{
 	display:inline-block;
@@ -974,7 +974,7 @@ ul.cus-product-sl-rp li h5{
 	font-size:20px;
 	color:#fff;
 	text-transform: capitalize;
-} 
+}
 .cus-gh-hd-pro h2{
 	font-size:20px;
 	color:#fff;
@@ -1391,7 +1391,7 @@ ul.tab-custon-design, ul.tab-review-design {
 }
 .rating > input:checked ~ label, .rating:not(:checked) > label:hover, .rating:not(:checked) > label:hover ~ label {
   color: #24caa1;
-} 
+}
 .rating > input:checked + label:hover, .rating > input:checked ~ label:hover,
 .rating > label:hover ~ input:checked ~ label, .rating > input:checked ~ label:hover ~ label {
   color: #24caa1;
@@ -1517,7 +1517,7 @@ ul#single-product-tab li{
 	background:#f7941d;
 }
 .single-pro-size span, .color-quality-details span {
-  display: inline-block; 
+  display: inline-block;
   font-weight: 300;
   height: 25px;
   line-height: 25px;
@@ -1616,7 +1616,7 @@ ul#single-product-tab li{
 	color:#fff;
 }
 .review-content-section .input-group input[type="text"]{
-	
+
 }
 .review-content-section .input-group input::-webkit-input-placeholder, .product-delivary .form-group input::-webkit-input-placeholder, .form-group input::-webkit-input-placeholder, .review-content-section input::-webkit-input-placeholder {
     color:#fff;
@@ -2595,7 +2595,7 @@ ul.tab-custon-design li.active a, ul.tab-review-design li.active a{
 	background: #fff;
     border: 1px solid rgba(0,0,0,.12);
     border-radius: 0px;
-    color: rgba(0,0,0,.87);
+    color: rgba(255,255,255,.87);
     display: block;
     font-family: inherit;
     font-size: 14px;
@@ -3663,7 +3663,7 @@ th.fc-day-header.fc-widget-header {
 	border-color: #152036;
 }
 .review-pro-edt button:hover, .review-pro-edt button:focus, .review-pro-edt button:active{
-	background:#152036 !important; 
+	background:#152036 !important;
 	border-color: #152036 !important;
 	outline:none;
 }
