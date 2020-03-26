@@ -790,7 +790,7 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                         <div class="breadcomb-report">
-											<button data-toggle="tooltip" data-placement="left" title="Download Report" class="btn"><i class="icon nalika-download"></i></button>
+											<button data-toggle="tooltip" data-placement="left" title="Download Report" class="btn btn-custon-rounded-three btn-warning" id="exportbtn"><i class="icon nalika-download"></i>Export CSV</button>
 										</div>
                                     </div>
                                 </div>
@@ -799,18 +799,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div>
-          <div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
-              <div class="header-top-menu tabl-d-n">
-                  <div class="breadcome-heading">
-                    <form role="search" class="" method="get">
-                      <input name="search_keyword" type="text" placeholder="Search..." class="search form-control" style="color:white">
-                      <a href=""><i class="fa fa-search"></i></a>
-                    </form>
-                  </div>
-              </div>
-          </div>
         </div>
         <div class="product-status mg-b-30">
             <div class="container-fluid">
@@ -848,12 +836,12 @@
                               <tbody class="list">
                                 {% for data in page_obj %}
                                 <tr>
-                                  <th scope="row" class="id">{{ data.id }}</td>
-                                    <td class="image_link"><img src={% static data.image_link %} alt=""></td>
+                                  <td scope="row" class="id">{{ data.id }}</td>
+                                    <td class="image_link"><img src={% static data.image_link %} alt={{ data.image_link }}></td>
                                     <td class="name">{{ data.name }}</td>
                                     <td class="age">{{ data.age }}</td>
                                     <td class="emo">
-                                      <img src={% static data.emo %} alt="">
+                                      <img src={% static data.emo %} alt={{ data.emo }}>
                                     </td>
                                     <td class="checkin">{{ data.last_checkin }}</td>
                                     <td class="checkout">{{ data.last_checkout }}</td>
@@ -871,7 +859,7 @@
 									<li class="page-item"><a class="page-link" href="#">2</a></li>
 									<li class="page-item"><a class="page-link" href="#">3</a></li>
 									<li class="page-item"><a class="page-link" href="#">Next</a></li> -->
-                  <span class="step-links">
+                  <!-- <span class="step-links">
                           {% if page_obj.has_previous %}
                               <a href="?page=1">&laquo; first</a>
                               <a href="?page={{ page_obj.previous_page_number }}">previous</a>
@@ -885,7 +873,7 @@
                               <a href="?page={{ page_obj.next_page_number }}">next</a>
                               <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
                           {% endif %}
-                    </span>
+                    </span> -->
 								</ul>
                             </div>
                         </div>
@@ -954,17 +942,28 @@
 		============================================ -->
     <script src={% static "js/main.js" %}></script>
 
-    <!-- DataTable Jquery -->
+    <!-- DataTable Jquery - List.JS Plugin -->
     <script src={% static "js/jquery.min.js" %}></script>
     <script src={% static "js/list.min.js" %}></script>
     <script type="text/javascript">
       /* here you use your_column_names */
       var options = {
-        valueNames: [ 'id', "image_link", "name", "age", "emo", "checkin", "checkout", "prob" ]
+        valueNames: [ 'id', "image_link", "name", "age", "emo", "checkin", "checkout", "prob" ],
+        page: 5,
+        pagination: true
       };
-
       /*table = id of the div */
       var userList = new List('table', options);
+    </script>
+
+    <!-- Export table to CSV script -->
+    <script src={% static "js/tabletoCSV/jquery.tabletoCSV.js" %} charset="utf-8"></script>
+    <script type="text/javascript">
+      $(function(){
+        $("#exportbtn").click(function(){
+          $(".table").tableToCSV();
+        });
+      });
 
     </script>
 </body>
