@@ -23,7 +23,7 @@ class Top3Helper:
         return self.conn
 
     def create_table_if_doest_exist(self):
-        sql = ''' CREATE TABLE IF NOT EXISTS ImageDetail (
+        sql = ''' CREATE TABLE IF NOT EXISTS ImageDetail(
                     Id INTEGER PRIMARY KEY,
                     file_path TEXT NOT NULL,
                     top1 TEXT NOT NULL,

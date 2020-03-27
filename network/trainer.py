@@ -13,12 +13,6 @@ from sklearn.metrics import confusion_matrix
 from sklearn.utils import shuffle
 
 
-classname = []
-for dirname in sorted(os.listdir('./datasets/aligned/train/112x112/')):
-    classname.append(dirname)
-
- 
-
 class Trainer():
     def __init__(self, config):
         self.config = config
@@ -28,6 +22,15 @@ class Trainer():
         # Create a estimator with model_fn
         self.classifier = tf.estimator.Estimator(model_fn=self.model.model_fn, 
                         model_dir=self.config.checkpoint_dir)
+
+        #df = pd.read_csv("./data/train.csv")
+        #listcls = df['clsname'].tolist()
+        #self.classname = list(set(listcls))
+
+        self.classname = []
+        for dirname in sorted(os.listdir('./datasets/aligned/train/112x112/')):
+            self.classname.append(dirname)
+        print(len(self.classname))
 
     def train(self):
         # Load training and eval data 
@@ -109,12 +112,12 @@ class Trainer():
         result_top3 = []
         for p in predictions:
             best_idx = p['predicted_logit']
-            clsname = classname[best_idx]
+            clsname = self.classname[best_idx]
             #print("="*10, best_idx, clsname)
             prob = p['probabilities'][best_idx]
             best_idx_top3 = p['predicted_logit_top3']
             for bestidx in best_idx_top3:
-                ret = [classname[bestidx], p['probabilities'][bestidx]]  
+                ret = [self.classname[bestidx], p['probabilities'][bestidx]]  
                 result_top3.append(ret)
 
             yield best_idx, clsname, prob, result_top3

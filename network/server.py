@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 import base64
 import numpy as np
 import cv2
@@ -14,6 +15,7 @@ import sys
 import imutils
 
 app = Flask(__name__)
+CORS(app, support_credentials=True)
 
 sys.path.append('./models/insightface/deploy/')
 args = get_args()
