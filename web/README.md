@@ -5,6 +5,8 @@ python manage.py migrate (*to save changes*)
 
 python manage.py runserver
 
+## Web Tools
+
 Image Model:
   - img_url: địa chỉ tương đối của ảnh trong thư mục static
   - img_tag: nhãn của ảnh
@@ -21,3 +23,5 @@ url cho database crud:
   - action == "save-image-data-to-database" = lưu dữ liệu ảnh trong thư mục "Temp Image Folder location: settings.py -> TEMP_IMG" vào db
   - action == "delete":
   + <host>/crud/delete/<int:img_pk>: xóa img object có pk bằng img pk
+
+## Web Management

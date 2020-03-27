@@ -28,7 +28,7 @@ def save_record_to_database():
         print(emo_link)
         emo_list.append(emo_link)
 
-    for i in range(5):
+    for i in range(1000):
         # TimeKeeping(image_link, name, age, emo, last_checkin, last_checkout, prob)
         record = TimeKeeping(image_link=rd.choice(img_list), name=fake.name(), age=rd.randint(1, 80), emo=rd.choice(emo_list), last_checkin=fake.date_time(), last_checkout=fake.date_time(), prob=rd.random())
         print(record)
