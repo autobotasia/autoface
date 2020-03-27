@@ -30,7 +30,7 @@ app = Flask(__name__)
 
 # initialize the video stream and allow the camera sensor to
 # warmup
-#vs = VideoStream(usePiCamera=1).start()
+#vs = VideoStream(src="rtsp://admin:12345678a@@172.16.110.2:554/Streamming/channels/101").start()
 vs = VideoStream(src=0).start()
 time.sleep(2.0)
 
@@ -133,7 +133,7 @@ args = vars(ap.parse_args())'''
 
 # start a thread that will perform motion detection
 t = threading.Thread(target=detect_motion, args=(
-	5,))
+	20,))
 	#args["frame_count"],))
 t.daemon = True
 t.start()
