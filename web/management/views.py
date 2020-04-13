@@ -24,6 +24,27 @@ def report(request):
         print("Http404 Error. Cannot get TimeKeeping Records.")
 
 
+def camera_list(request):
+    try:
+        return render(request, 'camera-list.html')
+    except  Http404:
+        print("Http404 Error. Cannot get TimeKeeping Records.")
+
+
+def organization_list(request):
+    try:
+        return render(request, 'organization-list.html')
+    except  Http404:
+        print("Http404 Error. Cannot get TimeKeeping Records.")
+
+
+def group_of_title_list(request):
+    try:
+        return render(request, 'group-of-title.html')
+    except  Http404:
+        print("Http404 Error. Cannot get TimeKeeping Records.")
+
+
 def crud(request, arg, img_pk=0):
 
     if arg == "save-record-to-database":

@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
 
 admin.site.site_header = "NCC Admin"
 admin.site.site_title = "NCC Admin Portal"
@@ -24,4 +25,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('tools.urls')),
     path('management/', include('management.urls'), name="management"),
+    path('404error', TemplateView.as_view(template_name='404.html'), name='404-url'),
 ]

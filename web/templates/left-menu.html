@@ -1,0 +1,55 @@
+{% load staticfiles %}
+
+<!-- left menu -->
+<div class="left-sidebar-pro">
+  <nav id="sidebar" class="">
+    <div class="sidebar-header">
+      <a href="index.html"><img class="main-logo" src={% static "img/logo/logo.png" %} alt="" /></a>
+      <strong><img src={% static "img/logo/logosn.png" %} alt="" /></strong>
+    </div>
+    <div class="nalika-profile">
+      <div class="profile-dtl">
+        <a href="#"><img src={% static "img/notification/41.jpg" %} alt="" /></a>
+        <h2>Lakian <span class="min-dtn">Das</span></h2>
+      </div>
+      <div class="profile-social-dtl">
+        <ul class="dtl-social">
+          <li><a href="#"><i class="icon nalika-facebook"></i></a></li>
+          <li><a href="#"><i class="icon nalika-twitter"></i></a></li>
+          <li><a href="#"><i class="icon nalika-linkedin"></i></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="left-custom-menu-adp-wrap comment-scrollbar">
+      <nav class="sidebar-nav left-sidebar-menu-pro">
+        <ul class="metismenu" id="menu1">
+          <li class="active">
+            <a class="has-arrow" href='#'>
+              <i class="icon nalika-home icon-wrap"></i>
+              <span class="mini-click-non">Users</span>
+            </a>
+            <ul class="submenu-angle" aria-expanded="true">
+              <li><a title="Users List" href="#"><span class="mini-sub-pro">Users List</span></a></li>
+            </ul>
+          </li>
+          <li>
+            <a class="has-arrow" href="" aria-expanded="false"><i class="icon nalika-pie-chart icon-wrap"></i><span class="mini-click-non">System</span></a>
+            <ul class="submenu-angle" aria-expanded="false">
+              <li><a title="Cameras" href={% url "camera_list" %}><span class="mini-sub-pro">Cameras</span></a></li>
+              <li><a title="Organization" href={% url "organization_list" %}><span class="mini-sub-pro">Organization</span></a></li>
+            </ul>
+          </li>
+          <li>
+            <a class="has-arrow" href="#" aria-expanded="false"><i class="icon nalika-bar-chart icon-wrap"></i> <span class="mini-click-non">Report</span></a>
+            <ul class="submenu-angle" aria-expanded="false">
+              <li><a title="TimeKeeping" href={% url "management_report" %}><span class="mini-sub-pro">TimeKeeping</span></a></li>
+              <li><a title="Emotional Detection" href={% url "404-url" %}><span class="mini-sub-pro">Emotional Detection</span></a></li>
+              <li><a title="Group of Title" href={% url "group_of_title_list" %}><span class="mini-sub-pro">Group of Title</span></a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </nav>
+</div>
+<!-- end of left menu -->
