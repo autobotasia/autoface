@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from . import views
 
 urlpatterns = [
-    path('crud/<str:arg>/', views.crud, name='management_crud'),
+    path('crud/<str:arg>/<str:opt>', views.crud, name='management_crud'),
     path('', lambda request: redirect('management_report', permanent=True)),
     path('report', views.report, name='management_report'),
     path('camera', views.camera_list, name="camera_list"),

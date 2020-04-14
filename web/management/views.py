@@ -3,9 +3,15 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView, ListView
-from . import mock_dbtools
 from .models import TimeKeeping
+from .models import Camera
+from .models import Organization
+from .models import GroupOfTitle
+
+from . import mock_dbtools
 # Create your views here.
+
+
 # @login_required
 def report(request):
 
@@ -15,41 +21,53 @@ def report(request):
         #
         # page_number = request.GET.get('page')
         # page_obj = paginator.get_page(page_number)
-        page_obj = data_list
 
         return render(request, 'report.html', {
-            "page_obj": page_obj,
+            "page_obj": data_list,
         })
     except  Http404:
         print("Http404 Error. Cannot get TimeKeeping Records.")
 
 
+# @login_required
 def camera_list(request):
     try:
-        return render(request, 'camera-list.html')
+        data_list = get_list_or_404(Camera)
+        return render(request, 'camera-list.html', {
+            "page_obj": data_list,
+        })
     except  Http404:
         print("Http404 Error. Cannot get TimeKeeping Records.")
 
 
+# @login_required
 def organization_list(request):
     try:
-        return render(request, 'organization-list.html')
+        data_list = get_list_or_404(Organization)
+        return render(request, 'organization-list.html', {
+            "page_obj": data_list,
+        })
     except  Http404:
         print("Http404 Error. Cannot get TimeKeeping Records.")
 
 
+# @login_required
 def group_of_title_list(request):
     try:
-        return render(request, 'group-of-title.html')
+        data_list = get_list_or_404(GroupOfTitle)
+        return render(request, 'group-of-title.html', {
+            "page_obj": data_list,
+        })
     except  Http404:
         print("Http404 Error. Cannot get TimeKeeping Records.")
 
 
-def crud(request, arg, img_pk=0):
+# @login_required
+def crud(request, arg, opt):
 
     if arg == "save-record-to-database":
         try:
-            mock_dbtools.save_record_to_database()
+            mock_dbtools.save_record_to_database(opt)
         except Http404:
             return HttpResponse("404 Error.")
         else:

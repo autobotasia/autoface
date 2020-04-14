@@ -1,22 +1,26 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Cameras Management | NCC Autofaces</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- NCC Icon CSS
-  ============================================ -->
-  <link rel="stylesheet" href="css/nalika-icon.css">
+{% block page-head %}
+
+{# Page style #}
+<title>Camera Management | NCC Autofaces</title>
 
 
+<style media="screen">
+.table [data-sort] {
+  cursor: pointer;
+}
+/* This is for the sort up and down icon */
+.table [data-sort]::after {
+  margin-left: .25rem;
+  content: url('data:image/svg+xml;utf8,<svg width=\'6\' height=\'10\' viewBox=\'0 0 6 10\' fill=\'none\' xmlns=\'http://www.w3.org/2000/svg\'><path fill-rule=\'evenodd\' clip-rule=\'evenodd\' d=\'M3 0L6 4H0L3 0ZM3 10L0 6H6L3 10Z\' fill=\'%238898aa\'/></svg>');
+}
+</style>
 
+{# End of Page style #}
+{% endblock %}
 
-</head>
-
-<body>
   <!--[if lt IE 8]>
   <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
@@ -45,13 +49,13 @@
                     </div>
                     <div class="breadcomb-ctn">
                       <h2>Camera List</h2>
-                      <p>Welcome to NCC <span class="bread-ntd">Admin Template</span></p>
+                      <p>Welcome to NCC <span class="bread-ntd">Admin</span></p>
                     </div>
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                   <div class="breadcomb-report">
-                    <button data-toggle="tooltip" data-placement="left" title="Download Report" class="btn"><i class="icon nalika-download"></i></button>
+                    <button data-toggle="tooltip" data-placement="left" title="Download Report" class="btn btn-custon-rounded-three btn-warning" id="exportbtn"><i class="icon nalika-download"></i>Export CSV</button>
                   </div>
                 </div>
               </div>
@@ -60,138 +64,80 @@
         </div>
       </div>
     </div>
-    {# Page Header #}
+    {# End of Page Header #}
   </div>
   {# End of all header #}
-  <div>
-    <div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
-      <div class="header-top-menu tabl-d-n">
-        <div class="breadcome-heading">
-          <form role="search" class="">
-            <input type="text" placeholder="Search..." class="form-control">
-            <a href=""><i class="fa fa-search"></i></a>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
   <div class="product-status mg-b-30">
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="product-status-wrap">
-            <h4>Cameras List</h4>
-            <div class="add-product">
-              <a href="camera-create.html">Add Camera</a>
+          <div class="product-status-wrap" id="table">
+            <div class="row">
+              <div class="col-lg-4">
+                <h4>Cameras List</h4>
+              </div>
+              <div class="col-lg-4">
+
+              </div>
+              <div class="">
+                <div class="add-product">
+                  <a href="{% url 'admin:management:camera:add' %}">Add Camera</a>
+                </div>
+              </div>
             </div>
-            <table>
-              <tr>
-                <th>No</th>
-                <th>Camera Title</th>
-                <th>Area</th>
-                <th>Organization</th>
-                <th>IP Camera</th>
-                <th>Status</th>
-                <th>Setting</th>
-              </tr>
-              <tr>
-                <td>No 1</td>
-                <td>Camera Title 1</td>
-                <td>Area#</td>
-                <td>NCC</td>
-                <td>0.0.0.0:8888</td>
-                <td>
-                  <button class="pd-setting">Active</button>
-                </td>
-                <td>
-                  <button data-toggle="tooltip" title="View" class="pd-setting-ed"><a href="camera-crud.html"><i class="fa fa-eye" aria-hidden="true"></i></a></button>
-                  <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><a href="camera-crud.html"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></button>
-                  <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                </td>
-              </tr>
-              <tr>
-                <td>No #</td>
-                <td>Camera Title 2</td>
-                <td>Area#</td>
-                <td>NCC</td>
-                <td>0.0.0.0:8888</td>
-                <td>
-                  <button class="ps-setting">Paused</button>
-                </td>
-                <td>
-                  <button data-toggle="tooltip" title="View" class="pd-setting-ed"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                  <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                  <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                </td>
-              </tr>
-              <tr>
-                <td>No #</td>
-                <td>Camera Title 3</td>
-                <td>Area#</td>
-                <td>NCC</td>
-                <td>0.0.0.0:8888</td>
-                <td>
-                  <button class="ds-setting">Disabled</button>
-                </td>
-                <td>
-                  <button data-toggle="tooltip" title="View" class="pd-setting-ed"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                  <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                  <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                </td>
-              </tr>
-              <tr>
-                <td>No #</td>
-                <td>Camera Title 4</td>
-                <td>Area#</td>
-                <td>NCC</td>
-                <td>0.0.0.0:8888</td>
-                <td>
-                  <button class="pd-setting">Active</button>
-                </td>
-                <td>
-                  <button data-toggle="tooltip" title="View" class="pd-setting-ed"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                  <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                  <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                </td>
-              </tr>
-              <tr>
-                <td>No #</td>
-                <td>Camera Title 5</td>
-                <td>Area#</td>
-                <td>NCC</td>
-                <td>0.0.0.0:8888</td>
-                <td>
-                  <button class="pd-setting">Active</button>
-                </td>
-                <td>
-                  <button data-toggle="tooltip" title="View" class="pd-setting-ed"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                  <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                  <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                </td>
-              </tr>
-              <tr>
-                <td>No #</td>
-                <td>Camera Title 6</td>
-                <td>Area#</td>
-                <td>NCC</td>
-                <td>0.0.0.0:8888</td>
-                <td>
-                  <button class="ps-setting">Paused</button>
-                </td>
-                <td>
-                  <button data-toggle="tooltip" title="View" class="pd-setting-ed"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                  <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                  <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                </td>
-              </tr>
+            <div class="row">
+              <div class="breadcome-heading col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <form role="search" class="" method="get">
+                  <input name="search_keyword" type="text" placeholder="Search..." class="search form-control pull-right" style="color:white">
+                  <!-- <a href="" class=""><i class="fa fa-search"></i></a> -->
+                </form>
+              </div>
+            </div>
+            <table class='table'>
+              <thead>
+                <tr>
+                  <th scope="col" class="sort" data-sort="id">No</th>
+                  <th scope="col" class="sort" data-sort="camera_title">Camera Title</th>
+                  <th scope="col" class="sort" data-sort="area">Area</th>
+                  <th scope="col" class="sort" data-sort="organization_name">Organization</th>
+                  <th scope="col" class="sort" data-sort="IP_camera">IP Camera</th>
+                  <th scope="col" class="sort" data-sort="status">Status</th>
+                  <th>Setting</th>
+                </tr>
+              </thead>
+              <tbody class="list">
+                {% for data in page_obj %}
+                <tr>
+                  <td scope="row" class="id">{{ data.id }}</td>
+                  <td class="camera_title">{{ data.camera_title }}</td>
+                  <td class="area">{{ data.area }}</td>
+                  <td class="organization_name">{{ data.organization_name }}</td>
+                  <td class="IP_camera">{{ data.IP_camera }}</td>
+                  <td class="status">
+                    {% if data.status == 0 %}
+                    <button class="btn btn-custon-rounded-three btn-success">{{ 'Active' }}</button>
+                    {% elif data.status == 1 %}
+                    <button class="btn btn-custon-rounded-three btn-warning">{{ 'Paused' }}</button>
+                    {% elif data.status == 2 %}
+                    <button class="btn btn-custon-rounded-three btn-danger">{{ 'Disabled' }}</button>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <button data-toggle="tooltip" title="View" class="pd-setting-ed"><a href="camera-crud.html"><i class="fa fa-eye" aria-hidden="true"></i></a></button>
+                    <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><a href="camera-crud.html"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></button>
+                    <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
             </table>
             <div class="custom-pagination">
               <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                {# <li class="page-item"><a class="page-link" href="#">Previous</a></li> #}
+                {# <li class="page-item"><a class="page-link" href="#">1</a></li>
                 <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li> #}
+                {# <li class="page-item"><a class="page-link" href="#">Next</a></li> #}
               </ul>
             </div>
           </div>
@@ -199,7 +145,33 @@
       </div>
     </div>
   </div>
-  {% include "footer-copyright.html" %}
 
 
-  {% endblock %}
+  {# Page script #}
+
+  <!-- DataTable Jquery - List.JS Plugin -->
+  <script src={% static "js/jquery.min.js" %}></script>
+  <script src={% static "js/list.min.js" %}></script>
+  <script type="text/javascript">
+  /* here you use your_column_names */
+  var options = {
+    valueNames: [ 'id', "camera_title", "area", "organization_name", "IP_camera", "status"],
+    page: 20,
+    pagination: true,
+  };
+  /*table = id of the div */
+  var userList = new List('table', options);
+  </script>
+
+  <!-- Export table to CSV script -->
+  <script src={% static "js/tabletoCSV/jquery.tabletoCSV.js" %} charset="utf-8"></script>
+  <script type="text/javascript">
+  $(function(){
+  $("#exportbtn").click(function(){
+  $(".table").tableToCSV();
+});
+});
+
+</script>
+{# End of Page script #}
+{% endblock %}

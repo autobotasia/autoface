@@ -7,7 +7,7 @@
 
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Report | NCC Autofaces</title>
+
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -24,9 +24,9 @@
     <!-- Bootstrap CSS
 		============================================ -->
     <link rel="stylesheet" href={% static "css/font-awesome.min.css" %}>
-	<!-- NCC Icon CSS *
+	<!-- NCC Icon CSS
 		============================================ -->
-    <link rel="stylesheet" href={% static "css/font-awesome.min.css" %}>
+    <link rel="stylesheet" href={% static "css/nalika-icon.css" %}>
     <!-- owl.carousel CSS
 		============================================ -->
     <link rel="stylesheet" href={% static "css/owl.carousel.css" %}>
@@ -64,14 +64,15 @@
     <!-- responsive CSS
 		============================================ -->
     <link rel="stylesheet" href={% static "css/responsive.css" %}>
+    <!-- modernizr JS
+    ============================================ -->
+    <link rel="stylesheet" href={% static "js/vendor/modernizr-2.8.3.min.js" %}>
     {# End of main link #}
 
     {% block page-head %}
+    {# Add Page Head #}
     {% endblock %}
 
-    <!-- modernizr <J></J>S
-		============================================ -->
-    <link rel="stylesheet" href={% static "js/vendor/modernizr-2.8.3.min.js" %}>
 
 
 </head>
@@ -95,8 +96,9 @@
     </div>
 
   {% block content %}
+  {% endblock %}
 
-
+  {% include "footer-copyright.html" %}
       {# main-script #}
 
       <!-- jquery
@@ -148,7 +150,7 @@
       <script src={% static "js/main.js" %}></script>
 
       {# end of main-script #}
-  {% endblock %}
+
   </div>
 
 </body>

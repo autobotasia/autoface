@@ -23,6 +23,7 @@ admin.site.index_title = "Welcome to NCC Portal"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('login', TemplateView.as_view(template_name='login.html'), name='404-url'),
     path('', include('tools.urls')),
     path('management/', include('management.urls'), name="management"),
     path('404error', TemplateView.as_view(template_name='404.html'), name='404-url'),
