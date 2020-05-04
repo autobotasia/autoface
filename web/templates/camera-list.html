@@ -5,7 +5,9 @@
 
 {# Page style #}
 <title>Camera Management | NCC Autofaces</title>
-
+<!-- style CSS
+============================================ -->
+<link rel="stylesheet" href={% static "css/alerts.css" %}>
 
 <style media="screen">
 .table [data-sort] {
@@ -67,6 +69,12 @@
     {# End of Page Header #}
   </div>
   {# End of all header #}
+  {% if notif != None %}
+  <div class="alert alert-success alert-st-one col-lg-12" role="alert">
+    <i class="fa fa-check adminpro-checked-pro admin-check-pro admin-check-pro-none" aria-hidden="true"></i>
+    <p class="message-mg-rt message-alert-none"><strong>Well done!</strong> You successfully read this important alert message.</p>
+  </div>
+  {% endif %}
   <div class="product-status mg-b-30">
     <div class="container-fluid">
       <div class="row">
@@ -81,7 +89,7 @@
               </div>
               <div class="">
                 <div class="add-product">
-                  <a href="{% url 'admin:management:camera:add' %}">Add Camera</a>
+                  <a href="#">Add Camera</a>
                 </div>
               </div>
             </div>
@@ -125,7 +133,7 @@
                   <td>
                     <button data-toggle="tooltip" title="View" class="pd-setting-ed"><a href="camera-crud.html"><i class="fa fa-eye" aria-hidden="true"></i></a></button>
                     <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><a href="camera-crud.html"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></button>
-                    <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    <button data-toggle="tooltip" title="Trash" class="pd-setting-ed confirm-delete" id="confirm-delete" value={{ data.id }}><a><i class="fa fa-trash-o" aria-hidden="true"></i></a></button>
                   </td>
                 </tr>
                 {% endfor %}
@@ -163,6 +171,20 @@
   var userList = new List('table', options);
   </script>
 
+  {# delete object #}
+  <script type="text/javascript">
+    $(document).on("click", '.confirm-delete', function(){
+      var objectID = $('#confirm-delete').val();
+      var conf = confirm('Are you sure you want to delete ' + objectID);
+      if(conf){
+        // console.log(objectID)
+        window.location.href = "camera/" + objectID + "/delete";
+      }
+
+    });
+
+  </script>
+  {# end of delete object #}
   <!-- Export table to CSV script -->
   <script src={% static "js/tabletoCSV/jquery.tabletoCSV.js" %} charset="utf-8"></script>
   <script type="text/javascript">

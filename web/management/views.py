@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView, ListView
+from django.urls import reverse
 from .models import TimeKeeping
 from .models import Camera
 from .models import Organization
@@ -24,6 +25,7 @@ def report(request):
 
         return render(request, 'report.html', {
             "page_obj": data_list,
+            "notif": None,
         })
     except  Http404:
         print("Http404 Error. Cannot get TimeKeeping Records.")
@@ -35,9 +37,38 @@ def camera_list(request):
         data_list = get_list_or_404(Camera)
         return render(request, 'camera-list.html', {
             "page_obj": data_list,
+            "notif": None,
         })
     except  Http404:
         print("Http404 Error. Cannot get TimeKeeping Records.")
+
+
+def camera_create(request):
+    
+
+
+# @login_required
+def camera_crud(request, id, opt):
+    if opt == 'delete':
+        try:
+            data_list = get_list_or_404(Camera)
+            data = get_object_or_404(Camera, pk=id)
+            print(data)
+            notif = "Deleted camera " + str(data.id)
+            return HttpResponseRedirect(reverse('camera_list', args={
+                "page_obj": data_list,
+                "notif": notif,
+            }))
+        except  Http404:
+            print("Http404 Error. Cannot get TimeKeeping Records.")
+    else:
+        try:
+            data_list = get_list_or_404(Camera)
+            return render(request, 'camera-list.html', {
+                "page_obj": data_list,
+            })
+        except  Http404:
+            print("Http404 Error. Cannot get TimeKeeping Records.")
 
 
 # @login_required
