@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.core.paginator import Paginator
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView, ListView
 from django.urls import reverse
@@ -8,6 +9,9 @@ from .models import TimeKeeping
 from .models import Camera
 from .models import Organization
 from .models import GroupOfTitle
+
+from .forms import CameraForm
+from .forms import OrganizationForm
 
 from . import mock_dbtools
 # Create your views here.
@@ -44,11 +48,22 @@ def camera_list(request):
 
 
 def camera_create(request):
-    
+
+    if request.method == 'POST':
+        form = CameraForm(request.POST)
+        if form.is_valid():
+            form.save()
+            camera_name = form.cleaned_data['camera_title']
+            messages.success(request, "Created " + camera_name)
+            return HttpResponseRedirect(request.path_info)
+    else:
+        form = CameraForm()
+        return render(request, 'temp-camera-create-form.html', {'form': form})
 
 
 # @login_required
 def camera_crud(request, id, opt):
+
     if opt == 'delete':
         try:
             data_list = get_list_or_404(Camera)
@@ -61,6 +76,23 @@ def camera_crud(request, id, opt):
             }))
         except  Http404:
             print("Http404 Error. Cannot get TimeKeeping Records.")
+
+    elif opt == 'update':
+        camera = get_object_or_404(Camera, pk=id)
+        form = CameraForm(instance=camera)
+
+        if request.method == 'POST':
+            form = CameraForm(request.POST, instance=camera)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Updated camera ' + str(id))
+                return HttpResponseRedirect(request.path_info)
+
+        return render(request, 'temp-camera-update-form.html', {'form': form})
+
+    elif opt == 'view':
+        camera = Camera.objects.get(pk=id)
+        return render(request, 'temp-camera-view.html', {'camera' : camera})
     else:
         try:
             data_list = get_list_or_404(Camera)
@@ -69,6 +101,10 @@ def camera_crud(request, id, opt):
             })
         except  Http404:
             print("Http404 Error. Cannot get TimeKeeping Records.")
+
+
+
+
 
 
 # @login_required
@@ -80,6 +116,74 @@ def organization_list(request):
         })
     except  Http404:
         print("Http404 Error. Cannot get TimeKeeping Records.")
+
+def camera_crud(request, id, opt):
+
+    if opt == 'delete':
+        try:
+            data_list = get_list_or_404(Camera)
+            data = get_object_or_404(Camera, pk=id)
+            print(data)
+            notif = "Deleted camera " + str(data.id)
+            return HttpResponseRedirect(reverse('camera_list', args={
+                "page_obj": data_list,
+                "notif": notif,
+            }))
+        except  Http404:
+            print("Http404 Error. Cannot get TimeKeeping Records.")
+
+    elif opt == 'update':
+        camera = get_object_or_404(Camera, pk=id)
+        form = CameraForm(instance=camera)
+
+        if request.method == 'POST':
+            form = CameraForm(request.POST, instance=camera)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Updated camera ' + str(id))
+                return HttpResponseRedirect(request.path_info)
+
+        return render(request, 'temp-camera-update-form.html', {'form': form})
+
+    elif opt == 'view':
+        camera = Camera.objects.get(pk=id)
+        return render(request, 'temp-camera-view.html', {'camera' : camera})
+    else:
+        try:
+            data_list = get_list_or_404(Camera)
+            return render(request, 'camera-list.html', {
+                "page_obj": data_list,
+            })
+        except  Http404:
+            print("Http404 Error. Cannot get TimeKeeping Records.")
+
+
+def organization_create(request):
+
+    if request.method == 'POST':
+        form = OrganizationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            organization_name = form.cleaned_data['organization_name']
+            messages.success(request, "Created " + organization_name)
+            return HttpResponseRedirect(request.path_info)
+    else:
+        form = OrganizationForm()
+        return render(request, 'temp-organization-create-form.html', {'form': form})
+
+def organization_create(request):
+
+    if request.method == 'POST':
+        form = OrganizationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            organization_name = form.cleaned_data['organization_name']
+            messages.success(request, "Created " + organization_name)
+            return HttpResponseRedirect(request.path_info)
+    else:
+        form = OrganizationForm()
+        return render(request, 'temp-organization-create-form.html', {'form': form})
+
 
 
 # @login_required

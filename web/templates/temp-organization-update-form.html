@@ -1,0 +1,19 @@
+<h3>Camera Create</h3>
+<div class="info">
+  <h4>Status:</h4>
+  <ul>
+    <li>0 : ACTIVE</li>
+    <li>1 : PAUSED</li>
+    <li>2 : DISABLED</li>
+  </ul>
+</div>
+<br>
+<br>
+<br>
+<div class="form">
+  <form class="form" action={% url 'camera_crud' %} method="post">
+    {% csrf_token %}
+    {{ form.as_ul }}
+    <input type="submit" name="" value="Submit">
+  </form>
+</div>

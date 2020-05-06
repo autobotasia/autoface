@@ -89,7 +89,7 @@
               </div>
               <div class="">
                 <div class="add-product">
-                  <a href="#">Add Camera</a>
+                  <a href={% url "camera_create" %}>Add Camera</a>
                 </div>
               </div>
             </div>
@@ -131,9 +131,9 @@
                     {% endif %}
                   </td>
                   <td>
-                    <button data-toggle="tooltip" title="View" class="pd-setting-ed"><a href="camera-crud.html"><i class="fa fa-eye" aria-hidden="true"></i></a></button>
-                    <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><a href="camera-crud.html"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></button>
-                    <button data-toggle="tooltip" title="Trash" class="pd-setting-ed confirm-delete" id="confirm-delete" value={{ data.id }}><a><i class="fa fa-trash-o" aria-hidden="true"></i></a></button>
+                    <a href={% url "camera_crud" id=data.id opt="view" %}><button data-toggle="tooltip" title="View" class="pd-setting-ed"><i class="fa fa-eye" aria-hidden="true"></i></button></a>
+                    <a href={% url "camera_crud" id=data.id opt="update" %}><button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
+                    <a><button data-toggle="tooltip" title="Trash" class="pd-setting-ed confirm-delete" id="confirm-delete" value={{ data.id }}><i class="fa fa-trash-o" aria-hidden="true"></i></button></a>
                   </td>
                 </tr>
                 {% endfor %}

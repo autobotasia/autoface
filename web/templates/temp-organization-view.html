@@ -1,0 +1,38 @@
+<h3>Organization {{ organization.id }}</h3>
+<a href={% url 'camera_list' %}>Camera List</a>
+<br>
+<a href={% url "camera_crud" id=camera.id opt="update" %}>Camera Update</a>
+<br>
+<br>
+<br>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+    {% endfor %}
+</ul>
+{% endif %}
+<table>
+  <tr>
+    <th>Camera Title</th>
+    <th>Area</th>
+    <th>Organization</th>
+    <th>IP</th>
+    <th>Status</th>
+  </tr>
+  <tr>
+    <td>{{ camera.camera_title }}</td>
+    <td>{{ camera.area }}</td>
+    <td>{{ camera.organization_name }}</td>
+    <td>{{ camera.IP_camera }}</td>
+    <td>
+      {% if camera.status == 0 %}
+      Active
+      {% elif camera.status == 1 %}
+      PAUSED
+      {% else %}
+      DISABLED
+      {% endif %}
+    </td>
+  </tr>
+</table>

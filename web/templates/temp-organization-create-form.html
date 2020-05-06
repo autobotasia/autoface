@@ -1,0 +1,18 @@
+<h3>Organization Create</h3>
+<a href={% url 'organization_list' %}>Organization List</a>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+    {% endfor %}
+</ul>
+{% endif %}
+<br>
+<br>
+<div class="form">
+  <form class="form" action={% url 'organization_create' %} method="post">
+    {% csrf_token %}
+    {{ form.as_ul }}
+    <input type="submit" name="" value="Submit">
+  </form>
+</div>
