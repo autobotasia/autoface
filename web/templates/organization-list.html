@@ -74,7 +74,7 @@
 
               </div>
                 <div class="add-product">
-                  <a href="organization-create.html">Add Organization</a>
+                  <a href={% url 'organization_create' %}>Add Organization</a>
                 </div>
             </div>
             <div class="row">
@@ -107,8 +107,8 @@
                   <td class="location">{{ data.location }}</td>
                   <td class="tel">{{ data.tel }}</td>
                   <td>
-                    <button data-toggle="tooltip" title="View" class="pd-setting-ed"><a href={% url "organization_update" id=data.id opt='view' %}><i class="fa fa-eye" aria-hidden="true"></i></a></button>
-                    <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><a href={% url "organization_update" id=data.id opt='update' %}><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></button>
+                    <a href={% url "organization_crud" id=data.id opt='view' %}><button data-toggle="tooltip" title="View" class="pd-setting-ed"><i class="fa fa-eye" aria-hidden="true"></i></button></a>
+                    <a href={% url "organization_crud" id=data.id opt='update' %}><button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
                     <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                   </td>
                 </tr>
