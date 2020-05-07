@@ -57,7 +57,7 @@
   </div>
   {# End of Page Header #}
 </div>
-  {# End of all header #}
+{# End of all header #}
 
 <!-- Single pro tab start-->
 <div class="single-product-tab-area mg-b-30">
@@ -74,6 +74,10 @@
             </ul>
             <div id="myTabContent" class="tab-content custom-product-edit">
               <div class="product-tab-list tab-pane fade active in" id="description">
+                {# Start Form Block #}
+                <div class="form">
+                  <form class="form" action={% url 'organization_create' %} method="post">
+                    {% csrf_token %}
                 <div class="row">
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <div class="review-content-section">
@@ -124,6 +128,9 @@
                     </div>
                   </div>
                 </div>
+              </form>
+            </div>
+                {# End Form Block #}
               </div>
               <div class="product-tab-list tab-pane fade" id="reviews1">
                 <div class="row">
