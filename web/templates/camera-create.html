@@ -68,28 +68,30 @@
               </ul>
               <div id="myTabContent" class="tab-content custom-product-edit">
                 <div class="product-tab-list tab-pane fade active in" id="description">
+                  <form class="form" action={% url 'camera_create' %} method="post">
+                    {% csrf_token %}
                   <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                       <div class="review-content-section">
                         <div class="input-group mg-b-pro-edt">
                           <span class="input-group-addon"><i class="icon nalika-menu-task" aria-hidden="true"></i></span>
-                          <input type="text" class="form-control" placeholder="No.">
+                          {{ form.status }}
                         </div>
                         <div class="input-group mg-b-pro-edt">
                           <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
-                          <input type="text" class="form-control" placeholder="Camera Name">
+                          {{ form.camera_title }}
                         </div>
                         <div class="input-group mg-b-pro-edt">
                           <span class="input-group-addon"><i class="icon nalika-placeholder" aria-hidden="true"></i></span>
-                          <input type="text" class="form-control" placeholder="Area">
+                          {{ form.area }}
                         </div>
                         <div class="input-group mg-b-pro-edt">
                           <span class="input-group-addon"><i class="fa fa-building-o" aria-hidden="true"></i></span>
-                          <input type="text" class="form-control" placeholder="Organization">
+                          {{ form.organization_name }}
                         </div>
                         <div class="input-group mg-b-pro-edt">
                           <span class="input-group-addon"><i class="icon nalika-desktop" aria-hidden="true"></i></span>
-                          <input type="text" class="form-control" placeholder="IP Camera">
+                          {{ form.IP_camera }}
                         </div>
                         <div class="input-group mg-b-pro-edt">
                           <span class="input-group-addon"><i class="icon nalika-upload" aria-hidden="true"></i></span>
@@ -121,30 +123,20 @@
                       </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                      <div class="review-content-section">
-                        <form method="post">
-                          <textarea id="summernote" name="editordata"></textarea>
-                        </form>
-                        <script>
-                        $('#summernote').summernote({
-                          placeholder: 'Descriptions',
-                          tabsize: 2,
-                          height: 200
-                        });
-                        </script>
-                      </div>
+                      {# Description Text Area #}
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <div class="text-center custom-pro-edt-ds">
-                        <button type="button" class="btn btn-ctl-bt waves-effect waves-light m-r-10">Save
+                        <button type="Submit" class="btn btn-ctl-bt waves-effect waves-light m-r-10" value='submit'>Save
                         </button>
                         <button type="button" class="btn btn-ctl-bt waves-effect waves-light">Discard
                         </button>
                       </div>
                     </div>
                   </div>
+                </form>
                 </div>
               </div>
             </div>

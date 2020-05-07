@@ -87,41 +87,30 @@
                       </div>
                       <div class="input-group mg-b-pro-edt">
                         <span class="input-group-addon"><i class="icon nalika-user" aria-hidden="true"></i></span>
-                        <input type="text" class="form-control" placeholder="Admin">
+                        {{ form.admin }}
                       </div>
                       <div class="input-group mg-b-pro-edt">
                         <span class="input-group-addon"><i class="icon nalika-team" aria-hidden="true"></i></span>
-                        <input type="text" class="form-control" placeholder="Organization Name">
+                        {{ form.organization_name }}
                       </div>
                       <div class="input-group mg-b-pro-edt">
                         <span class="input-group-addon"><i class="fa fa-building-o" aria-hidden="true"></i></span>
-                        <input type="text" class="form-control" placeholder="Location">
+                        {{ form.location }}
                       </div>
                       <div class="input-group mg-b-pro-edt">
                         <span class="input-group-addon"><i class="icon nalika-smartphone-call" aria-hidden="true"></i></span>
-                        <input type="text" class="form-control" placeholder="Tel">
+                        {{ form.tel }}
                       </div>
                     </div>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <div class="review-content-section">
-                      <form method="post">
-                        <textarea id="summernote" name="editordata"></textarea>
-                      </form>
-                      <script>
-                      $('#summernote').summernote({
-                        placeholder: 'Descriptions',
-                        tabsize: 2,
-                        height: 160
-                      });
-                      </script>
-                    </div>
+                    {# Description TextArea #}
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="text-center custom-pro-edt-ds">
-                      <button type="button" class="btn btn-ctl-bt waves-effect waves-light m-r-10">Save
+                      <button type="Submit" class="btn btn-ctl-bt waves-effect waves-light m-r-10" value="submit">Save
                       </button>
                       <button type="button" class="btn btn-ctl-bt waves-effect waves-light">Discard
                       </button>

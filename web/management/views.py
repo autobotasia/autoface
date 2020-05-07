@@ -56,20 +56,6 @@ def camera_create(request):
             return HttpResponseRedirect(request.path_info)
     else:
         form = CameraForm()
-        return render(request, 'temp-camera-create-form.html', {'form': form})
-
-
-def camera_create2(request):
-
-    if request.method == 'POST':
-        form = CameraForm(request.POST)
-        if form.is_valid():
-            form.save()
-            camera_name = form.cleaned_data['camera_title']
-            messages.success(request, "Created " + camera_name)
-            return HttpResponseRedirect(request.path_info)
-    else:
-        form = CameraForm()
         return render(request, 'camera-create.html', {'form': form})
 
 
@@ -100,7 +86,7 @@ def camera_crud(request, id, opt):
                 messages.success(request, 'Updated camera ' + str(id))
                 return HttpResponseRedirect(request.path_info)
 
-        return render(request, 'temp-camera-update-form.html', {'form': form})
+        return render(request, 'camera-crud.html', {'form': form})
 
     elif opt == 'view':
         camera = Camera.objects.get(pk=id)
@@ -126,62 +112,7 @@ def organization_list(request):
         print("Http404 Error. Cannot get TimeKeeping Records.")
 
 
-def camera_crud(request, id, opt):
-
-    if opt == 'delete':
-        try:
-            data_list = get_list_or_404(Camera)
-            data = get_object_or_404(Camera, pk=id)
-            print(data)
-            notif = "Deleted camera " + str(data.id)
-            return HttpResponseRedirect(reverse('camera_list', args={
-                "page_obj": data_list,
-                "notif": notif,
-            }))
-        except  Http404:
-            print("Http404 Error. Cannot get TimeKeeping Records.")
-
-    elif opt == 'update':
-        camera = get_object_or_404(Camera, pk=id)
-        form = CameraForm(instance=camera)
-
-        if request.method == 'POST':
-            form = CameraForm(request.POST, instance=camera)
-            if form.is_valid():
-                form.save()
-                messages.success(request, 'Updated camera ' + str(id))
-                return HttpResponseRedirect(request.path_info)
-
-        return render(request, 'temp-camera-update-form.html', {"camera_id" : camera.id, 'form': form})
-
-    elif opt == 'view':
-        camera = Camera.objects.get(pk=id)
-        return render(request, 'temp-camera-view.html', {'camera' : camera})
-    else:
-        try:
-            data_list = get_list_or_404(Camera)
-            return render(request, 'camera-list.html', {
-                "page_obj": data_list,
-            })
-        except  Http404:
-            print("Http404 Error. Cannot get TimeKeeping Records.")
-
-
 def organization_create(request):
-
-    if request.method == 'POST':
-        form = OrganizationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            organization_name = form.cleaned_data['organization_name']
-            messages.success(request, "Created " + organization_name)
-            return HttpResponseRedirect(request.path_info)
-    else:
-        form = OrganizationForm()
-        return render(request, 'temp-organization-create-form.html', {'form': form})
-
-
-def organization_create2(request):
 
     if request.method == 'POST':
         form = OrganizationForm(request.POST)
@@ -221,7 +152,7 @@ def organization_crud(request, id, opt):
                 messages.success(request, 'Updated organization ' + str(id))
                 return HttpResponseRedirect(request.path_info)
 
-        return render(request, 'temp-organization-update-form.html', {"org_id" : organization.id, 'form': form})
+        return render(request, 'organization-crud.html', {'form': form})
 
     elif opt == 'view':
         organization = Organization.objects.get(pk=id)
@@ -248,7 +179,7 @@ def group_of_title_list(request):
 
 
 # @login_required
-def crud(request, arg, opt):
+def database_crud(request, arg, opt):
 
     if arg == "save-record-to-database":
         try:

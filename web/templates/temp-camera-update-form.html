@@ -23,7 +23,23 @@
 <div class="form">
   <form class="form" action="" method="post">
     {% csrf_token %}
-    {{ form.as_ul }}
+    <table>
+      <tr>
+        <th>{{ form.area.label_tag }}</th>
+        <th>{{ form.camera_title.label_tag }}</th>
+        <th>{{ form.status.label_tag }}</th>
+        <th>{{ form.IP_camera.label_tag }}</th>
+        <th>{{ form.organization_name.label_tag }}</th>
+      </tr>
+      <tr>
+        <td>{{ form.area }}</td>
+        <td>{{ form.camera_title }}</td>
+        <td>{{ form.status }}</td>
+        <td>{{ form.IP_camera }}</td>
+        <td>{{ form.organization_name }}</td>
+      </tr>
+    </table>
+
     <input type="submit" name="" value="Submit">
   </form>
 </div>

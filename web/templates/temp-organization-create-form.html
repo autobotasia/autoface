@@ -12,7 +12,23 @@
 <div class="form">
   <form class="form" action={% url 'organization_create' %} method="post">
     {% csrf_token %}
-    {{ form.as_ul }}
-    <input type="submit" name="" value="Submit">
+    <table>
+      <tr>
+        <th>{{ form.initial.pk.label_tag }}</th>
+        <th>{{ form.organization_name.label_tag }}</th>
+        <th>{{ form.admin.label_tag }}</th>
+        <th>{{ form.location.label_tag }}</th>
+        <th>{{ form.tel.label_tag }}</th>
+      </tr>
+      <tr>
+        <td>{{ form.initial.pk }}</td>
+        <td>{{ form.organization_name }}</td>
+        <td>{{ form.admin }}</td>
+        <td>{{ form.location }}</td>
+        <td>{{ form.tel }}</td>
+      </tr>
+    </table>
+        <button type="Submit" name="submit-btn" value="submit">Save</button>
+
   </form>
 </div>
