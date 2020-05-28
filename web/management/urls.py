@@ -14,7 +14,7 @@ urlpatterns = [
     path('camera/create', views.camera_create, name='camera_create'),
     path('camera/<int:id>/<str:opt>', views.camera_crud, name="camera_crud"),
 
-    path('organization', views.organization_list,    name='organization_list'),
+    path('organization', views.organization_list, name='organization_list'),
     path('organization/', lambda request: redirect('organization_list', permanent=True)),
     path('organization/create', views.organization_create, name='organization_create'),
     path('organization/<int:id>/<str:opt>', views.organization_crud, name="organization_crud"),

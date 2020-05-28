@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, DeleteView
 from django.urls import reverse
 from .models import TimeKeeping
 from .models import Camera
@@ -15,7 +15,7 @@ from . import mock_dbtools
 # Create your views here.
 
 
-# @login_required
+@login_required
 def report(request):
 
     try:
@@ -64,14 +64,17 @@ def camera_crud(request, id, opt):
 
     if opt == 'delete':
         try:
-            data_list = get_list_or_404(Camera)
-            data = get_object_or_404(Camera, pk=id)
-            print(data)
-            notif = "Deleted camera " + str(data.id)
-            return HttpResponseRedirect(reverse('camera_list', args={
-                "page_obj": data_list,
-                "notif": notif,
-            }))
+            camera = get_object_or_404(Camera, pk=id)
+            form = CameraForm(instance=camera)
+            if request.method == 'POST':
+                form = CameraForm(request.POST, instance=camera)
+                if form.is_valid():
+                    form.delete()
+                    messages.success(request, 'Deleted camera ' + str(id))
+                    return HttpResponseRedirect('camera_list')
+
+            return render(request, 'camera-delete.html', {'form': form})
+
         except  Http404:
             print("Http404 Error. Cannot get TimeKeeping Records.")
 
@@ -99,6 +102,12 @@ def camera_crud(request, id, opt):
             })
         except  Http404:
             print("Http404 Error. Cannot get TimeKeeping Records.")
+
+
+class DeleteMe(DeleteView):
+    template_name = 'camera-delete.html'
+    model = Camera
+    success_url = 'camera_list'
 
 
 # @login_required

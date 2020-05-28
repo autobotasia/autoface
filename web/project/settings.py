@@ -50,6 +50,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Django sites app  required
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    # apps
     'tools',
     'management',
     'crispy_forms',
@@ -153,6 +160,9 @@ MEDIAFILES_DIR = [
 
 # temporary image files location:
 TEMP_IMG = 'cls/'
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'management.report'
 
 # TAG LIST
 TAG_LIST = tags = [
