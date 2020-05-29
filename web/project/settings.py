@@ -50,17 +50,35 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     # Django sites app  required
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    # 'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+    # 'allauth.socialaccount.providers.twitter',
 
     # apps
     'tools',
     'management',
     'crispy_forms',
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        
+    },
+    'google':{
+        'SCOPE': ['email'],
+        'AUTH_PARAMS': { 'access_type': 'online' }
+    },
+    'twitter':{}
+}
+
+# Ensure SITE_ID is set sites app
+SITE_ID = 2
 
 # DJANGO CRISPY FORMS PACKAGE SETTING
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -127,6 +145,26 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
+]
+
+# EMAIL_BACKEND so allauth can proceed to send confirmation emails
+# ONLY for development/testing use console
+EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
+
+
+# Custom allauth settings
+# Use email as the primary identifier
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+# Make email verification mandatory to avoid junk email accounts
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+# Eliminate need to provide username, as it's a very old practice
+ACCOUNT_USERNAME_REQUIRED = False
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -162,7 +200,7 @@ MEDIAFILES_DIR = [
 TEMP_IMG = 'cls/'
 
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'management.report'
+LOGIN_REDIRECT_URL = '/management/report'
 
 # TAG LIST
 TAG_LIST = tags = [
