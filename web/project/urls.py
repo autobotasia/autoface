@@ -30,11 +30,7 @@ urlpatterns = [
     # path('register/', user_views.register, name='register'),
     # path('login', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     url(r'^accounts/', include('allauth.urls')),
-    path('login', RedirectView.as_view(url='/admin/login/?next=/admin/', permanent=True), name='login'),
-    path('logout', TemplateView.as_view(template_name='logout.html'), name='logout'),
-    # url(r'^accounts/', include('django.contrib.auth.urls')),
-    # url(r'^accounts/signup/$',registration_views.UserSignUp.as_view(),name="signup"),
-    path('password-recovery', TemplateView.as_view(template_name='password-recovery.html'), name='password-recovery'),
+    path('accounts/profile/<int:user_id>/', TemplateView.as_view(template_name='user-profile.html')),
 
     path('management/', include('management.urls'), name="management"),
     path('404error', TemplateView.as_view(template_name='404.html'), name='404-url'),

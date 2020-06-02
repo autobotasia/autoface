@@ -12,11 +12,15 @@ urlpatterns = [
     path('camera', views.camera_list, name="camera_list"),
     path('camera/', lambda request: redirect('camera_list', permanent=True)),
     path('camera/create', views.camera_create, name='camera_create'),
+    path('camera/<int:id>/view', views.camera_view, name="camera_view"),
     path('camera/<int:id>/<str:opt>', views.camera_crud, name="camera_crud"),
+    path('refuse-to-access/', TemplateView.as_view(template_name='refuse-access.html'), name='refuse_access'),
 
     path('organization', views.organization_list, name='organization_list'),
+
     path('organization/', lambda request: redirect('organization_list', permanent=True)),
     path('organization/create', views.organization_create, name='organization_create'),
+    path('organization/<int:id>/view', views.organization_view, name="organization_view"),
     path('organization/<int:id>/<str:opt>', views.organization_crud, name="organization_crud"),
 
     path('group-of-title', views.group_of_title_list, name='group_of_title_list'),

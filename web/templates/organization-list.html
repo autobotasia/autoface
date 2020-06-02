@@ -109,7 +109,7 @@
                   <td>
                     <a href={% url "organization_crud" id=data.id opt='view' %}><button data-toggle="tooltip" title="View" class="pd-setting-ed"><i class="fa fa-eye" aria-hidden="true"></i></button></a>
                     <a href={% url "organization_crud" id=data.id opt='update' %}><button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
-                    <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    <a href={% url "organization_crud" id=data.id opt='delete' %}><button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button></a>
                   </td>
                 </tr>
                 {% endfor %}

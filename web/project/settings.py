@@ -28,7 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     '0.0.0.0',
-    'ai.nccsoft.vn'
+    'ai.nccsoft.vn',
+     '127.0.0.1'
 ]
 
 SECURE_HSTS_SECONDS = 1
@@ -56,7 +57,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    # 'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
     # 'allauth.socialaccount.providers.twitter',
 
@@ -68,7 +69,7 @@ INSTALLED_APPS = [
 
 SOCIALACCOUNT_PROVIDERS = {
     'facebook': {
-        
+
     },
     'google':{
         'SCOPE': ['email'],
@@ -152,7 +153,7 @@ AUTHENTICATION_BACKENDS = [
 
 # EMAIL_BACKEND so allauth can proceed to send confirmation emails
 # ONLY for development/testing use console
-EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 
 
 # Custom allauth settings
@@ -161,9 +162,18 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 # Make email verification mandatory to avoid junk email accounts
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-# Eliminate need to provide username, as it's a very old practice
-ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS=7
 
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 900
+# Eliminate need to provide username, as it's a very old practice
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+ACCOUNT_USERNAME_REQUIRED = False
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'fake.mail.2043@gmail.com'
+EMAIL_HOST_PASSWORD = 'D0t4Tth@nh'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

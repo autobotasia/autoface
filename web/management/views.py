@@ -3,19 +3,17 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.views.generic import TemplateView, ListView, DeleteView
 from django.urls import reverse
-from .models import TimeKeeping
-from .models import Camera
-from .models import Organization
-from .models import GroupOfTitle
-from .forms import CameraForm
-from .forms import OrganizationForm
+from django.contrib.auth.models import User
+from .models import TimeKeeping, Camera, Organization, GroupOfTitle
+from .forms import CameraForm, OrganizationForm
 from . import mock_dbtools
 # Create your views here.
 
 
-@login_required
+@login_required(login_url='/accounts/login/')
 def report(request):
 
     try:
@@ -33,7 +31,7 @@ def report(request):
         print("Http404 Error. Cannot get TimeKeeping Records.")
 
 
-# @login_required
+@login_required(login_url='/accounts/login/')
 def camera_list(request):
     try:
         data_list = get_list_or_404(Camera)
@@ -45,6 +43,7 @@ def camera_list(request):
         print("Http404 Error. Cannot get TimeKeeping Records.")
 
 
+@login_required(login_url='/accounts/login/')
 def camera_create(request):
 
     if request.method == 'POST':
@@ -59,21 +58,26 @@ def camera_create(request):
         return render(request, 'camera-create.html', {'form': form})
 
 
-# @login_required
+@login_required(login_url='/accounts/login/')
+def camera_view(request, id):
+    camera = Camera.objects.get(pk=id)
+    return render(request, 'temp-camera-view.html', {'camera' : camera})
+
+
+@login_required(login_url='/accounts/login/')
+@staff_member_required(login_url='refuse_access')
 def camera_crud(request, id, opt):
 
     if opt == 'delete':
         try:
             camera = get_object_or_404(Camera, pk=id)
-            form = CameraForm(instance=camera)
-            if request.method == 'POST':
-                form = CameraForm(request.POST, instance=camera)
-                if form.is_valid():
-                    form.delete()
-                    messages.success(request, 'Deleted camera ' + str(id))
-                    return HttpResponseRedirect('camera_list')
 
-            return render(request, 'camera-delete.html', {'form': form})
+            if request.method == 'POST':
+                camera.delete()
+                messages.success(request, 'Deleted camera ' + str(id))
+                return HttpResponseRedirect('camera_list')
+
+            return render(request, 'camera-delete.html', {'pk': id, 'camera_name' : camera.camera_title})
 
         except  Http404:
             print("Http404 Error. Cannot get TimeKeeping Records.")
@@ -91,9 +95,6 @@ def camera_crud(request, id, opt):
 
         return render(request, 'camera-crud.html', {'form': form})
 
-    elif opt == 'view':
-        camera = Camera.objects.get(pk=id)
-        return render(request, 'temp-camera-view.html', {'camera' : camera})
     else:
         try:
             data_list = get_list_or_404(Camera)
@@ -104,13 +105,7 @@ def camera_crud(request, id, opt):
             print("Http404 Error. Cannot get TimeKeeping Records.")
 
 
-class DeleteMe(DeleteView):
-    template_name = 'camera-delete.html'
-    model = Camera
-    success_url = 'camera_list'
-
-
-# @login_required
+@login_required(login_url='/accounts/login/')
 def organization_list(request):
     try:
         data_list = get_list_or_404(Organization)
@@ -121,6 +116,7 @@ def organization_list(request):
         print("Http404 Error. Cannot get TimeKeeping Records.")
 
 
+@login_required(login_url='/accounts/login/')
 def organization_create(request):
 
     if request.method == 'POST':
@@ -135,18 +131,27 @@ def organization_create(request):
         return render(request, 'organization-create.html', {'form': form})
 
 
+@login_required(login_url='/accounts/login/')
+def organization_view(request, id):
+
+    organization = Organization.objects.get(pk=id)
+    return render(request, 'temp-organization-view.html', {'organization' : organization})
+
+
+@login_required(login_url='/accounts/login/')
 def organization_crud(request, id, opt):
 
     if opt == 'delete':
         try:
-            data_list = get_list_or_404(Organization)
-            data = get_object_or_404(Organization, pk=id)
-            print(data)
-            notif = "Deleted organization " + str(data.id)
-            return HttpResponseRedirect(reverse('organization_list', args={
-                "page_obj": data_list,
-                "notif": notif,
-            }))
+            organization = get_object_or_404(Organization, pk=id)
+
+            if request.method == 'POST':
+                organization.delete()
+                messages.success(request, 'Deleted camera ' + str(id))
+                return HttpResponseRedirect('organization_list')
+
+            return render(request, 'organization-delete.html', {'pk': id, 'organization_name' : organization.organization_name})
+
         except  Http404:
             print("Http404 Error. Cannot get TimeKeeping Records.")
 
@@ -163,12 +168,9 @@ def organization_crud(request, id, opt):
 
         return render(request, 'organization-crud.html', {'form': form})
 
-    elif opt == 'view':
-        organization = Organization.objects.get(pk=id)
-        return render(request, 'temp-organization-view.html', {'organization' : organization})
     else:
         try:
-            data_list = get_list_or_404(organization)
+            data_list = get_list_or_404(Organization)
             return render(request, 'organization-list.html', {
                 "page_obj": data_list,
             })
@@ -176,7 +178,7 @@ def organization_crud(request, id, opt):
             print("Http404 Error. Cannot get TimeKeeping Records.")
 
 
-# @login_required
+@login_required(login_url='/accounts/login/')
 def group_of_title_list(request):
     try:
         data_list = get_list_or_404(GroupOfTitle)
@@ -187,7 +189,7 @@ def group_of_title_list(request):
         print("Http404 Error. Cannot get TimeKeeping Records.")
 
 
-# @login_required
+@login_required(login_url='/accounts/login/')
 def database_crud(request, arg, opt):
 
     if arg == "save-record-to-database":
@@ -213,3 +215,10 @@ def database_crud(request, arg, opt):
     #         return HttpResponse("Delete all successfully.")
 
     return HttpResponse("Argument is not valid.")
+
+
+@login_required(login_url='/accounts/login/')
+def get_user_profile(request, id):
+
+    user = User.objects.get(pk=id)
+    return render(request, 'user-profile.html', { 'form' : form})
