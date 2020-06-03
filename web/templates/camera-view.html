@@ -64,21 +64,27 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="review-tab-pro-inner">
             <ul id="myTab3" class="tab-review-design">
-              <li class="active"><a href="#description"><i class="icon nalika-edit" aria-hidden="true"></i> Camera Edit</a></li>
+              <li ><a href="#description"><i class="icon nalika-edit" aria-hidden="true"></i> Camera View</a></li>
 
             </ul>
             <div id="myTabContent" class="tab-content custom-product-edit">
-              <div class="product-tab-list tab-pane active in" id="description">
+              <div class="product-tab-list tab-pane fade  active in" id="description">
                 <form class="form" action='' method="post">
                   {% csrf_token %}
                 <div class="row">
-                  <div class="col-lg-3 col-md-3 col-sm-3">
+                  <div class="col-lg-3 col-md-3 col-sm-3 ">
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <div class="review-content-section">
                       <div class="input-group mg-b-pro-edt">
                         <span class="input-group-addon"><i class="icon nalika-menu-task" aria-hidden="true"></i></span>
-                        {{ form.status }}
+                        {% if form.status == 0 %}
+                        <input type="text" name="" value="Active" class="form-control">
+                        {% elif form.status == 1 %}
+                        <input type="text" name="" value="Paused" class="form-control">
+                        {% else %}
+                        <input type="text" name="" value="Disabled" class="form-control">
+                        {% endif %}
                       </div>
                       <div class="input-group mg-b-pro-edt">
                         <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
@@ -96,47 +102,10 @@
                         <span class="input-group-addon"><i class="icon nalika-desktop" aria-hidden="true"></i></span>
                         {{ form.IP_camera }}
                       </div>
-                      <div class="input-group mg-b-pro-edt">
-                        <span class="input-group-addon"><i class="icon nalika-upload" aria-hidden="true"></i></span>
-                        <label style="color:#ddd; padding: 10px">Status</label>
-                        <!-- begin button-drop-style-two block -->
-                        <button type="button" class="btn btn-custon-four btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-info-circle adminpro-informatio" aria-hidden="true"></i> Primary <i class="fa fa-angle-down"></i></button>
-                        <ul class="dropdown-menu btn-dropdown-menu another-drop-pro-seven" role="menu">
-                          <li><a href="#">Action</a>
-                          </li>
-                          <li><a href="#">Another action</a>
-                          </li>
-                          <li><a href="#">Something else here</a>
-                          </li>
-                          <li><a href="#">Separated link</a>
-                          </li>
-                          <li>
-                            <div class="btn-setting-icon">
-                              <div class="btn-icon-st">
-                                <a href="#"><i class="fa fa-cloud-download adminpro-cloud-computing-down" aria-hidden="true"></i></a>
-                              </div>
-                              <div class="btn-icon-st">
-                                <a href="#"><i class="fa fa-cog adminpro-settings" aria-hidden="true"></i></a>
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
-                        <!-- end button-drop-style-two-->
-                      </div>
                     </div>
                   </div>
-                  <div class="col-lg-3 col-md-3 col-sm-3">
+                  <div class="col-lg-3 col-md-3 col-sm-3 ">
                     {# Description Text Area #}
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="text-center custom-pro-edt-ds">
-                      <button type="Submit" class="btn btn-ctl-bt waves-effect waves-light m-r-10" value="submit">Save
-                      </button>
-                      <button type="button" class="btn btn-ctl-bt waves-effect waves-light">Discard
-                      </button>
-                    </div>
                   </div>
                 </div>
               </form>

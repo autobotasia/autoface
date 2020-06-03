@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block page-head %}
+<title>Organization Edit | Nalika - Material Admin Template</title>
+
+
+<!-- include libraries(jQuery, bootstrap) -->
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- include summernote css/js -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-bs4.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-bs4.min.js"></script>
+
+{% endblock %}
+
+{% block content %}
+
+{# All header #}
+<div class="header-advance-area">
+  {# Main Header #}
+  {% include "main-header.html" %}
+  {# End of Main Header #}
+
+  <!-- Mobile Menu start -->
+  {% include "mobile-menu.html" %}
+  <!-- Mobile Menu end -->
+
+  <div class="breadcome-area">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="breadcome-list">
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div class="breadcomb-wp">
+                  <div class="breadcomb-icon">
+                    <i class="icon nalika-home"></i>
+                  </div>
+                  <div class="breadcomb-ctn">
+                    <h2>Organization Detail</h2>
+                    <p>Welcome to NCC <span class="bread-ntd">Admin Template</span></p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {# End of Page Header #}
+</div>
+{# End of all header #}
+
+<!-- Single pro tab start-->
+<div class="single-product-tab-area mg-b-30">
+  <!-- Single pro tab review Start-->
+  <div class="single-pro-review-area">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="review-tab-pro-inner">
+            <ul id="myTab3" class="tab-review-design">
+              <li ><a href="#description"><i class="icon nalika-edit" aria-hidden="true"></i> Organization View</a></li>
+
+            </ul>
+            <div id="myTabContent" class="tab-content custom-product-edit">
+              <div class="product-tab-list tab-pane fade  active in" id="description">
+                <form class="form" action='' method="post">
+                  {% csrf_token %}
+                <div class="row">
+                  <div class="col-lg-3 col-md-3 col-sm-3 ">
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="review-content-section">
+                      <div class="input-group mg-b-pro-edt">
+                        <span class="input-group-addon"><i class="icon nalika-menu-task" aria-hidden="true"></i></span>
+                        <label class="form-control">Organization ID</label>
+                        <input type="text" class="form-control" placeholder="No." value={{ id }}>
+                      </div>
+                      <div class="input-group mg-b-pro-edt">
+                        <span class="input-group-addon"><i class="icon nalika-team" aria-hidden="true"></i></span>
+                        <label for="" class="form-control">Organization Name</label>
+                        {{ form.organization_name }}
+                      </div>
+                      <div class="input-group mg-b-pro-edt">
+                        <span class="input-group-addon"><i class="icon nalika-user" aria-hidden="true"></i></span>
+                        <label for="" class="form-control">Admin</label>
+                        {{ form.admin }}
+                      </div>
+                      <div class="input-group mg-b-pro-edt">
+                        <span class="input-group-addon"><i class="fa fa-building-o" aria-hidden="true"></i></span>
+                        <label for="" class="form-control">Location</label>
+                        {{ form.location }}
+                      </div>
+                      <div class="input-group mg-b-pro-edt">
+                        <span class="input-group-addon"><i class="icon nalika-smartphone-call" aria-hidden="true"></i></span>
+                        <label for="" class="form-control">Tel</label>
+                        {{ form.tel }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-3 ">
+                    {# Description Text Area #}
+                  </div>
+                </div>
+              </form>
+              </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+{% endblock %}

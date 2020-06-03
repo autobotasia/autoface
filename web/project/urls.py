@@ -19,6 +19,7 @@ from django.urls import path, include
 # from users import views as user_views
 from django.views.generic import TemplateView, RedirectView
 from django.conf.urls import url
+from . import user_views
 
 admin.site.site_header = "NCC Admin"
 admin.site.site_title = "NCC Admin Portal"
@@ -30,7 +31,8 @@ urlpatterns = [
     # path('register/', user_views.register, name='register'),
     # path('login', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     url(r'^accounts/', include('allauth.urls')),
-    path('accounts/profile/<int:user_id>/', TemplateView.as_view(template_name='user-profile.html')),
+    path('myaccount/', user_views.get_current_user_profile, name='current_user_profile'),
+    # path('accounts/profile/<int:user_id>/', TemplateView.as_view(template_name='user-profile.html')),
 
     path('management/', include('management.urls'), name="management"),
     path('404error', TemplateView.as_view(template_name='404.html'), name='404-url'),

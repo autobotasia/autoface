@@ -68,40 +68,46 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="review-tab-pro-inner">
             <ul id="myTab3" class="tab-review-design">
-              <li class="active"><a href="#INFORMATION"><i class="icon nalika-chat" aria-hidden="true"></i> Overview</a></li>
               <li><a href="#description"><i class="icon nalika-edit" aria-hidden="true"></i> Organization Edit (Hide with normal users)</a></li>
               <li><a href="#reviews1"><i class="icon nalika-picture" aria-hidden="true"></i> Photos</a></li>
             </ul>
             <div id="myTabContent" class="tab-content custom-product-edit">
-              <div class="product-tab-list tab-pane fade" id="description">
+              <div class="product-tab-list tab-pane fade active in" id="description">
                 <form class="form" action='' method="post">
                   {% csrf_token %}
                   <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 ">
+                    </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                       <div class="review-content-section">
                         <div class="input-group mg-b-pro-edt">
                           <span class="input-group-addon"><i class="icon nalika-menu-task" aria-hidden="true"></i></span>
-                          <input type="text" class="form-control" placeholder="No.">
-                        </div>
-                        <div class="input-group mg-b-pro-edt">
-                          <span class="input-group-addon"><i class="icon nalika-user" aria-hidden="true"></i></span>
-                          {{ form.admin }}
+                          <label class="form-control">Organization ID</label>
+                          <input type="text" class="form-control" placeholder="No." value={{ id }}>
                         </div>
                         <div class="input-group mg-b-pro-edt">
                           <span class="input-group-addon"><i class="icon nalika-team" aria-hidden="true"></i></span>
+                          <label for="" class="form-control">Organization Name</label>
                           {{ form.organization_name }}
                         </div>
                         <div class="input-group mg-b-pro-edt">
+                          <span class="input-group-addon"><i class="icon nalika-user" aria-hidden="true"></i></span>
+                          <label for="" class="form-control">Admin</label>
+                          {{ form.admin }}
+                        </div>
+                        <div class="input-group mg-b-pro-edt">
                           <span class="input-group-addon"><i class="fa fa-building-o" aria-hidden="true"></i></span>
+                          <label for="" class="form-control">Location</label>
                           {{ form.location }}
                         </div>
                         <div class="input-group mg-b-pro-edt">
                           <span class="input-group-addon"><i class="icon nalika-smartphone-call" aria-hidden="true"></i></span>
+                          <label for="" class="form-control">Tel</label>
                           {{ form.tel }}
                         </div>
                       </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="col-lg-3 col-md-3 col-sm-3 ">
                       {# Description Text Area #}
                     </div>
                   </div>
@@ -110,8 +116,10 @@
                       <div class="text-center custom-pro-edt-ds">
                         <button type="Submit" class="btn btn-ctl-bt waves-effect waves-light m-r-10" value='submit'>Save
                         </button>
-                        <button type="button" class="btn btn-ctl-bt waves-effect waves-light">Discard
-                        </button>
+                        <a href={% url "organization_list" %}>
+                          <button type="button" class="btn btn-ctl-bt waves-effect waves-light">Discard
+                          </button>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -272,75 +280,12 @@
                   </div>
                 </div>
               </div>
-              <div class="product-tab-list tab-pane fade  active in" id="INFORMATION">
-                <div class="row">
-                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="review-content-section">
-                      <div class="card-block">
-                        <div class="m-t-10">
-                          <div class="txt-primary f-18 f-w-600">
-                            <h3>Your Rating for this Organization</h3>
-                          </div>
-                          <div class="stars stars-example-css detail-stars">
-                            <div class="review-rating">
-                              <fieldset class="rating">
-                                <input type="radio" id="star5" name="rating" value="5">
-                                <label class="full" for="star5"></label>
-                                <input type="radio" id="star4half" name="rating" value="4 and a half">
-                                <label class="half" for="star4half"></label>
-                                <input type="radio" id="star4" name="rating" value="4">
-                                <label class="full" for="star4"></label>
-                                <input type="radio" id="star3half" name="rating" value="3 and a half">
-                                <label class="half" for="star3half"></label>
-                                <input type="radio" id="star3" name="rating" value="3">
-                                <label class="full" for="star3"></label>
-                                <input type="radio" id="star2half" name="rating" value="2 and a half">
-                                <label class="half" for="star2half"></label>
-                                <input type="radio" id="star2" name="rating" value="2">
-                                <label class="full" for="star2"></label>
-                                <input type="radio" id="star1half" name="rating" value="1 and a half">
-                                <label class="half" for="star1half"></label>
-                                <input type="radio" id="star1" name="rating" value="1">
-                                <label class="full" for="star1"></label>
-                                <input type="radio" id="starhalf" name="rating" value="half">
-                                <label class="half" for="starhalf"></label>
-                              </fieldset>
-                            </div>
-                            <div class="clear"></div>
-                          </div>
-                        </div>
-                        <br/>
-                        <br/>
-                        <div class="text-muted f-w-400">
-                          <h3>Organization Info and Descriptions</h3>
-                          <div>
-                            せ日けはへねいきッフリーュマせっけ、擢保譜課毛、ょりううへい手模夜氏離手絵離魔露留たの野模差ふへ日つぬヒメハケ津舳ひや絵列目以へよよめトクラ瀬んニュ名他ろめのへさゆ野擢うまや等夜都手毛素根、しョトトスムノヘつるそへおらかモュ保クヨー舳手知うや無ゆほれは、保遊。
-                            <br>
-                            っ津手以めそち樹目ほぬ屋しへあむみ遊都阿毛離御尾擢露野てひやかめふ氏擢巣毛尾クーンミ保以っつけけ根個ヨウユナロまぬそきねすせ、ヘラエュルーヌらあへなっつぬろのンアクえてこらかとお素雲鵜名ひす。あつョロリ鵜っすひく都露せろひきの無手御留み、ろちぬっさ樹絵うさろ津知屋遊模。てよの巣目名擢尾まいっっ御阿みっょそ根瀬無ひすう。雲尾めよよま都模ひっほ魔二模津ゅっ。手日魔雲トネハヌクツロヘウアホタネヒ。
-                            <br>
-                            目鵜手もゅのねうョエヘナコマユタコチレみ御津名名譜二差舳課日と氏等保ゆ擢都根擢野等個るぬ模手課留他課知雲日舳差譜留離巣等野えもふちそあ離おふタルクセ、あ他等すらんょね鵜知、のなえゃ。
-                            <br>
-                            た以瀬野根。とゅう絵鵜舳根名ルロミ。いぬ氏夜魔み留いたねせのす派離りて御保他目ゅるカテエュヤにはほ差手露課樹。せまお、かとま目根瀬譜マセヌ。んみさぬもかッャノ課個絵なみ列、差模二区。以二尾阿絵保区毛瀬鵜津知ホカ津ひもせ屋野た樹。目みろ氏課模毛あ巣以う名樹以。のつはか巣差以津っ等離区譜ともの素都差野列ぬいすうひみめかえ日他素野名。
-                          </div>
-                        </div>
-                        <!-- <div class="input-group mg-b-15 mg-t-15">
-                        <span class="input-group-addon"><i class="icon nalika-user" aria-hidden="true"></i></span>
-                        <input type="text" class="form-control" placeholder="User Name">
-                      </div>
-                      <div class="form-group review-pro-edt mg-b-0-pt">
-                      <button type="submit" class="btn btn-ctl-bt waves-effect waves-light">Submit -->
-                    </button>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-</div>
 </div>
 </div>
 </div>

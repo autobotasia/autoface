@@ -13,6 +13,8 @@ from . import mock_dbtools
 # Create your views here.
 
 
+
+
 @login_required(login_url='/accounts/login/')
 def report(request):
 
@@ -61,7 +63,9 @@ def camera_create(request):
 @login_required(login_url='/accounts/login/')
 def camera_view(request, id):
     camera = Camera.objects.get(pk=id)
-    return render(request, 'temp-camera-view.html', {'camera' : camera})
+    form = CameraForm(instance=camera)
+    return render(request, 'camera-view.html', {'form' : form})
+    # return render(request, 'camera-view.html', {'camera' : camera})
 
 
 @login_required(login_url='/accounts/login/')
@@ -135,10 +139,12 @@ def organization_create(request):
 def organization_view(request, id):
 
     organization = Organization.objects.get(pk=id)
-    return render(request, 'temp-organization-view.html', {'organization' : organization})
+    form = OrganizationForm(instance=organization)
+    return render(request, 'organization-view.html', {'id': id, 'form' : form})
 
 
 @login_required(login_url='/accounts/login/')
+@staff_member_required(login_url='refuse_access')
 def organization_crud(request, id, opt):
 
     if opt == 'delete':
@@ -166,7 +172,7 @@ def organization_crud(request, id, opt):
                 messages.success(request, 'Updated organization ' + str(id))
                 return HttpResponseRedirect(request.path_info)
 
-        return render(request, 'organization-crud.html', {'form': form})
+        return render(request, 'organization-crud.html', {'id': id, 'form': form})
 
     else:
         try:
@@ -190,6 +196,7 @@ def group_of_title_list(request):
 
 
 @login_required(login_url='/accounts/login/')
+@staff_member_required(login_url='refuse_access')
 def database_crud(request, arg, opt):
 
     if arg == "save-record-to-database":
@@ -221,4 +228,4 @@ def database_crud(request, arg, opt):
 def get_user_profile(request, id):
 
     user = User.objects.get(pk=id)
-    return render(request, 'user-profile.html', { 'form' : form})
+    return render(request, 'user-profile.html', { 'id': id, 'form' : form})

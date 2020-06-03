@@ -79,12 +79,9 @@
                   <form class="form" action={% url 'organization_create' %} method="post">
                     {% csrf_token %}
                 <div class="row">
+                  <div class="col-lg-3 col-md-3 col-sm-3 "></div>
                   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <div class="review-content-section">
-                      <div class="input-group mg-b-pro-edt">
-                        <span class="input-group-addon"><i class="icon nalika-menu-task" aria-hidden="true"></i></span>
-                        <input type="text" class="form-control" placeholder="No.">
-                      </div>
                       <div class="input-group mg-b-pro-edt">
                         <span class="input-group-addon"><i class="icon nalika-user" aria-hidden="true"></i></span>
                         {{ form.admin }}
@@ -103,17 +100,17 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    {# Description TextArea #}
-                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-3 "></div>
                 </div>
                 <div class="row">
                   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="text-center custom-pro-edt-ds">
                       <button type="Submit" class="btn btn-ctl-bt waves-effect waves-light m-r-10" value="submit">Save
                       </button>
-                      <button type="button" class="btn btn-ctl-bt waves-effect waves-light">Discard
-                      </button>
+                      <a href={% url "organization_list" %}>
+                        <button type="button" class="btn btn-ctl-bt waves-effect waves-light">Discard
+                        </button>
+                      </a>
                     </div>
                   </div>
                 </div>
