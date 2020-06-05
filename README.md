@@ -20,7 +20,7 @@ export PYTHONPATH=./models/insightface/deploy/
   "do_preprocess":0,
   "do_train":0,
   "do_demo": 1,
-  "pretrained_mode  l": {
+  "pretrained_mode": {
     "image_size":"112,112",
     "ga_model":"",
     "model":"./models/insightface/models/model-r100-ii/model,0",
