@@ -8,7 +8,6 @@ from .models import Organization
 from .models import GroupOfTitle
 from django.conf import settings
 from faker import Faker
-import pandas as pd
 import random as rd
 import string
 

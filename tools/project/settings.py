@@ -64,7 +64,6 @@ INSTALLED_APPS = [
     # apps
     'tools',
     'management',
-    'crispy_forms',
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -173,7 +172,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'fake.mail.2043@gmail.com'
-EMAIL_HOST_PASSWORD = 'D0t4Tth@nh'
+EMAIL_HOST_PASSWORD = 'D0t4Tth@nh*60'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -209,7 +208,7 @@ MEDIAFILES_DIR = [
 # temporary image files location:
 TEMP_IMG = 'cls/'
 
-LOGIN_URL = 'login'
+LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/management/report'
 
 # TAG LIST

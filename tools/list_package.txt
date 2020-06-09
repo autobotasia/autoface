@@ -1,0 +1,17 @@
+Web App Requirements
+
+Libs & Plugins:
+
+  Bootstrap 3
+  JQuery
+  List.js
+  JQUERY TABLE2EXCEL
+
+Template:
+  Nalika Admin Template
+
+Package:
+
+  django=2.2
+  django-allauth
+  
