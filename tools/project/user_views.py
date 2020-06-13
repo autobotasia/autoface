@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm
 from django.forms.models import model_to_dict
-
+from management.auth_forms import UserProfileForm
 
 
 @login_required(login_url='/accounts/login/')
@@ -16,8 +16,8 @@ def get_current_user_profile(request):
     if request.user.is_authenticated:
         current_user = request.user
         # context = model_to_dict(current_user)
-        UserFormSet = modelformset_factory(User, fields=('last_login', 'username', "first_name", "last_name", "email", "date_joined"))
-        # form = UserChangeForm(instance=current_user)
+        # UserFormSet = modelformset_factory(User, fields=('last_login', 'username', "first_name", "last_name", "email", "date_joined"))
+        form = UserChangeForm(instance=current_user)
         for k in form.fields.keys():
             field = form.fields[k]
             css_addition = ' form-control '

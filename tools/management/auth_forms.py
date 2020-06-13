@@ -1,7 +1,7 @@
 # from allauth.account.forms import SignupForm, LoginForm, AddEmailForm, ChangePasswordForm, SetPasswordForm, ResetPasswordForm
 # from allauth.socialaccount.forms import SignupForm, DisconnectForm
-#
-#
+from django.forms import ModelForm
+from django.contrib.auth.models import User
 # class MyCustomLoginForm(LoginForm):
 #
 #     def __init__(self, *args, **kwargs):
@@ -22,3 +22,8 @@
 #                     'style': "color:black;"
 #                 }
 #             )
+class UserProfileForm(ModelForm):
+
+    class Meta:
+        model = User
+        fields = ("first_name", "last_name",  "username")
