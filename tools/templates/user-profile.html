@@ -78,117 +78,127 @@
                 <div class="form">
                   <form class="form" action='' method="post">
                     {% csrf_token %}
-                <div class="row">
-                  <div class="col-lg-3 col-md-3 col-sm-3 "></div>
-                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <div class="review-content-section">
+                    <div class="row">
+                      <div class="col-lg-3 col-md-3 col-sm-3 "></div>
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="review-content-section">
 
-                      <div class="input-group mg-b-pro-edt">
-                        <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
-                        <label class='form-control'>
-                          Password
-                        </label>
-                        <br>
-                        <a href="../accounts/password/reset" class='form-control'>Reset Password</a>
+                          <div class="input-group mg-b-pro-edt">
+                            <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
+                            <label class='form-control'>
+                              Last Login:
+                            </label>
+                            <label class='form-control'>
+                              {{ user_data.last_login }}
+                            </label>
+                          </div>
+
+
+
+                          <div class="input-group mg-b-pro-edt">
+                            <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
+                            <label class='form-control'>
+                              {{ form.username.label }}:
+                            </label>
+                            <br>
+                            {{ form.username }}
+                          </div>
+
+                          <div class="input-group mg-b-pro-edt">
+                            <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
+                            <label class='form-control'>
+                              {{ form.first_name.label }}:
+                            </label>
+                            <br>
+                            {{ form.first_name }}
+                          </div>
+
+                          <div class="input-group mg-b-pro-edt">
+                            <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
+                            <label class='form-control'>
+                              {{ form.last_name.label }}
+                            </label>
+                            <br>
+                            {{ form.last_name }}
+                          </div>
+
+                          <div class="input-group mg-b-pro-edt">
+                            <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
+                            <label class='form-control'>
+                              Email address:
+                            </label>
+                            <label class='form-control'>
+                              {{ user_data.email }}
+                            </label>
+                            <a href="../accounts/email/" class='form-control'>Update Email Info</a>
+                          </div>
+
+
+                          <div class="input-group mg-b-pro-edt">
+                            <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
+                            <label class='form-control'>
+                              Password
+                            </label>
+                            <br>
+                            <a href="../accounts/password/reset" class='form-control'>Reset Password</a>
+                          </div>
+
+
+                          <div class="input-group mg-b-pro-edt">
+                            <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
+                            {% if user_data.is_superuser %}
+                            <label class='form-control'>
+                              Superuser
+                            </label>
+                            {% else %}
+                            <label class='form-control'>Normal User</label>
+                            {% endif %}
+                          </div>
+
+                          {% if user_data.is_staff %}
+                          <div class="input-group mg-b-pro-edt">
+                            <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
+                            <label class="form-control">Staff Member</label>
+                          </div>
+                          {% endif %}
+
+                          <div class="input-group mg-b-pro-edt">
+                            <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
+                            {% if user_data.is_active %}
+                            <label class="form-control">Active</label>
+                            {% else %}
+                            <label class="form-control">Inactive</label>
+                            {% endif %}
+                          </div>
+
+                          <div class="input-group mg-b-pro-edt">
+                            <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
+                            <label class='form-control'>
+                              Date Joined:
+                            </label>
+                            <label class='form-control'>
+                              {{ user_data.date_joined }}
+                            </label>
+                          </div>
+
+                        </div>
                       </div>
-
-                      <div class="input-group mg-b-pro-edt">
-                        <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
-                        <label class='form-control'>
-                          Last Login
-                        </label>
-                          {{ form.last_login }}
-                      </div>
-
-                      <div class="input-group mg-b-pro-edt">
-                        <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
-                        {% if form.is_superuser %}
-                        <label class='form-control'>
-                          Superuser
-                        </label>
-                        {% else %}
-                        <label class='form-control'>Normal User</label>
-                        {% endif %}
-                      </div>
-
-                      <div class="input-group mg-b-pro-edt">
-                        <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
-                        <label class='form-control'>
-                          {{ form.username.label }}
-                        </label>
-                        <br>
-                        {{ form.username }}
-                      </div>
-
-                      <div class="input-group mg-b-pro-edt">
-                        <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
-                        <label class='form-control'>
-                          {{ form.first_name.label }}
-                        </label>
-                        <br>
-                        {{ form.first_name }}
-                      </div>
-
-                      <div class="input-group mg-b-pro-edt">
-                        <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
-                        <label class='form-control'>
-                          {{ form.last_name.label }}
-                        </label>
-                        <br>
-                        {{ form.last_name }}
-                      </div>
-
-                      <div class="input-group mg-b-pro-edt">
-                        <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
-                        <label class='form-control'>
-                          {{ form.email.label }}
-                        </label>
-                          {{ form.email }}
-                        <a href="../accounts/email/" class='form-control'>Update Email Info</a>
-                      </div>
-
-                      {% if form.is_staff %}
-                      <div class="input-group mg-b-pro-edt">
-                        <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
-                        <label class="form-control">Staff Member</label>
-                      </div>
-                      {% endif %}
-
-                      <div class="input-group mg-b-pro-edt">
-                        <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
-                        {% if form.is_active %}
-                        <label class="form-control">Active</label>
-                        {% else %}
-                        <label class="form-control">Inactive</label>
-                        {% endif %}
-                      </div>
-
-                      <div class="input-group mg-b-pro-edt">
-                        <span class="input-group-addon"><i class="icon nalika-info" aria-hidden="true"></i></span>
-                        <label class='form-control'>
-                          {{ form.date_joined.label }}
-                        </label>
-                          {{ form.date_joined }}
-                      </div>
-
+                      <div class="col-lg-3 col-md-3 col-sm-3 "></div>
                     </div>
-                  </div>
-                  <div class="col-lg-3 col-md-3 col-sm-3 "></div>
-                </div>
-                <div class="row">
-                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="text-center custom-pro-edt-ds">
-                      <button type="Submit" class="btn btn-ctl-bt waves-effect waves-light m-r-10" value="submit">Save
-                      </button>
-                      <a href={% url "organization_list" %}>
-                        <button type="button" class="btn btn-ctl-bt waves-effect waves-light">Discard
-                        </button>
-                      </a>
+                    <div class="row">
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="text-center custom-pro-edt-ds">
+                          <button type="Submit" class="btn btn-ctl-bt waves-effect waves-light m-r-10" value="submit">Save
+                          </button>
+                          <a href={% url "organization_list" %}>
+                            <button type="button" class="btn btn-ctl-bt waves-effect waves-light">Discard
+                            </button>
+                          </a>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  </form>
                 </div>
-              </form>
-            </div>
                 {# End Form Block #}
               </div>
               <div class="product-tab-list tab-pane fade" id="reviews1">
